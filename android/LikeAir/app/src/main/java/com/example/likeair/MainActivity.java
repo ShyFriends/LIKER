@@ -9,15 +9,20 @@ import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
 
+    Button Button_longin;
+
     EditText EditText_login, EditText_password;
     Button Button_login;
     TextView TextView_forgot, TextView_creat;
 
 
     TextView textView_LikeAir;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+
     }
 }

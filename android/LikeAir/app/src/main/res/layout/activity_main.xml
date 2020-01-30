@@ -10,36 +10,32 @@
     android:paddingRight="16dp"
     android:paddingLeft="16dp">
 
-    <Space
-        android:layout_width="match_parent"
-        android:layout_height="80dp" />
 
     <ImageView
         android:id="@+id/imageView4"
+        android:layout_marginTop="125dp"
         android:layout_width="200dp"
         android:layout_height="100dp"
         android:layout_gravity="center"
         android:src = "@mipmap/liker_origin" />
-    <Space
-        android:layout_width="match_parent"
-        android:layout_height="50dp" />
+
 
     <RelativeLayout
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
+        android:layout_marginTop="30dp"
+        android:layout_width="298dp"
+        android:layout_height="56dp"
         android:layout_gravity="center"
-        android:background="@drawable/username_bgnd"
         android:layout_marginBottom="20dp"
-        >
+        android:background="@drawable/username_bgnd"
+        android:orientation="horizontal">
 
         <ImageView
             android:id="@+id/imageView"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
             android:layout_marginTop="10dp"
+            android:layout_marginRight="10dp"
             android:layout_weight="1"
             android:src="@mipmap/user1" />
 
@@ -47,14 +43,17 @@
             android:id="@+id/EditText_username"
             android:layout_width="300dp"
             android:layout_height="40dp"
-            android:ems="10"
-            android:inputType="textPersonName"
-            android:layout_toRightOf="@id/imageView"
-            android:hint="username"
-            android:layout_marginBottom="10dp"
             android:layout_marginTop="10dp"
             android:layout_marginRight="10dp"
-            />
+            android:layout_marginBottom="10dp"
+            android:layout_toRightOf="@id/imageView"
+            android:textColorHint="@color/colorPrimaryDark"
+            android:textSize="17dp"
+            android:ems="10"
+            android:hint="username"
+            android:inputType="textPersonName|textNoSuggestions"
+            android:background="@null"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
 
     </RelativeLayout>
@@ -83,7 +82,10 @@
             android:layout_width="300dp"
             android:layout_height="40dp"
             android:ems="10"
-            android:inputType="textPersonName"
+            android:background="@null"
+            android:textColorHint="@color/colorPrimaryDark"
+            android:inputType="textPersonName|textNoSuggestions"
+            android:textSize="17dp"
             android:layout_toRightOf="@id/imageView2"
             android:hint="password"
             android:layout_marginBottom="10dp"
@@ -99,38 +101,61 @@
         android:id="@+id/Button_login"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Log-in"
-        android:background="@drawable/btn_login"
         android:layout_gravity="right"
-        android:layout_marginBottom="80dp"
-        android:layout_marginRight="20dp"
-
-        />
+        android:layout_marginRight="40dp"
+        android:layout_marginBottom="100dp"
+        android:background="@drawable/btn_login"
+        android:onClick="click_login"
+        android:textStyle="bold"
+        android:text="Log-in" />
 
     <View
         android:id="@+id/view"
         android:layout_width="match_parent"
         android:layout_height="2px"
-        android:background="#ffffff"/>
+        android:layout_marginBottom="10dp"
+        android:background="@color/colorLightGrayLiker"/>
 
     <TextView
         android:id="@+id/TextView_forgot"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Forgot Password?"
-        android:gravity="center"
-        android:textColor="#ffffff"
+        android:text="              Forgot Password?"
+        android:gravity="left"
+        android:textColor="@color/colorLightGrayLiker"
+        />
+
+    <TextView
+        android:id="@+id/TextView_forgotpwd"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightof="@+id/TextView_forgot"
+        android:text="Click HERE"
+        android:gravity="right"
+        android:textColor="@color/colorLightGrayLiker"
         android:clickable="true"
-        android:layout_marginTop="10dp"
         />
 
     <TextView
         android:id="@+id/TextView_creat"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Creat Account"
-        android:gravity="center"
-        android:textColor="#ffffff"
+        android:text="              Creat Account?"
+        android:textcolor="colorLig"
+        android:gravity="left"
+        android:textColor="@color/colorLightGrayLiker"
+        android:layout_marginBottom="10dp"
+        />
+
+    <TextView
+        android:id="@+id/TextView_creataccount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Click HERE"
+        android:textcolor="colorLig"
+        android:gravity="right"
+        android:textColor="@color/colorLightGrayLiker"
         android:clickable="true"
+        android:layout_marginBottom="10dp"
         />
 </LinearLayout>
