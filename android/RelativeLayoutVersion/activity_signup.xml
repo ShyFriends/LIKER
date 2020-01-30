@@ -49,6 +49,7 @@
             android:id="@+id/textView_username"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginRight="16dp"
             android:text="User name"
             android:textSize="20dp"
             android:textColor="@color/colorNavyLiker"
@@ -57,9 +58,11 @@
 
         <TextView
             android:id="@+id/textView_username_input"
-            android:layout_width="match_parent"
+            android:layout_width="250dp"
             android:layout_height="28dp"
+            android:layout_alignParentRight="true"
             android:layout_toRightOf="@+id/textView_username"
+            android:gravity="center"
             android:background="#ffffff"
             android:text="username_input"
             android:textSize="20dp"
@@ -72,19 +75,22 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/textView_username"
             android:layout_marginTop="16dp"
+            android:layout_marginRight="16dp"
             android:text="Email"
             android:textSize="20dp"
             android:textColor="@color/colorNavyLiker"/>
 
         <TextView
             android:id="@+id/textView_email_input"
-            android:layout_width="match_parent"
+            android:layout_width="250dp"
             android:layout_height="28dp"
+            android:layout_alignParentRight="true"
             android:layout_marginTop="16dp"
             android:layout_below="@+id/textView_username"
             android:layout_toRightOf="@+id/textView_email"
+            android:gravity="center"
             android:background="#ffffff"
-            android:text="TextView"
+            android:text="email_input"
             android:textSize="20dp"
             android:textColor="@color/colorNavyLiker"/>
 
