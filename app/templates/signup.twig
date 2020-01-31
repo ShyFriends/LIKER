@@ -205,7 +205,40 @@
       -ms-transform: scale(0.95);
       transform: scale(0.95);
     }*/
+button[type=button]  {
+      background-color: #f39c12;
+      border: none;
+      color: white;
+      padding: 10px 32px ;
+      width: 70%;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      text-transform: uppercase;
+      font-size: 13px;
+      -webkit-box-shadow: 0 10px 30px 0 rgba(95,186,233,0.4);
+      box-shadow: 0 10px 30px 0 rgba(95,186,233,0.4);
+      -webkit-border-radius: 5px 5px 5px 5px;
+      border-radius: 5px 5px 5px 5px;
+      margin: 0px 10px 10px 10px;
+      -webkit-transition: all 0.3s ease-in-out;
+      -moz-transition: all 0.3s ease-in-out;
+      -ms-transition: all 0.3s ease-in-out;
+      -o-transition: all 0.3s ease-in-out;
+      transition: all 0.3s ease-in-out;
+    }
 
+
+    button[type=button]:hover {
+      background-color: #f39c12;
+    }
+        button[type=button]:active  {
+      -moz-transform: scale(0.95);
+      -webkit-transform: scale(0.95);
+      -o-transform: scale(0.95);
+      -ms-transform: scale(0.95);
+      transform: scale(0.95);
+    }
 input[type=button], input[type=submit], input[type=reset]  {
       background-color: #f39c12;
       border: none;
@@ -299,15 +332,15 @@ input[type=button], input[type=submit], input[type=reset]  {
       transform: scale(0.95);
     }*/
 
-    input[type=text2]:focus {
+    input[type=text]:focus {
       background-color: #fff;
       border-bottom: 2px solid #5fbae9;
     }
 
-    input[type=text2]:placeholder {
+    input[type=text]:placeholder {
       color: #cccccc;
     }
-     input[type=text2] {
+     input[type=text] {
       background-color: #f6f6f6;
       border: none;
       color: #0d0d0d;
@@ -336,6 +369,36 @@ input[type=button], input[type=submit], input[type=reset]  {
     input[type=text]:placeholder {
       color: #cccccc;
     }
+
+
+     input[type=password] {
+      background-color: #f6f6f6;
+      border: none;
+      color: #0d0d0d;
+      padding: 15px 32px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 16px;
+      margin: 5px;
+      width: 85%;
+      border: 2px solid #f6f6f6;
+      -webkit-transition: all 0.5s ease-in-out;
+      -moz-transition: all 0.5s ease-in-out;
+      -ms-transition: all 0.5s ease-in-out;
+      -o-transition: all 0.5s ease-in-out;
+      transition: all 0.5s ease-in-out;
+      -webkit-border-radius: 5px 5px 5px 5px;
+      border-radius: 5px 5px 5px 5px;
+    }
+
+
+
+
+
+
+
+
 
     /* ANIMATIONS */
 
@@ -487,7 +550,7 @@ input[type=button], input[type=submit], input[type=reset]  {
       transition: all 0.1s linear;
     }
     .panel-heading a.active{
-      color: #60a0ff;
+      color: #f39c12;
       font-size: 18px;
     }
     .panel-heading hr{
@@ -508,20 +571,25 @@ input[type=button], input[type=submit], input[type=reset]  {
   <script type="text/javascript">
     $(function() {
     
-      $('#login-form-link').click(function(e) {
-        $("#formContent").delay(100).fadeIn(100);
-        $("#formContent2").fadeOut(100);
-        $('#register-form-link').removeClass('active');
-        $(this).addClass('active');
-        e.preventDefault();
-      });
-      $('#register-form-link').click(function(e) {
-        $("#formContent2").delay(100).fadeIn(100);
-        $("#formContent").fadeOut(100);
-        $('#login-form-link').removeClass('active');
-        $(this).addClass('active');
-        e.preventDefault();
-      });
+
+    $('#login-form-link').click(function(e) {
+    $("#login-form").delay(100).fadeIn(100);
+    $("#register-form").fadeOut(100);
+    $("formFooter").delay(100).fadeIn(100);
+    $("formFooter").fadeOut(100);
+    $('#register-form-link').removeClass('active');
+    $(this).addClass('active');
+    e.preventDefault();
+  });
+  $('#register-form-link').click(function(e) {
+    $("#register-form").delay(100).fadeIn(100);
+    $("#login-form").fadeOut(100);
+    $("formFooter").delay(100).fadeIn(100);
+    $("formFooter").fadeOut(100);
+    $('#login-form-link').removeClass('active');
+    $(this).addClass('active');
+    e.preventDefault();
+  });
 
       $('#gender_M').click(function (){
         $('#gender_M').css('background-color','#f39c12');
@@ -542,71 +610,63 @@ input[type=button], input[type=submit], input[type=reset]  {
 
   </script>
 
-  <div class="wrapper">
+  <div class="wrapper" style="padding-bottom: 100px;">
+ <img src="{{base_url}}/img/Likerlogo2.png" class="fadeIn first" style="height: 200px;width: 300px;">
+
     <div id="formContent" class="wrapper fadeInDown" >
+
       <!-- Icon -->
-      <div class="fadeIn first">
-        <br><h1>LIKER</h1>
+      <div class="fadeIn first"><br>
       </div>
       <div class="panel-heading"  >
         <div  style="float: left; width: 50%">
           <a href="#" class="active" id="login-form-link" style="float: center;">Login</a>
         </div>
-        <div style="float: right; width: 50%">
+        <div style="float: right; width: 50%; margin-bottom: 20px;">
           <a href="#" id="register-form-link" style="float: center;">Register</a>
         </div>
         <!-- Login Form -->
-            <form id="login-form" method="post" action="signin" style="background-color:#fff ">
+            <form id="login-form" method="post" action="signin" style="background-color:#fff">
       <input type="text" id="login" class="fadeIn second" name="username" placeholder="username">
-      <input type="text" id="password" class="fadeIn third" name="password" placeholder="password">
-      <input type="submit" class="fadeIn fourth" value="Log In">
+      <input type="password" id="password" class="fadeIn third" name="password" placeholder="password">
+      <input type="submit" class="fadeIn fourth" value="Log In" style="font-weight: bolder;width: 90%;margin-top: 20px; height: 50px;font-weight: bolder;">
     </form>
+    <form id="register-form" method="post" action="register" style="background-color: #fff; display: none;" >
+         
+            <input type="text" id="signup" class="fadeIn first" name="username" placeholder="username" style= "width: 50%; height: 30%;">
+            <button type="button" class="fadeIn second" onclick="check_duplicate()" style=" width: 30%;font-weight: bolder;font-size: 10px; text-align: center;">Check Duplication</button>
+          
+          <input type="text" id="signup" class="fadeIn first" name="email" placeholder="email" style= " width: 50%; ">
+          <button type="button" class="fadeIn second"  onclick="alert('we are working now..')" style="width: 30%;" value="Verfiy" style=" width: 30%;font-weight: bolder;font-size: 10px; text-align: center;">Verify</button>
+          <input type="password" id="signup" class="fadeIn first" name="password" placeholder="password">
+        
+          <input type="text" id="signup" class="fadeIn second" name="phone_number" placeholder="phone_number">
+               
+          <input type="text" id="signup" class="fadeIn second" name="birth" placeholder="Birth Year(ex.1996)">
+         
+         
+          <input type="button" id="gender_M" class="fadeIn second" name="gender" value="M"  style="width: 35%; box-sizing: border-box;height: 20%;"/>
+           
 
+          <input type="button" id="gender_F" class="fadeIn second" value="F" name="gender"  style="width: 35%; box-sizing: border-box; background-color:#d3d1de;height: 90%;"/>
+
+          <input type="submit" class="fadeIn second" value="Register to LIKER" style="font-weight: bolder;width: 90%;height: 50px;">
+
+       
+        </form>
+            <div id="formFooter" class="fadeIn fourth">
+        <a class="underlineHover" href="#">forgot password</a>
+        </div>
       </div>
     </div>
 
     <!-- Register Form -->
-    <div id ="formContent2" class ="wrapper fadeInDown" style="display: none;">
-      <!-- Icon -->
-      <div class="fadeIn first">
-        <br><img src="../../public/img/logo_rmback.png">
-      </div>
-      <div class="panel-heading">
-        <div  style="float: left; width: 50%">
-          <a href="#" id="login-form-link" style="float: center;">Login</a>
-        </div>
-        <div style="float: right; width: 50%">
-          <a href="#" id="register-form-link" class="active" style="float: center;">Register</a>
-        </div>
-
-        <!-- Register Form-->
-        <form id="register-form" style="background-color: #fff">
-         
-            <input type="text2" id="signup" class="fadeIn second" name="signup" placeholder="username" style= "width: 60%; ">
-            <input type="submit"  class="fadeIn fourth" onclick="alert('OK')" style="width: 20%;" value="Check Duplication">
-          
-          <input type="text2" id="signup" class="fadeIn second" name="signup" placeholder="email" style= " width: 60%; ">
-          <input type="submit" class="fadeIn fourth"  onclick="alert('OK')" style="width: 20%;" value="Verfiy">
-        
-          <input type="text2" id="signup" class="fadeIn second" name="signup" placeholder="phonenumber">
-               
-          <input type="text2" id="signup" class="fadeIn second" name="signup" placeholder="Birth Year">
-         
-         
-          <input type="button" id="gender_M" class="fadeIn second" name="gender" value="M"  style="width: 30%; box-sizing: border-box;"/>
-           
-
-          <input type="button" id="gender_F" class="fadeIn second" value="F" name="gender"  style="width: 30%; box-sizing: border-box; background-color:#d3d1de;"/>
-
-          <input type="submit" id="signup_complete" class="fadeIn fourth" value="Register to LIKER" />
-
-       
-        </form>
-      </div>
-    </div>
+   
   </div>
 
-
+<script type="text/javascript">
+  alert("we are working now..");
+</script>
 
 </body>
 </html>
