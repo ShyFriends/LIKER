@@ -22,7 +22,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:layout_centerInParent="true"
-            android:text="Regist"
+            android:text="Register"
             android:textColor="@color/colorYellowLiker"
             android:textSize="50dp"
             android:textStyle="bold"
@@ -57,6 +57,7 @@
                     android:layout_centerInParent="true"
                     android:paddingBottom="30dp"
                     android:text="Username available"
+                    android:fontFamily="@font/regular"
                     android:textColor="#000000"
                     android:textSize="20dp"/>
 
@@ -65,9 +66,11 @@
                     android:layout_width="125dp"
                     android:layout_height="wrap_content"
                     android:layout_alignParentBottom="true"
-                    android:background="#ffffff"
+                    android:background="@color/colorLightGrayLiker"
                     android:text="CANCEL"
-                    android:textColor="@color/colorLightGrayLiker"
+                    android:fontFamily="@font/bold"
+                    android:textSize="20dp"
+                    android:textColor="@color/colorDarkGrayLiker"
                     style="?android:attr/borderlessButtonStyle"/>
 
                 <Button
@@ -76,8 +79,10 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentBottom="true"
                     android:layout_alignParentRight="true"
-                    android:background="#ffffff"
+                    android:background="@color/colorLightGrayLiker"
                     android:text="OK"
+                    android:fontFamily="@font/bold"
+                    android:textSize="20dp"
                     android:textColor="@color/colorYellowLiker"
                     style="?android:attr/borderlessButtonStyle"
                     />
