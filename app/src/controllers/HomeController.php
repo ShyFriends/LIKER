@@ -30,6 +30,29 @@ final class HomeController extends BaseController
         return $response;
     }
 
+    public function register(Request $request, Response $response, $args)
+    {
+
+
+        $username_sql = $_POST['username'];
+        $password_sql = $_POST['password'];
+        $email_sql = $_POST['email'];
+        $phone_number_sql = $_POST['phone_number'];
+        $birth_sql = $_POST['birth'];
+        $gender_sql = 'M';
+
+
+        $sql = "insert into Users(username, h_password, email, birth, phone_number, gender, loginflag) values ('$username_sql','$password_sql','$email_sql','$birth_sql','$phone_number_sql','$gender_sql', 'T')";
+        $stmt = $this->em->getConnection()->query($sql);
+        $stmt->execute();
+
+        // $results = $stmt->fetchAll();
+
+        print_r($results);
+        $this->view->render($response, 'success.twig');
+        return $response;
+    }
+
     public function signin(Request $request, Response $response, $args)
     {
 
