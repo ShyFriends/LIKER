@@ -556,11 +556,12 @@ input[type=button], input[type=submit], input[type=reset]  {
           <a href="#" id="register-form-link" style="float: center;">Register</a>
         </div>
         <!-- Login Form -->
-        <form id="login-form" style="background-color:#fff ">
-          <input type="text" id="login" class="fadeIn second" name="login" placeholder="username">
-          <input type="text" id="password" class="fadeIn third" name="login" placeholder="password">
-          <input type="submit" class="fadeIn fourth" value="Log In">
-        </form>
+            <form id="login-form" method="post" action="signin" style="background-color:#fff ">
+      <input type="text" id="login" class="fadeIn second" name="username" placeholder="username">
+      <input type="text" id="password" class="fadeIn third" name="password" placeholder="password">
+      <input type="submit" class="fadeIn fourth" value="Log In">
+    </form>
+
       </div>
     </div>
 
@@ -604,6 +605,8 @@ input[type=button], input[type=submit], input[type=reset]  {
       </div>
     </div>
   </div>
+
+
 
 </body>
 </html>
