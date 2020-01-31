@@ -13,8 +13,14 @@ $app->get('/signup', 'App\Controller\HomeController:signup')
 $app->post('/signin', 'App\Controller\HomeController:signin')
     ->setName('signin');
 
+$app->post('/register', 'App\Controller\HomeController:register')
+    ->setName('register');
+
 $app->get('/testJSON', 'App\Controller\HomeController:testJSON')
     ->setName('testJSON');
+
+$app->get('/check_duplicate', 'App\Controller\HomeController:check_duplicate')
+    ->setName('check_duplicate');
 
 $app->get('/testQuery', 'App\Controller\HomeController:testQuery')
     ->setName('testQuery');
