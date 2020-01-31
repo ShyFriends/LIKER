@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".MainActivity"
+    android:background="@color/colorLightGrayLiker">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:orientation="horizontal"
+        android:background="@color/colorNavyLiker">
+
+
+        <TextView
+            android:id="@+id/textView_Regist"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_centerInParent="true"
+            android:text="Register"
+            android:textColor="@color/colorYellowLiker"
+            android:textSize="50dp"
+            android:textStyle="bold"
+            />
+
+        <ImageView
+            android:id="@+id/imageView_Liker"
+            android:layout_width="80dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:src="@mipmap/liker_origin"
+            android:layout_alignParentRight="true"
+             />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="16dp">
+
+
+        <TextView
+            android:id="@+id/textView_username"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="16dp"
+            android:text="User name"
+            android:textSize="20dp"
+            android:textColor="@color/colorNavyLiker"
+            />
+
+
+        <TextView
+            android:id="@+id/textView_username_input"
+            android:layout_width="250dp"
+            android:layout_height="28dp"
+            android:layout_alignParentRight="true"
+            android:layout_toRightOf="@+id/textView_username"
+            android:gravity="center"
+            android:background="@drawable/corners_white"
+            android:text="username_input"
+            android:textSize="20dp"
+
+            android:textColor="@color/colorNavyLiker"/>
+
+        <TextView
+            android:id="@+id/textView_email"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/textView_username"
+            android:layout_marginTop="16dp"
+            android:layout_marginRight="16dp"
+            android:text="Email"
+            android:textSize="20dp"
+            android:textColor="@color/colorNavyLiker"/>
+
+        <TextView
+            android:id="@+id/textView_email_input"
+            android:layout_width="250dp"
+            android:layout_height="28dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="16dp"
+            android:layout_below="@+id/textView_username"
+            android:layout_toRightOf="@+id/textView_email"
+            android:gravity="center"
+            android:background="@drawable/corners_white"
+            android:text="email_input"
+            android:textSize="20dp"
+            android:textColor="@color/colorNavyLiker"/>
+
+        <TextView
+        android:id="@+id/textView_password"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textView_email"
+        android:layout_marginTop="16dp"
+        android:text="Password"
+        android:textSize="20dp"
+        android:textColor="@color/colorNavyLiker"/>
+
+        <EditText
+            android:id="@+id/editText_password_su"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_below="@+id/textView_password"
+            android:ems="10"
+            android:inputType="textPassword"
+            android:textColor="@color/colorNavyLiker"
+            android:background="@drawable/corners_white"/>
+
+        <TextView
+            android:id="@+id/textView_BirthYear"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/editText_password_su"
+            android:layout_marginTop="16dp"
+            android:text="Birth Year"
+            android:textSize="20dp"
+            android:textColor="@color/colorNavyLiker"/>
+
+        <EditText
+            android:id="@+id/editText_BirthYear"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_below="@+id/textView_BirthYear"
+            android:ems="10"
+            android:inputType="date"
+            android:textColor="#14064f"
+            android:background="@drawable/corners_white"/>
+
+        <TextView
+            android:id="@+id/textView_gender"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/editText_BirthYear"
+            android:layout_marginTop="24dp"
+            android:text="Gender"
+            android:textSize="20dp"
+            android:textColor="@color/colorNavyLiker"/>
+
+        <RadioGroup
+            android:id="@+id/radioGroup_gender"
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/editText_BirthYear"
+            android:layout_marginTop="16dp"
+            android:layout_toRightOf="@id/textView_gender">
+
+                <RadioButton
+                    android:id="@+id/radioButton_male"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="40dp"
+                    android:buttonTint="@color/colorNavyLiker"
+                    android:text="Male"
+                    android:textSize="30dp"
+                    android:textColor="@color/colorNavyLiker" />
+
+                <RadioButton
+                    android:id="@+id/radioButton_female"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="40dp"
+                    android:layout_toRightOf="@id/radioButton_male"
+                    android:buttonTint="@color/colorNavyLiker"
+
+                    android:text="Female"
+                    android:textSize="30dp"
+                    android:textColor="@color/colorNavyLiker"/>
+
+        </RadioGroup>
+
+        <TextView
+            android:id="@+id/textView_PhoneNumber"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/radioGroup_gender"
+            android:layout_marginTop="16dp"
+            android:text="Phone Number"
+            android:textSize="20dp"
+            android:textColor="@color/colorNavyLiker"/>
+
+        <EditText
+            android:id="@+id/editText_PhoneNumber"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_below="@+id/textView_PhoneNumber"
+            android:ems="10"
+            android:inputType="date"
+            android:textColor="@color/colorNavyLiker"
+            android:background="@drawable/corners_white"/>
+        />
+
+        <Button
+            android:id="@+id/button_register"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="32dp"
+            android:layout_below="@id/editText_PhoneNumber"
+            android:background="@drawable/corners_navy"
+            android:textAllCaps="false"
+            android:text="Register to LIKER"
+            android:textSize="28dp"
+            android:textColor="#ffffff"/>
+
+    </RelativeLayout>
+
+</LinearLayout>

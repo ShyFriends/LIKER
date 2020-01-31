@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity"
+    android:background="@color/colorNavyLiker"
+    android:paddingRight="16dp"
+    android:paddingLeft="16dp">
+
+
+    <ImageView
+        android:id="@+id/imageView_Logo_Liker"
+        android:layout_marginTop="120dp"
+        android:layout_width="200dp"
+        android:layout_height="100dp"
+        android:layout_centerHorizontal="true"
+        android:src = "@mipmap/liker_origin" />
+
+
+    <RelativeLayout
+        android:id="@+id/RelativeLayout_username"
+        android:layout_marginTop="30dp"
+        android:layout_width="298dp"
+        android:layout_height="56dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="20dp"
+        android:layout_below="@+id/imageView_Logo_Liker"
+        android:background="@drawable/username_bgnd">
+
+        <ImageView
+            android:id="@+id/imageView_username"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_weight="1"
+            android:src="@mipmap/user1" />
+
+        <EditText
+            android:id="@+id/EditText_username"
+            android:layout_width="300dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_toRightOf="@id/imageView_username"
+            android:textColorHint="@color/colorPrimaryDark"
+            android:textSize="17dp"
+            android:ems="10"
+            android:hint="username"
+            android:inputType="textPersonName|textNoSuggestions"
+            android:background="@null"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/RelativeLayout_password"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/RelativeLayout_username"
+        android:layout_gravity="center"
+        android:background="@drawable/username_bgnd"
+        android:layout_marginBottom="20dp"
+        >
+
+        <ImageView
+            android:id="@+id/imageView_password"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@mipmap/password"
+            android:layout_marginLeft="10dp"
+            android:layout_weight="1"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="10dp"/>
+
+        <EditText
+            android:id="@+id/EditText_password"
+            android:layout_width="300dp"
+            android:layout_height="40dp"
+            android:ems="10"
+            android:background="@null"
+            android:textColorHint="@color/colorPrimaryDark"
+            android:inputType="textPersonName|textNoSuggestions"
+            android:textSize="17dp"
+            android:layout_toRightOf="@id/imageView_password"
+            android:hint="password"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="10dp"
+            />
+
+
+    </RelativeLayout>
+
+
+    <Button
+        android:id="@+id/Button_login"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/RelativeLayout_password"
+        android:layout_alignRight="@+id/RelativeLayout_password"
+        android:layout_marginBottom="100dp"
+        android:background="@drawable/btn_login"
+        android:textStyle="bold"
+        android:text="Log-in" />
+
+    <View
+        android:id="@+id/view_line"
+        android:layout_width="match_parent"
+        android:layout_height="5px"
+        android:layout_below="@id/Button_login"
+        android:layout_marginBottom="10dp"
+        android:background="@color/colorLightGrayLiker"/>
+
+    <TextView
+        android:id="@+id/TextView_forgot"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/view_line"
+        android:layout_marginLeft="20dp"
+        android:text="Forgot Password?"
+        android:textSize="20dp"
+        android:textColor="@color/colorLightGrayLiker"
+        />
+
+    <TextView
+        android:id="@+id/TextView_forgotpwd"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/view_line"
+        android:layout_toRightOf="@id/TextView_forgot"
+        android:layout_marginRight="50dp"
+        android:gravity="right"
+        android:text="Click HERE"
+        android:textSize="20dp"
+        android:textStyle="bold"
+        android:textColor="@color/colorLightGrayLiker"
+        android:clickable="true"
+        />
+
+    <TextView
+        android:id="@+id/TextView_creat"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/TextView_forgot"
+        android:layout_marginLeft="20dp"
+        android:text="Creat Account?"
+        android:textSize="20dp"
+        android:textColor="@color/colorLightGrayLiker"
+        android:layout_marginBottom="10dp"
+        />
+
+    <TextView
+        android:id="@+id/TextView_creataccount"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/TextView_forgot"
+        android:layout_toRightOf="@+id/TextView_creat"
+        android:layout_marginRight="50dp"
+        android:gravity="right"
+        android:text="Click HERE"
+        android:textSize="20dp"
+        android:textStyle="bold"
+        android:textColor="@color/colorLightGrayLiker"
+        android:clickable="true"
+        android:layout_marginBottom="10dp"
+        />
+</RelativeLayout>
