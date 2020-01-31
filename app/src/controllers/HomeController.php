@@ -51,12 +51,12 @@ final class HomeController extends BaseController
         $birth_sql = $_POST['birth'];
         $gender_sql = 'M';
 
-        
+
 
         $hashed_password = password_hash($password_sql, PASSWORD_DEFAULT);
 
         $sql = "insert into Users(username, h_password, email, birth, phone_number, gender, loginflag) values ('$username_sql','$hashed_password','$email_sql','$birth_sql','$phone_number_sql','$gender_sql', 'T')";
-        $stmt = $this->em->getConnection()->query($sql);
+        $stmt = $this->em->getConnection()->prepare($sql);
         $stmt->execute();
 
         // $results = $stmt->fetchAll();
