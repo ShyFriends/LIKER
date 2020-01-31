@@ -633,16 +633,16 @@ input[type=button], input[type=submit], input[type=reset]  {
     </form>
     <form id="register-form" method="post" action="register" style="background-color: #fff; display: none;" >
          
-            <input type="text" id="signup" class="fadeIn first" name="username" placeholder="username" style= "width: 50%; height: 30%;">
-            <button type="button" class="fadeIn second" onclick="check_duplicate()" style=" width: 30%;font-weight: bolder;font-size: 10px; text-align: center;">Check Duplication</button>
+            <input type="text" id="uid" class="fadeIn first" name="username" placeholder="username" style= "width: 50%; height: 30%;">
+            <button type="button" class="fadeIn second" onclick="duplicate_check()" style=" width: 30%;font-weight: bolder;font-size: 10px; text-align: center;">Check Duplication</button>
           
-          <input type="text" id="signup" class="fadeIn first" name="email" placeholder="email" style= " width: 50%; ">
+          <input type="text" id="email" class="fadeIn first" name="email" placeholder="email" style= " width: 50%; ">
           <button type="button" class="fadeIn second"  onclick="alert('we are working now..')" style="width: 30%;" value="Verfiy" style=" width: 30%;font-weight: bolder;font-size: 10px; text-align: center;">Verify</button>
-          <input type="password" id="signup" class="fadeIn first" name="password" placeholder="password">
+          <input type="password" id="password" class="fadeIn first" name="password" placeholder="password">
         
-          <input type="text" id="signup" class="fadeIn second" name="phone_number" placeholder="phone_number">
+          <input type="text" id="phone_number" class="fadeIn second" name="phone_number" placeholder="phone_number">
                
-          <input type="text" id="signup" class="fadeIn second" name="birth" placeholder="Birth Year(ex.1996)">
+          <input type="text" id="birth" class="fadeIn second" name="birth" placeholder="Birth Year(ex.1996)">
          
          
           <input type="button" id="gender_M" class="fadeIn second" name="gender" value="M"  style="width: 35%; box-sizing: border-box;height: 20%;"/>
@@ -665,7 +665,27 @@ input[type=button], input[type=submit], input[type=reset]  {
   </div>
 
 <script type="text/javascript">
-  alert("we are working now..");
+  function duplicate_check(){
+      var uid = $('#uid').val();
+      alert(uid);
+      alert("we are working now..");
+
+      $.ajax({
+        type:"GET",
+        url:"/check_duplicate",
+        data: {"id": uid},
+        success: function(data) {
+            console.log("SUCCESS: ", data);
+            alert("tlqkf");
+        },
+        error: function(data) {
+            console.log('ERROR: ', data);
+        },
+
+    });
+    event.preventDefault();
+  }
+      
 </script>
 
 </body>
