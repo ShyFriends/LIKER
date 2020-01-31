@@ -68,334 +68,515 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
-<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
-<!------ Include the above in your HEAD tag ---------->
-<style type="text/css">
-  
-/* BASIC */
+  <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+  <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+  <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+  <!------ Include the above in your HEAD tag ---------->
+  <style type="text/css">
 
-html {
-  background-color: #56baed;
-}
+    /* BASIC */
 
-body {
-  font-family: "Poppins", sans-serif;
-  height: 100vh;
-}
+    html {
+      background-color: #56baed;
+    }
 
-a {
-  color: #92badd;
-  display:inline-block;
-  text-decoration: none;
-  font-weight: 400;
-}
+    body {
+      font-family: "Poppins", sans-serif;
+      height: 100vh;
+    }
 
-h2 {
-  text-align: center;
-  font-size: 16px;
-  font-weight: 600;
-  text-transform: uppercase;
-  display:inline-block;
-  margin: 40px 8px 10px 8px; 
-  color: #cccccc;
-}
+    a {
+      color: #f39c12;
+      display:inline-block;
+      text-decoration: none;
+      font-weight: 400;
+    }
 
-
-
-/* STRUCTURE */
-
-.wrapper {
-  display: flex;
-  align-items: center;
-  flex-direction: column; 
-  justify-content: center;
-  width: 100%;
-  min-height: 100%;
-  padding: 20px;
-}
-
-#formContent {
-  -webkit-border-radius: 10px 10px 10px 10px;
-  border-radius: 10px 10px 10px 10px;
-  background: #fff;
-  padding: 30px;
-  width: 90%;
-  max-width: 450px;
-  position: relative;
-  padding: 0px;
-  -webkit-box-shadow: 0 30px 60px 0 rgba(0,0,0,0.3);
-  box-shadow: 0 30px 60px 0 rgba(0,0,0,0.3);
-  text-align: center;
-}
-
-#formFooter {
-  background-color: #f6f6f6;
-  border-top: 1px solid #dce8f1;
-  padding: 25px;
-  text-align: center;
-  -webkit-border-radius: 0 0 10px 10px;
-  border-radius: 0 0 10px 10px;
-}
+    h2 {
+      text-align: center;
+      font-size: 16px;
+      font-weight: 600;
+      text-transform: uppercase;
+      display:inline-block;
+      margin: 40px 8px 10px 8px; 
+      color: #cccccc;
+    }
 
 
 
-/* TABS */
+    /* STRUCTURE */
 
-h2.inactive {
-  color: #cccccc;
-}
+    .wrapper {
+      display: flex;
+      background-color: #14064f;
+      align-items: center;
+      flex-direction: column; 
+      justify-content: center;
+      width: 100%;
+      min-height: 100%;
+      padding: 20px;
+    }
 
-h2.active {
-  color: #darkblue;
-  border-bottom: 2px solid #5fbae9;
-}
+    #formContent {
+      -webkit-border-radius: 10px 10px 10px 10px;
+      border-radius: 10px 10px 10px 10px;
+      background-color: #fff;
+      padding: 30px;
+      width: 90%;
+      max-width: 450px;
+      position: relative;
+      padding: 0px;
+      -webkit-box-shadow: 0 30px 60px 0 rgba(0,0,0,0.3);
+      box-shadow: 0 30px 60px 0 rgba(0,0,0,0.3);
+      text-align: center;
+    }
+
+    #formContent2 {
+      -webkit-border-radius: 10px 10px 10px 10px;
+      border-radius: 10px 10px 10px 10px;
+      background-color:  #fff;
+      padding: 30px;
+      width: 90%;
+      max-width: 950px;
+      position: relative;
+      padding: 0px;
+      -webkit-box-shadow: 0 30px 60px 0 rgba(0,0,0,0.3);
+      box-shadow: 0 30px 60px 0 rgba(0,0,0,0.3);
+      text-align: center;
+    }
+    #formFooter {
+      background-color: #f6f6f6;
+      border-top: 1px solid #dce8f1;
+      padding: 25px;
+      text-align: center;
+      -webkit-border-radius: 0 0 10px 10px;
+      border-radius: 0 0 10px 10px;
+    }
 
 
 
-/* FORM TYPOGRAPHY*/
+    /* TABS */
 
+    h2.inactive {
+      color: #cccccc;
+    }
+
+    h2.active {
+      color: #darkblue;
+      border-bottom: 2px solid #f39c12;
+    }
+
+
+
+    /* FORM TYPOGRAPHY*/
+
+    
+
+   /* input[type=signup_btn] ,input[type=signup_submit],input[type=signup_reset]{
+      background-color: #f39c12;
+      border: none;
+      color: white;
+      padding: 10px 32px ;
+      width: 60%;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      text-transform: unset;
+      font-size: 20px;
+      -webkit-box-shadow: 0 10px 30px 0 rgba(95,186,233,0.4);
+      box-shadow: 0 10px 30px 0 rgba(95,186,233,0.4);
+      -webkit-border-radius: 5px 5px 5px 5px;
+      border-radius: 5px 5px 5px 5px;
+      margin: 5px 20px 40px 20px;
+      -webkit-transition: all 0.3s ease-in-out;
+      -moz-transition: all 0.3s ease-in-out;
+      -ms-transition: all 0.3s ease-in-out;
+      -o-transition: all 0.3s ease-in-out;
+      transition: all 0.3s ease-in-out;
+    }
+     input[type=signup_btn]:hover, input[type=signup_submit]:hover, input[type=signup_reset]:hover  {
+      background-color: #39ace7;
+    }
+
+    input[type=signup_btn]:active, input[type=signup_submit]:active, input[type=signup_reset]:active  {
+      -moz-transform: scale(0.95);
+      -webkit-transform: scale(0.95);
+      -o-transform: scale(0.95);
+      -ms-transform: scale(0.95);
+      transform: scale(0.95);
+    }*/
+button[type=button]  {
+      background-color: #f39c12;
+      border: none;
+      color: white;
+      padding: 10px 32px ;
+      width: 70%;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      text-transform: uppercase;
+      font-size: 13px;
+      -webkit-box-shadow: 0 10px 30px 0 rgba(95,186,233,0.4);
+      box-shadow: 0 10px 30px 0 rgba(95,186,233,0.4);
+      -webkit-border-radius: 5px 5px 5px 5px;
+      border-radius: 5px 5px 5px 5px;
+      margin: 0px 10px 10px 10px;
+      -webkit-transition: all 0.3s ease-in-out;
+      -moz-transition: all 0.3s ease-in-out;
+      -ms-transition: all 0.3s ease-in-out;
+      -o-transition: all 0.3s ease-in-out;
+      transition: all 0.3s ease-in-out;
+    }
+
+
+    button[type=button]:hover {
+      background-color: #f39c12;
+    }
+        button[type=button]:active  {
+      -moz-transform: scale(0.95);
+      -webkit-transform: scale(0.95);
+      -o-transform: scale(0.95);
+      -ms-transform: scale(0.95);
+      transform: scale(0.95);
+    }
 input[type=button], input[type=submit], input[type=reset]  {
-  background-color: #56baed;
-  border: none;
-  color: white;
-  padding: 15px 80px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  text-transform: uppercase;
-  font-size: 13px;
-  -webkit-box-shadow: 0 10px 30px 0 rgba(95,186,233,0.4);
-  box-shadow: 0 10px 30px 0 rgba(95,186,233,0.4);
-  -webkit-border-radius: 5px 5px 5px 5px;
-  border-radius: 5px 5px 5px 5px;
-  margin: 5px 20px 40px 20px;
-  -webkit-transition: all 0.3s ease-in-out;
-  -moz-transition: all 0.3s ease-in-out;
-  -ms-transition: all 0.3s ease-in-out;
-  -o-transition: all 0.3s ease-in-out;
-  transition: all 0.3s ease-in-out;
-}
+      background-color: #f39c12;
+      border: none;
+      color: white;
+      padding: 10px 32px ;
+      width: 70%;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      text-transform: uppercase;
+      font-size: 13px;
+      -webkit-box-shadow: 0 10px 30px 0 rgba(95,186,233,0.4);
+      box-shadow: 0 10px 30px 0 rgba(95,186,233,0.4);
+      -webkit-border-radius: 5px 5px 5px 5px;
+      border-radius: 5px 5px 5px 5px;
+      margin: 5px 20px 40px 20px;
+      -webkit-transition: all 0.3s ease-in-out;
+      -moz-transition: all 0.3s ease-in-out;
+      -ms-transition: all 0.3s ease-in-out;
+      -o-transition: all 0.3s ease-in-out;
+      transition: all 0.3s ease-in-out;
+    }
 
-input[type=button]:hover, input[type=submit]:hover, input[type=reset]:hover  {
-  background-color: #39ace7;
-}
+    input[type=button]:hover, input[type=submit]:hover, input[type=reset]:hover  {
+      background-color: #f39c12;
+    }
 
-input[type=button]:active, input[type=submit]:active, input[type=reset]:active  {
-  -moz-transform: scale(0.95);
-  -webkit-transform: scale(0.95);
-  -o-transform: scale(0.95);
-  -ms-transform: scale(0.95);
-  transform: scale(0.95);
-}
+    input[type=button]:active, input[type=submit]:active, input[type=reset]:active  {
+      -moz-transform: scale(0.95);
+      -webkit-transform: scale(0.95);
+      -o-transform: scale(0.95);
+      -ms-transform: scale(0.95);
+      transform: scale(0.95);
+    }
 
-input[type=text] {
-  background-color: #f6f6f6;
-  border: none;
-  color: #0d0d0d;
-  padding: 15px 32px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 16px;
-  margin: 5px;
-  width: 85%;
-  border: 2px solid #f6f6f6;
-  -webkit-transition: all 0.5s ease-in-out;
-  -moz-transition: all 0.5s ease-in-out;
-  -ms-transition: all 0.5s ease-in-out;
-  -o-transition: all 0.5s ease-in-out;
-  transition: all 0.5s ease-in-out;
-  -webkit-border-radius: 5px 5px 5px 5px;
-  border-radius: 5px 5px 5px 5px;
-}
+    input[type=text] {
+      background-color: #f6f6f6;
+      border: none;
+      color: #0d0d0d;
+      padding: 15px 32px 10px 10px ;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 16px;
+      margin: 5px  ;
+      width: 85%;
+      border: 2px solid #f6f6f6;
+      -webkit-transition: all 0.5s ease-in-out;
+      -moz-transition: all 0.5s ease-in-out;
+      -ms-transition: all 0.5s ease-in-out;
+      -o-transition: all 0.5s ease-in-out;
+      transition: all 0.5s ease-in-out;
+      -webkit-border-radius: 5px 5px 5px 5px;
+      border-radius: 5px 5px 5px 5px;
+    }
 
-input[type=text]:focus {
-  background-color: #fff;
-  border-bottom: 2px solid #5fbae9;
-}
+/*input[type=button2], input[type=submit2], input[type=reset2]  {
 
-input[type=text]:placeholder {
-  color: #cccccc;
-}
+      background-color: #d3d1de;
+      border: none;
+      color: white;
+      padding: 10px 32px ;
+      width: 70%;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      text-transform: uppercase;
+      font-size: 13px;
+      -webkit-box-shadow: 0 10px 30px 0 rgba(95,186,233,0.4);
+      box-shadow: 0 10px 30px 0 rgba(95,186,233,0.4);
+      -webkit-border-radius: 5px 5px 5px 5px;
+      border-radius: 5px 5px 5px 5px;
+      margin: 5px 20px 40px 20px;
+      -webkit-transition: all 0.3s ease-in-out;
+      -moz-transition: all 0.3s ease-in-out;
+      -ms-transition: all 0.3s ease-in-out;
+      -o-transition: all 0.3s ease-in-out;
+      transition: all 0.3s ease-in-out;
+
+    }
+
+    input[type=button2]:hover, input[type=submit2]:hover, input[type=reset2]:hover  {
+      background-color: #d3d1de;
+    }
+
+    input[type=button2]:active, input[type=submit2]:active, input[type=reset2]:active  {
+      -moz-transform: scale(0.95);
+      -webkit-transform: scale(0.95);
+      -o-transform: scale(0.95);
+      -ms-transform: scale(0.95);
+      transform: scale(0.95);
+    }*/
+
+    input[type=text]:focus {
+      background-color: #fff;
+      border-bottom: 2px solid #5fbae9;
+    }
+
+    input[type=text]:placeholder {
+      color: #cccccc;
+    }
+     input[type=text] {
+      background-color: #f6f6f6;
+      border: none;
+      color: #0d0d0d;
+      padding: 15px 32px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 16px;
+      margin: 5px;
+      width: 85%;
+      border: 2px solid #f6f6f6;
+      -webkit-transition: all 0.5s ease-in-out;
+      -moz-transition: all 0.5s ease-in-out;
+      -ms-transition: all 0.5s ease-in-out;
+      -o-transition: all 0.5s ease-in-out;
+      transition: all 0.5s ease-in-out;
+      -webkit-border-radius: 5px 5px 5px 5px;
+      border-radius: 5px 5px 5px 5px;
+    }
+
+    input[type=text]:focus {
+      background-color: #fff;
+      border-bottom: 2px solid #5fbae9;
+    }
+
+    input[type=text]:placeholder {
+      color: #cccccc;
+    }
+
+
+     input[type=password] {
+      background-color: #f6f6f6;
+      border: none;
+      color: #0d0d0d;
+      padding: 15px 32px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 16px;
+      margin: 5px;
+      width: 85%;
+      border: 2px solid #f6f6f6;
+      -webkit-transition: all 0.5s ease-in-out;
+      -moz-transition: all 0.5s ease-in-out;
+      -ms-transition: all 0.5s ease-in-out;
+      -o-transition: all 0.5s ease-in-out;
+      transition: all 0.5s ease-in-out;
+      -webkit-border-radius: 5px 5px 5px 5px;
+      border-radius: 5px 5px 5px 5px;
+    }
 
 
 
-/* ANIMATIONS */
 
-/* Simple CSS3 Fade-in-down Animation */
-.fadeInDown {
-  -webkit-animation-name: fadeInDown;
-  animation-name: fadeInDown;
-  -webkit-animation-duration: 1s;
-  animation-duration: 1s;
-  -webkit-animation-fill-mode: both;
-  animation-fill-mode: both;
-}
 
-@-webkit-keyframes fadeInDown {
-  0% {
-    opacity: 0;
-    -webkit-transform: translate3d(0, -100%, 0);
-    transform: translate3d(0, -100%, 0);
-  }
-  100% {
-    opacity: 1;
-    -webkit-transform: none;
-    transform: none;
-  }
-}
 
-@keyframes fadeInDown {
-  0% {
-    opacity: 0;
-    -webkit-transform: translate3d(0, -100%, 0);
-    transform: translate3d(0, -100%, 0);
-  }
-  100% {
-    opacity: 1;
-    -webkit-transform: none;
-    transform: none;
-  }
-}
 
-/* Simple CSS3 Fade-in Animation */
-@-webkit-keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
-@-moz-keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
-@keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
 
-.fadeIn {
-  opacity:0;
-  -webkit-animation:fadeIn ease-in 1;
-  -moz-animation:fadeIn ease-in 1;
-  animation:fadeIn ease-in 1;
 
-  -webkit-animation-fill-mode:forwards;
-  -moz-animation-fill-mode:forwards;
-  animation-fill-mode:forwards;
+    /* ANIMATIONS */
 
-  -webkit-animation-duration:1s;
-  -moz-animation-duration:1s;
-  animation-duration:1s;
-}
+    /* Simple CSS3 Fade-in-down Animation */
+    .fadeInDown {
+      -webkit-animation-name: fadeInDown;
+      animation-name: fadeInDown;
+      -webkit-animation-duration: 1s;
+      animation-duration: 1s;
+      -webkit-animation-fill-mode: both;
+      animation-fill-mode: both;
+    }
 
-.fadeIn.first {
-  -webkit-animation-delay: 0.4s;
-  -moz-animation-delay: 0.4s;
-  animation-delay: 0.4s;
-}
+    @-webkit-keyframes fadeInDown {
+      0% {
+        opacity: 0;
+        -webkit-transform: translate3d(0, -100%, 0);
+        transform: translate3d(0, -100%, 0);
+      }
+      100% {
+        opacity: 1;
+        -webkit-transform: none;
+        transform: none;
+      }
+    }
 
-.fadeIn.second {
-  -webkit-animation-delay: 0.6s;
-  -moz-animation-delay: 0.6s;
-  animation-delay: 0.6s;
-}
+    @keyframes fadeInDown {
+      0% {
+        opacity: 0;
+        -webkit-transform: translate3d(0, -100%, 0);
+        transform: translate3d(0, -100%, 0);
+      }
+      100% {
+        opacity: 1;
+        -webkit-transform: none;
+        transform: none;
+      }
+    }
 
-.fadeIn.third {
-  -webkit-animation-delay: 0.8s;
-  -moz-animation-delay: 0.8s;
-  animation-delay: 0.8s;
-}
+    /* Simple CSS3 Fade-in Animation */
+    @-webkit-keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
+    @-moz-keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
+    @keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
 
-.fadeIn.fourth {
-  -webkit-animation-delay: 1s;
-  -moz-animation-delay: 1s;
-  animation-delay: 1s;
-}
-.fadeIn.fifth {
-  -webkit-animation-delay: 0.1s;
-  -moz-animation-delay: 0.1s;
-  animation-delay: 0.1s;
-}
-.fadeIn.sixth {
-  -webkit-animation-delay: 0.2s;
-  -moz-animation-delay: 0.2s;
-  animation-delay: 0.2s;
-}
-.fadeIn.seventh {
-  -webkit-animation-delay: 0.4s;
-  -moz-animation-delay: 0.4s;
-  animation-delay: 0.4s;
-}
-/* Simple CSS3 Fade-in Animation */
-.underlineHover:after {
-  display: block;
-  left: 0;
-  bottom: -10px;
-  width: 0;
-  height: 2px;
-  background-color: #56baed;
-  content: "";
-  transition: width 0.2s;
-}
+    .fadeIn {
+      opacity:0;
+      -webkit-animation:fadeIn ease-in 1;
+      -moz-animation:fadeIn ease-in 1;
+      animation:fadeIn ease-in 1;
 
-.underlineHover:hover {
-  color: #0d0d0d;
-}
+      -webkit-animation-fill-mode:forwards;
+      -moz-animation-fill-mode:forwards;
+      animation-fill-mode:forwards;
 
-.underlineHover:hover:after{
-  width: 100%;
-}
+      -webkit-animation-duration:1s;
+      -moz-animation-duration:1s;
+      animation-duration:1s;
+    }
 
-h1{
-    color:#60a0ff;
-}
+    .fadeIn.first {
+      -webkit-animation-delay: 0.4s;
+      -moz-animation-delay: 0.4s;
+      animation-delay: 0.4s;
+    }
 
-/* OTHERS */
+    .fadeIn.second {
+      -webkit-animation-delay: 0.6s;
+      -moz-animation-delay: 0.6s;
+      animation-delay: 0.6s;
+    }
 
-*:focus {
-    outline: none;
-} 
+    .fadeIn.third {
+      -webkit-animation-delay: 0.8s;
+      -moz-animation-delay: 0.8s;
+      animation-delay: 0.8s;
+    }
 
-#icon {
-  width:30%;
-}
+    .fadeIn.fourth {
+      -webkit-animation-delay: 1s;
+      -moz-animation-delay: 1s;
+      animation-delay: 1s;
+    }
+    .fadeIn.fifth {
+      -webkit-animation-delay: 0.1s;
+      -moz-animation-delay: 0.1s;
+      animation-delay: 0.1s;
+    }
+    .fadeIn.sixth {
+      -webkit-animation-delay: 0.2s;
+      -moz-animation-delay: 0.2s;
+      animation-delay: 0.2s;
+    }
+    .fadeIn.seventh {
+      -webkit-animation-delay: 0.4s;
+      -moz-animation-delay: 0.4s;
+      animation-delay: 0.4s;
+    }
+    /* Simple CSS3 Fade-in Animation */
+    .underlineHover:after {
+      display: block;
+      left: 0;
+      bottom: -10px;
+      width: 0;
+      height: 2px;
+      background-color: #56baed;
+      content: "";
+      transition: width 0.2s;
+    }
 
-</style>
+    .underlineHover:hover {
+      color: #0d0d0d;
+    }
 
-<style type="text/css">
-  
-  .panel-heading {
-  color: #00415d;
-  background-color: #fff;
-  border-color: #fff;
-  text-align:center;
-}
-.panel-heading a{
-  text-decoration: none;
-  color: #666;
-  font-weight: bold;
-  font-size: 15px;
-  -webkit-transition: all 0.1s linear;
-  -moz-transition: all 0.1s linear;
-  transition: all 0.1s linear;
-}
-.panel-heading a.active{
-  color: #60a0ff;
-  font-size: 18px;
-}
-.panel-heading hr{
-  margin-top: 10px;
-  margin-bottom: 0px;
-  clear: both;
-  border: 0;
-  height: 1px;
-  background-image: -webkit-linear-gradient(left,rgba(0, 0, 0, 0),rgba(0, 0, 0, 0.15),rgba(0, 0, 0, 0));
-  background-image: -moz-linear-gradient(left,rgba(0,0,0,0),rgba(0,0,0,0.15),rgba(0,0,0,0));
-  background-image: -ms-linear-gradient(left,rgba(0,0,0,0),rgba(0,0,0,0.15),rgba(0,0,0,0));
-  background-image: -o-linear-gradient(left,rgba(0,0,0,0),rgba(0,0,0,0.15),rgba(0,0,0,0));
-}
-</style>
+    .underlineHover:hover:after{
+      width: 100%;
+    }
+
+    h1{
+      color:#60a0ff;
+    }
+
+    /* OTHERS */
+
+    *:focus {
+      outline: none;
+    } 
+
+    #icon {
+      width:30%;
+    }
+
+  </style>
+
+  <style type="text/css">
+
+    .panel-heading {
+      color: #00415d;
+      background-color: #fff;
+      border-color: #fff;
+      text-align:center;
+    }
+    .panel-heading a{
+      text-decoration: none;
+      color: #666;
+      font-weight: bold;
+      font-size: 15px;
+      -webkit-transition: all 0.1s linear;
+      -moz-transition: all 0.1s linear;
+      transition: all 0.1s linear;
+    }
+    .panel-heading a.active{
+      color: #f39c12;
+      font-size: 18px;
+    }
+    .panel-heading hr{
+      margin-top: 10px;
+      margin-bottom: 0px;
+      clear: both;
+      border: 0;
+      height: 1px;
+      background-image: -webkit-linear-gradient(left,rgba(0, 0, 0, 0),rgba(0, 0, 0, 0.15),rgba(0, 0, 0, 0));
+      background-image: -moz-linear-gradient(left,rgba(0,0,0,0),rgba(0,0,0,0.15),rgba(0,0,0,0));
+      background-image: -ms-linear-gradient(left,rgba(0,0,0,0),rgba(0,0,0,0.15),rgba(0,0,0,0));
+      background-image: -o-linear-gradient(left,rgba(0,0,0,0),rgba(0,0,0,0.15),rgba(0,0,0,0));
+    }
+  </style>
 
 </head>
 <body>
-<script type="text/javascript">
-  $(function() {
+  <script type="text/javascript">
+    $(function() {
+    
 
     $('#login-form-link').click(function(e) {
     $("#login-form").delay(100).fadeIn(100);
     $("#register-form").fadeOut(100);
+    $("formFooter").delay(100).fadeIn(100);
+    $("formFooter").fadeOut(100);
     $('#register-form-link').removeClass('active');
     $(this).addClass('active');
     e.preventDefault();
@@ -403,51 +584,109 @@ h1{
   $('#register-form-link').click(function(e) {
     $("#register-form").delay(100).fadeIn(100);
     $("#login-form").fadeOut(100);
+    $("formFooter").delay(100).fadeIn(100);
+    $("formFooter").fadeOut(100);
     $('#login-form-link').removeClass('active');
     $(this).addClass('active');
     e.preventDefault();
   });
 
-});
+      $('#gender_M').click(function (){
+        $('#gender_M').css('background-color','#f39c12');
+        $('#gender_F').css('background-color','#d3d1de'); // M 누르면 F 비활성화
+         });
 
-</script>
-<div class="wrapper"style="background-color: navy">
-  <div id="formContent" class="wrapper fadeInDown" >
-    <!-- Tabs Titles -->
+      $('#gender_F').click(function (){
+        $('#gender_F').css('background-color','#f39c12');
+        $('#gender_M').css('background-color','#d3d1de'); // F누르면 M 비활성화
+         });
 
-    <!-- Icon -->
-    <div class="fadeIn first">
-      <br><h1>LIKER</h1>
-    </div>
-<div class="panel-heading">
-          <div  style="float: left; width: 50%">
-              <a href="#" class="active" id="login-form-link" style="float: center;">Login</a>
-          </div>
-          <div style="float: right; width: 50%">
-              <a href="#" id="register-form-link" style="float: center;">Register</a>
-            <hr>
-          </div>
-    <!-- Login Form -->
-    <form id="login-form">
-      <input type="text" id="login" class="fadeIn second" name="login" placeholder="username">
-      <input type="text" id="password" class="fadeIn third" name="login" placeholder="password">
-      <input type="submit" class="fadeIn fourth" value="Log In">
+      $('#signup_complete').click(function (){
+        alert("Complete Register");
+      });
+    });
+
+    
+
+  </script>
+
+  <div class="wrapper" style="padding-bottom: 100px;">
+ <img src="{{base_url}}/img/Likerlogo2.png" class="fadeIn first" style="height: 200px;width: 300px;">
+
+    <div id="formContent" class="wrapper fadeInDown" >
+
+      <!-- Icon -->
+      <div class="fadeIn first"><br>
+      </div>
+      <div class="panel-heading"  >
+        <div  style="float: left; width: 50%">
+          <a href="#" class="active" id="login-form-link" style="float: center;">Login</a>
+        </div>
+        <div style="float: right; width: 50%; margin-bottom: 20px;">
+          <a href="#" id="register-form-link" style="float: center;">Register</a>
+        </div>
+        <!-- Login Form -->
+            <form id="login-form" method="post" action="signin" style="background-color:#fff">
+      <input type="text" id="login" class="fadeIn second" name="username" placeholder="username">
+      <input type="password" id="password" class="fadeIn third" name="password" placeholder="password">
+      <input type="submit" class="fadeIn fourth" value="Log In" style="font-weight: bolder;width: 90%;margin-top: 20px; height: 50px;font-weight: bolder;">
     </form>
-    <form id="register-form" style="display: none;">
-      <input type="text" id="login" class="fadeIn fifth" name="login" placeholder="username">
-      <input type="text" id="password" class="fadeIn sixth" name="login" placeholder="password">
-      <input type="text" name="email" id="email" class="fadeIn seventh" tabindex="1" placeholder="Email Address" value="">
+    <form id="register-form" method="post" action="register" style="background-color: #fff; display: none;" >
+         
+            <input type="text" id="uid" class="fadeIn first" name="username" placeholder="username" style= "width: 50%; height: 30%;">
+            <button type="button" class="fadeIn second" onclick="duplicate_check()" style=" width: 30%;font-weight: bolder;font-size: 10px; text-align: center;">Check Duplication</button>
+          
+          <input type="text" id="email" class="fadeIn first" name="email" placeholder="email" style= " width: 50%; ">
+          <button type="button" class="fadeIn second"  onclick="alert('we are working now..')" style="width: 30%;" value="Verfiy" style=" width: 30%;font-weight: bolder;font-size: 10px; text-align: center;">Verify</button>
+          <input type="password" id="password" class="fadeIn first" name="password" placeholder="password">
+        
+          <input type="text" id="phone_number" class="fadeIn second" name="phone_number" placeholder="phone_number">
+               
+          <input type="text" id="birth" class="fadeIn second" name="birth" placeholder="Birth Year(ex.1996)">
+         
+         
+          <input type="button" id="gender_M" class="fadeIn second" name="gender" value="M"  style="width: 35%; box-sizing: border-box;height: 20%;"/>
+           
 
-      <input type="submit" class="fadeIn second" value="Sign Up">
-    </form>
-    <!-- Remind Passowrd -->
-    <div id="formFooter" class="fadeIn fifth">
-      <a class="underlineHover" href="#">forgot password</a>
+          <input type="button" id="gender_F" class="fadeIn second" value="F" name="gender"  style="width: 35%; box-sizing: border-box; background-color:#d3d1de;height: 90%;"/>
+
+          <input type="submit" class="fadeIn second" value="Register to LIKER" style="font-weight: bolder;width: 90%;height: 50px;">
+
+       
+        </form>
+            <div id="formFooter" class="fadeIn fourth">
+        <a class="underlineHover" href="#">forgot password</a>
+        </div>
+      </div>
     </div>
 
+    <!-- Register Form -->
+   
   </div>
-</div>
 
+<script type="text/javascript">
+  function duplicate_check(){
+      var uid = $('#uid').val();
+      alert(uid);
+      alert("we are working now..");
+
+      $.ajax({
+        type:"GET",
+        url:"/check_duplicate",
+        data: {"id": uid},
+        success: function(data) {
+            console.log("SUCCESS: ", data);
+            alert("tlqkf");
+        },
+        error: function(data) {
+            console.log('ERROR: ', data);
+        },
+
+    });
+    event.preventDefault();
+  }
+      
+</script>
 
 </body>
 </html>
