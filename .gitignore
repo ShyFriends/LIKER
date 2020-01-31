@@ -2,3 +2,7 @@ vendor/
 log/*
 cache/*
 app/src/models/
+
+app/templates/pages/
+pages/
+public/docs/
