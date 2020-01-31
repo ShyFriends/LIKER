@@ -20,6 +20,16 @@ final class HomeController extends BaseController
         return $response;
     }
 
+    public function check_duplicate(Request $request, Response $response, $args)
+    {
+        print("~~~~~~");
+        $uid = 'wkdgurwls00';
+        print_r($uid);
+        return $uid;
+    }
+
+
+
     public function signup(Request $request, Response $response, $args)
     {
         $this->logger->info("Home page action dispatched");
@@ -41,8 +51,11 @@ final class HomeController extends BaseController
         $birth_sql = $_POST['birth'];
         $gender_sql = 'M';
 
+        
 
-        $sql = "insert into Users(username, h_password, email, birth, phone_number, gender, loginflag) values ('$username_sql','$password_sql','$email_sql','$birth_sql','$phone_number_sql','$gender_sql', 'T')";
+        $hashed_password = password_hash($password_sql, PASSWORD_DEFAULT);
+
+        $sql = "insert into Users(username, h_password, email, birth, phone_number, gender, loginflag) values ('$username_sql','$hashed_password','$email_sql','$birth_sql','$phone_number_sql','$gender_sql', 'T')";
         $stmt = $this->em->getConnection()->query($sql);
         $stmt->execute();
 
@@ -68,8 +81,9 @@ final class HomeController extends BaseController
         $stmt->execute();
 
         $results = $stmt->fetchAll();
-
-        if($results[0]['h_password']==$password_sql){
+        
+        
+        if(password_verify($password_sql, $results[0]['h_password'])){
             $json_array = array("status" => "success");
             $this->view->render($response, 'home.twig');
             return $response;
