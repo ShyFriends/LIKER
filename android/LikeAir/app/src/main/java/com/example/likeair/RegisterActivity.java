@@ -1,16 +1,14 @@
 package com.example.likeair;
 
-import android.os.Bundle;
-import android.widget.TextView;
-
 import androidx.appcompat.app.AppCompatActivity;
 
-public class LoginResult extends AppCompatActivity {
+import android.os.Bundle;
 
-    TextView textView_LikeAir;
+public class RegisterActivity extends AppCompatActivity {
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+        setContentView(R.layout.activity_signup_main);
     }
 }

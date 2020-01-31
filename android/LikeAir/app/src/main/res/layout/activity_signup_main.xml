@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".MainActivity"
-    android:background="#e0e0e0"
+    android:background="@color/colorLightGrayLiker"
 >
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="80dp"
         android:orientation="horizontal"
-        android:background="#14064f">
+        android:background="@color/colorNavyLiker">
 
 
         <TextView
@@ -22,9 +22,10 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:layout_centerInParent="true"
-            android:text="Regist"
-            android:textColor="#f39c12"
-            android:textSize="50dp"
+            android:text="Register"
+            android:fontFamily="@font/bold"
+            android:textColor="@color/colorYellowLiker"
+            android:textSize="40dp"
             android:textStyle="bold"
 
             />
@@ -40,73 +41,84 @@
     </RelativeLayout>
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/textView_username_login"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="130dp"
+        android:layout_marginTop="200dp"
         android:layout_marginRight="16dp"
         android:layout_marginLeft="16dp"
         android:text="Username"
+        android:fontFamily="@font/medium"
         android:textSize="20dp"
-        android:textColor="#14064f"
+        android:textColor="@color/colorNavyLiker"
 
          />
 
     <EditText
-        android:id="@+id/editText2"
+        android:id="@+id/editText_username_login"
         android:layout_width="match_parent"
         android:layout_height="45dp"
+        android:layout_below="@+id/textView_username_login"
         android:layout_marginBottom="10dp"
         android:layout_marginRight="16dp"
         android:layout_marginLeft="16dp"
-        android:background="#ffffff"
+        android:background="@drawable/corners_white"
+        android:fontFamily="@font/regular"
         android:ems="10"
         android:inputType="textPersonName"
         android:text=""
         />
 
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/button_username_check"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@id/editText_username_login"
         android:layout_marginRight="16dp"
         android:layout_marginLeft="16dp"
-        android:background="#14064f"
+        android:background="@drawable/corners_navy"
         android:text="Duplicate Check"
+        android:fontFamily="@font/bold"
         android:textSize="20dp"
         />
 
     <TextView
-        android:id="@+id/textView3"
-        android:layout_width="match_parent"
+        android:id="@+id/textView_email_login"
+        android:layout_width="375dp"
         android:layout_height="wrap_content"
-        android:layout_marginRight="16dp"
+        android:layout_below="@id/button_username_check"
         android:layout_marginLeft="16dp"
         android:layout_marginTop="70dp"
+        android:layout_marginRight="16dp"
+        android:fontFamily="@font/medium"
         android:text="Email"
-        android:textSize="20dp"
-        android:textColor="#14064f"/>
+        android:textColor="@color/colorNavyLiker"
+        android:textSize="20dp" />
 
     <EditText
-        android:id="@+id/editText4"
+        android:id="@+id/editText_email_login"
         android:layout_width="match_parent"
         android:layout_height="45dp"
+        android:layout_below="@id/textView_email_login"
         android:layout_marginBottom="10dp"
         android:layout_marginRight="16dp"
         android:layout_marginLeft="16dp"
-        android:background="#ffffff"
+        android:background="@drawable/corners_white"
         android:ems="10"
+        android:fontFamily="@font/regular"
         android:inputType="textEmailAddress"
         android:text=""
         />
 
     <Button
-        android:id="@+id/button3"
+        android:id="@+id/button_email_verify"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@id/editText_email_login"
         android:layout_marginRight="16dp"
         android:layout_marginLeft="16dp"
-        android:background="#14064f"
+        android:fontFamily="@font/bold"
+        android:background="@drawable/corners_navy"
         android:text="Verify"
         android:textSize="20dp"/>
-</LinearLayout>
+</RelativeLayout>
