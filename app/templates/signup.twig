@@ -1,70 +1,3 @@
-<!-- <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-    <title>Document</title>
-</head>
-<body>
-    <?php
-        $email= $_POST['email'];
-        $name= $_POST['user'];
-        $password = $_POST['password'];    
-        if(isset($_POST['submit'])) {
-        // Check if name has been entered
-            if(empty($_POST['user'])) {
-                $errName= 'Please enter your user name';
-            }
-        // Check if email has been entered and is valid
-            else if(empty($_POST['email'])) {
-                $errEmail = 'Please enter a valid email address';
-            }
-        // check if a password has been entered and if it is a valid password
-            else if(empty($_POST['password']) || (preg_match("/^.*(?=.{8,})(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]).*$/", $_POST["password"]) === 0)) {
-                $errPass = '<p class="errText">Password must be at least 8 characters and must contain at least one lower case letter, one upper case letter and one digit</p>';
-            }
-            else {
-                echo "The form has been submitted";
-            }
-        }
-    ?>
-    <div class="container">
-        <form role="form" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
-            <div class="form-group row">
-                <label for="inputEmail" class="col-sm-2 col-form-label">Email</label>
-                <div class="col-sm-10">
-                    <input type="email" class="form-control" id="inputEmail" name="email" placeholder="Email">
-                    <?php echo $errEmail; ?>
-                </div>
-            </div>
-            <div class="form-group row">
-                <label for="inputUser" class="col-sm-2 col-form-label">User Name</label>
-                <div class="col-sm-10">
-                    <input type="text" class="form-control" id="inputUser" name="user" placeholder="Username">
-                    <?php echo $errName; ?>
-                </div>
-            </div>
-            <div class="form-group row">
-                <label for="inputPassword3" class="col-sm-2 col-form-label">Password</label>
-                <div class="col-sm-10">
-                    <input type="password" class="form-control" id="inputPassword" name="password" placeholder="Password">
-                    <?php echo $errPass; ?>
-                </div>
-            </div>
-            <div class="form-group row">
-                <div class="offset-sm-2 col-sm-10">
-                    <input type="submit" value="Sign in" name="submit" class="btn btn-primary"/>
-                </div>
-            </div>
-        </form>
-    </div>
-    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
-</body>
-</html> -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -167,44 +100,6 @@
     }
 
 
-
-    /* FORM TYPOGRAPHY*/
-
-    
-
-   /* input[type=signup_btn] ,input[type=signup_submit],input[type=signup_reset]{
-      background-color: #f39c12;
-      border: none;
-      color: white;
-      padding: 10px 32px ;
-      width: 60%;
-      text-align: center;
-      text-decoration: none;
-      display: inline-block;
-      text-transform: unset;
-      font-size: 20px;
-      -webkit-box-shadow: 0 10px 30px 0 rgba(95,186,233,0.4);
-      box-shadow: 0 10px 30px 0 rgba(95,186,233,0.4);
-      -webkit-border-radius: 5px 5px 5px 5px;
-      border-radius: 5px 5px 5px 5px;
-      margin: 5px 20px 40px 20px;
-      -webkit-transition: all 0.3s ease-in-out;
-      -moz-transition: all 0.3s ease-in-out;
-      -ms-transition: all 0.3s ease-in-out;
-      -o-transition: all 0.3s ease-in-out;
-      transition: all 0.3s ease-in-out;
-    }
-     input[type=signup_btn]:hover, input[type=signup_submit]:hover, input[type=signup_reset]:hover  {
-      background-color: #39ace7;
-    }
-
-    input[type=signup_btn]:active, input[type=signup_submit]:active, input[type=signup_reset]:active  {
-      -moz-transform: scale(0.95);
-      -webkit-transform: scale(0.95);
-      -o-transform: scale(0.95);
-      -ms-transform: scale(0.95);
-      transform: scale(0.95);
-    }*/
 button[type=button]  {
       background-color: #f39c12;
       border: none;
@@ -294,43 +189,6 @@ input[type=button], input[type=submit], input[type=reset]  {
       -webkit-border-radius: 5px 5px 5px 5px;
       border-radius: 5px 5px 5px 5px;
     }
-
-/*input[type=button2], input[type=submit2], input[type=reset2]  {
-
-      background-color: #d3d1de;
-      border: none;
-      color: white;
-      padding: 10px 32px ;
-      width: 70%;
-      text-align: center;
-      text-decoration: none;
-      display: inline-block;
-      text-transform: uppercase;
-      font-size: 13px;
-      -webkit-box-shadow: 0 10px 30px 0 rgba(95,186,233,0.4);
-      box-shadow: 0 10px 30px 0 rgba(95,186,233,0.4);
-      -webkit-border-radius: 5px 5px 5px 5px;
-      border-radius: 5px 5px 5px 5px;
-      margin: 5px 20px 40px 20px;
-      -webkit-transition: all 0.3s ease-in-out;
-      -moz-transition: all 0.3s ease-in-out;
-      -ms-transition: all 0.3s ease-in-out;
-      -o-transition: all 0.3s ease-in-out;
-      transition: all 0.3s ease-in-out;
-
-    }
-
-    input[type=button2]:hover, input[type=submit2]:hover, input[type=reset2]:hover  {
-      background-color: #d3d1de;
-    }
-
-    input[type=button2]:active, input[type=submit2]:active, input[type=reset2]:active  {
-      -moz-transform: scale(0.95);
-      -webkit-transform: scale(0.95);
-      -o-transform: scale(0.95);
-      -ms-transform: scale(0.95);
-      transform: scale(0.95);
-    }*/
 
     input[type=text]:focus {
       background-color: #fff;
@@ -644,18 +502,35 @@ input[type=button], input[type=submit], input[type=reset]  {
                
           <input type="text" id="birth" class="fadeIn second" name="birth" placeholder="Birth Year(ex.1996)">
          
-         
+<!--          
           <input type="button" id="gender_M" class="fadeIn second" name="gender" value="M"  style="width: 35%; box-sizing: border-box;height: 20%;"/>
            
 
-          <input type="button" id="gender_F" class="fadeIn second" value="F" name="gender"  style="width: 35%; box-sizing: border-box; background-color:#d3d1de;height: 90%;"/>
+          <input type="button" id="gender_F" class="fadeIn second" value="F" name="gender"  style="width: 35%; box-sizing: border-box; background-color:#d3d1de;height: 90%;"/> -->
+<!-- 
+          <div class="custom-control custom-checkbox" style="float: left;padding-left: 38%;padding-right: 10%">
+            <input class="custom-control-input" type="checkbox" id="Male" value="option1">
+            <label for="Male" class="custom-control-label">Male</label>
+          </div>
+          <div class="custom-control custom-checkbox" style="float: left;">
+            <input class="custom-control-input" type="checkbox" id="Female" checked>
+            <label for="Female" class="custom-control-label">Female</label>
+          </div>
+ -->
+          <div class="form-group fadeIn second">
+                        <label style="color: #808080;padding-right: 10%;align-items: center;" >Gender</label>
+                        <select class="custom-select" style="background-color: #f6f6f6;width: 60%;color: #808080">
+                          <option style="color: #808080">Male</option>
+                          <option style="color: #808080">Female</option>
+                        </select>
+                      </div>
 
           <input type="submit" class="fadeIn second" value="Register to LIKER" style="font-weight: bolder;width: 90%;height: 50px;">
 
        
         </form>
             <div id="formFooter" class="fadeIn fourth">
-        <a class="underlineHover" href="#">forgot password</a>
+        <a class="underlineHover" href="/forgot_password">forgot password</a>
         </div>
       </div>
     </div>
@@ -667,16 +542,22 @@ input[type=button], input[type=submit], input[type=reset]  {
 <script type="text/javascript">
   function duplicate_check(){
       var uid = $('#uid').val();
-      alert(uid);
       alert("we are working now..");
 
       $.ajax({
         type:"GET",
-        url:"/check_duplicate",
+        url:"/check_duplicate/{id}",
         data: {"id": uid},
         success: function(data) {
             console.log("SUCCESS: ", data);
-            alert("tlqkf");
+            if(data['status']=='success'){
+              alert("Available Username!");
+              document.getElementById("uid").disabled = true;
+            }
+            else{
+              alert("Try another username!");
+            }
+
         },
         error: function(data) {
             console.log('ERROR: ', data);
