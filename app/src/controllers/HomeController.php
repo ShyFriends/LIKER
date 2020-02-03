@@ -7,7 +7,7 @@ use Psr\Http\Message\ResponseInterface as Response;
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
 use PHPMailer\PHPMailer\Exception;
-
+    
 final class HomeController extends BaseController
 {
     public function dispatch(Request $request, Response $response, $args)
@@ -22,10 +22,32 @@ final class HomeController extends BaseController
 
     public function check_duplicate(Request $request, Response $response, $args)
     {
-        print("~~~~~~");
-        $uid = 'wkdgurwls00';
-        print_r($uid);
-        return $uid;
+        $username_sql = $_GET['id'];
+        $json_array = array("username"=>$_GET['id']);
+
+        $sql = "select * from Users where username = '$username_sql'";
+        $stmt = $this->em->getConnection()->query($sql);
+        $stmt->execute();
+
+        $results = $stmt->fetchAll();
+                
+        if($results == NULL){
+            $json_array = array("status" => "success");
+                return $response->withStatus(200)
+                ->withHeader('Content-Type', 'application/json')
+                ->write(json_encode($json_array));
+        }
+        else{
+            $json_array = array("status" => "fail");
+                return $response->withStatus(200)
+                ->withHeader('Content-Type', 'application/json')
+                ->write(json_encode($json_array));
+        }
+
+        return $response->withStatus(200)
+        ->withHeader('Content-Type', 'application/json')
+        ->write(json_encode($json_array));
+
     }
 
 
@@ -37,6 +59,12 @@ final class HomeController extends BaseController
         $this->flash->addMessage('info', 'Sample flash message');
 
         $this->view->render($response, 'signup.twig');
+        return $response;
+    }
+
+    public function forgot_password(Request $request, Response $response, $args)
+    {
+        $this->view->render($response, 'forgot_password.twig');
         return $response;
     }
 
@@ -61,7 +89,6 @@ final class HomeController extends BaseController
 
         // $results = $stmt->fetchAll();
 
-        print_r($results);
         $this->view->render($response, 'success.twig');
         return $response;
     }
@@ -82,10 +109,11 @@ final class HomeController extends BaseController
 
         $results = $stmt->fetchAll();
         
+        $data = ['username' => $username_sql];
         
         if(password_verify($password_sql, $results[0]['h_password'])){
             $json_array = array("status" => "success");
-            $this->view->render($response, 'home.twig');
+            $this->view->render($response, 'home.twig', ['username'=>$username_sql]);
             return $response;
 
         }
@@ -94,22 +122,25 @@ final class HomeController extends BaseController
             $this->view->render($response, 'errorpage.twig');
             return $response;
         }
-        // print_r($results);
-        // print_r($results[0]['h_password']);
-        // echo "i See~";
 
-
-
-        // return $response->withStatus(200)
-        // ->withHeader('Content-Type','application/json')
-        // ->write(json_encode($json_array));
-        
-        //$this->view->render($response, 'home.twig');
-        //return $response;
     }
 
     public function sendMail(Request $request, Response $response, $args)
     {
+        // $username_sql = $_GET['username'];
+
+        // $sql = "select email from Users where username = '$username_sql'";
+        // $stmt = $this->em->getConnection()->query($sql);
+        // $stmt->execute();
+
+        // $results = $stmt->fetchAll();
+        
+        // if($results == NULL)){
+        //     $json_array = array("status" => "fail", "message" => "Incorrect Username");
+        //     $this->view->render($response, 'errorpage.twig');
+        //     return $response;
+        // }
+        $results='wkdgurwls00@naver.com';
         $mail = new PHPMailer(true);
 
         try {
@@ -125,7 +156,7 @@ final class HomeController extends BaseController
 
         //Recipients
         $mail->setFrom('wkdgurwls1211@gmail.com', 'HyukJin');
-        $mail->addAddress('wkdgurwls00@naver.com');     // Add a recipient
+        $mail->addAddress($results);     // Add a recipient
         //$mail->addAddress('ellen@example.com');               // Name is optional
         // $mail->addReplyTo('info@example.com', 'Information');
         // $mail->addCC('cc@example.com');
