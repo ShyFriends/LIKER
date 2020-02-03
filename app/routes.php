@@ -10,6 +10,12 @@ $app->get('/sendmail', 'App\Controller\HomeController:sendMail')
 $app->get('/signup', 'App\Controller\HomeController:signup')
     ->setName('signup');
 
+$app->get('/forgot_password', 'App\Controller\HomeController:forgot_password')
+    ->setName('forgot_password');
+
+$app->get('/aqi', 'App\Controller\DeviceController:aqi')
+    ->setName('aqi');
+
 $app->post('/signin', 'App\Controller\HomeController:signin')
     ->setName('signin');
 
@@ -19,7 +25,7 @@ $app->post('/register', 'App\Controller\HomeController:register')
 $app->get('/testJSON', 'App\Controller\HomeController:testJSON')
     ->setName('testJSON');
 
-$app->get('/check_duplicate', 'App\Controller\HomeController:check_duplicate')
+$app->get('/check_duplicate/{id}', 'App\Controller\HomeController:check_duplicate')
     ->setName('check_duplicate');
 
 $app->get('/testQuery', 'App\Controller\HomeController:testQuery')
