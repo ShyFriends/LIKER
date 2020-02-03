@@ -188,7 +188,7 @@
           <img src="{{ base_url() }}/dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
         </div>
         <div class="info">
-          <a href="#" class="d-block">Team_B</a>
+          <a href="#" class="d-block">{{username}}</a>
         </div>
       </div>
 
@@ -228,7 +228,7 @@
  -->          </li>
           
           <li class="nav-item has-treeview">
-            <a href="#" class="nav-link">
+            <a href="/" class="nav-link">
               <i class="nav-icon fas fa-chart-pie"></i>
               <p>
                 Charts
@@ -237,13 +237,13 @@
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="pages/charts/chartjs.html" class="nav-link">
+                <a href="/" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Heart Rate</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="pages/charts/flot.html" class="nav-link">
+                <a href="/aqi" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>AQI</p>
                 </a>
@@ -253,7 +253,7 @@
           
           
           <li class="nav-item has-treeview">
-            <a href="#" class="nav-link">
+            <a href="/" class="nav-link">
               <i class="nav-icon fas fa-table"></i>
               <p>
                 Management
@@ -262,13 +262,13 @@
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="pages/tables/simple.html" class="nav-link">
+                <a href="/" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Polar Sensor</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="pages/tables/data.html" class="nav-link">
+                <a href="/" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Udoo Sensor</p>
                 </a>
@@ -307,10 +307,7 @@
       </div><!-- /.container-fluid -->
     </div>
     <!-- /.content-header -->
-
-
-
-
+    {{username}}
     <!-- Main content -->
     
   </div>
