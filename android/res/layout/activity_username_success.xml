@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".MainActivity"
+    android:background="@color/colorLightGrayLiker"
+>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:orientation="horizontal"
+        android:background="@color/colorNavyLiker">
+
+
+        <TextView
+            android:id="@+id/textView4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_centerInParent="true"
+            android:text="Register"
+            android:textColor="@color/colorYellowLiker"
+            android:textSize="50dp"
+            android:textStyle="bold"
+
+            />
+
+        <ImageView
+            android:id="@+id/imageView5"
+            android:layout_width="80dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:src="@mipmap/liker_origin"
+            android:layout_alignParentRight="true"
+             />
+    </RelativeLayout>
+
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="250dp"
+            android:layout_height="170dp"
+            android:layout_centerInParent="true"
+            app:cardBackgroundColor="#ffffff">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/textView5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:paddingBottom="30dp"
+                    android:text="Username available"
+                    android:fontFamily="@font/regular"
+                    android:textColor="#000000"
+                    android:textSize="20dp"/>
+
+                <Button
+                    android:id="@+id/button5"
+                    android:layout_width="125dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:background="@color/colorLightGrayLiker"
+                    android:text="CANCEL"
+                    android:fontFamily="@font/bold"
+                    android:textSize="20dp"
+                    android:textColor="@color/colorDarkGrayLiker"
+                    style="?android:attr/borderlessButtonStyle"/>
+
+                <Button
+                    android:id="@+id/button6"
+                    android:layout_width="125dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentRight="true"
+                    android:background="@color/colorLightGrayLiker"
+                    android:text="OK"
+                    android:fontFamily="@font/bold"
+                    android:textSize="20dp"
+                    android:textColor="@color/colorYellowLiker"
+                    style="?android:attr/borderlessButtonStyle"
+                    />
+            </RelativeLayout>
+        </androidx.cardview.widget.CardView>
+
+</RelativeLayout>
