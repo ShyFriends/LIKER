@@ -20,6 +20,25 @@ final class DeviceController extends BaseController
         return $response;
     }
 
+    public function polar(Request $request, Response $response, $args)
+    {
+        $this->logger->info("Home page action dispatched");
+
+        $this->flash->addMessage('info', 'Sample flash message');
+
+        $this->view->render($response, 'devices/polar.twig');
+        return $response;
+    }
+
+    public function udoo(Request $request, Response $response, $args)
+    {
+        $this->logger->info("Home page action dispatched");
+
+        $this->flash->addMessage('info', 'Sample flash message');
+
+        $this->view->render($response, 'devices/udoo.twig');
+        return $response;
+    }
 
     public function aqi(Request $request, Response $response, $args)
     {
@@ -31,6 +50,15 @@ final class DeviceController extends BaseController
         return $response;
     }
 
+    public function heartrate(Request $request, Response $response, $args)
+    {
+        $this->logger->info("Home page action dispatched");
+
+        $this->flash->addMessage('info', 'Sample flash message');
+
+        $this->view->render($response, 'devices/heartrate.twig');
+        return $response;
+    }
 
     public function viewPost(Request $request, Response $response, $args)
     {
