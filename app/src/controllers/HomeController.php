@@ -77,6 +77,51 @@ final class HomeController extends BaseController
         return $response;
     }
 
+    public function self_verify(Request $request, Response $response, $args)
+    {
+        $email_sql = $_GET['email'];
+
+        $nonce = password_hash($email_sql, PASSWORD_DEFAULT);
+
+        $username_sql = $_GET['username'];
+
+        $sql = "insert into Auth(username, temp_password, nonce, email, stateflag) values ('$username_sql','T', '$nonce','$email_sql', 'F')";
+        $stmt = $this->em->getConnection()->prepare($sql);
+        $stmt->execute();
+
+        $this->sendMail2($email_sql, $nonce);
+
+        $json_array = array("status" => "success");
+                return $response->withStatus(200)
+                ->withHeader('Content-Type', 'application/json')
+                ->write(json_encode($json_array));
+    }
+
+    public function self_confirm_verify(Request $request, Response $response, $args)
+    {
+        
+        $nonce = $_GET['nonce'];
+
+        $sql = "select username from Auth where nonce = '$nonce'";
+        $stmt = $this->em->getConnection()->prepare($sql);
+        $stmt->execute();
+
+        $results = $stmt->fetchAll();
+                
+        if($results == NULL){
+            $this->view->render($response, 'errorpage.twig');
+            return $response;
+        }
+        else{
+            $sql = "UPDATE Auth SET stateflag = 'T' WHERE nonce = '$nonce'"; 
+            $stmt = $this->em->getConnection()->prepare($sql);
+            $stmt->execute();
+            
+            $this->view->render($response, 'success.twig');
+            return $response;        
+        }
+    }
+
     public function verify(Request $request, Response $response, $args)
     {
 
@@ -92,14 +137,19 @@ final class HomeController extends BaseController
         
         $email_sql = $results[0]['email'];
 
-        $sql = "insert into Auth(username, temp_password, nonce, email, stateflag) values ('$username_sql','T', '$nonce','$email_sql', 'F')";
+        $randomNum = mt_rand(1000, 10000);
+        $temp_password = password_hash($randomNum, PASSWORD_DEFAULT);
+
+        $sql = "insert into Auth(username, temp_password, nonce, email, stateflag) values ('$username_sql','$temp_password', '$nonce','$email_sql', 'F')";
         $stmt = $this->em->getConnection()->prepare($sql);
         $stmt->execute();
 
+        
+        $sql = "UPDATE Users SET h_password = '$temp_password' WHERE username = '$username_sql'"; 
+            $stmt = $this->em->getConnection()->prepare($sql);
+            $stmt->execute();
 
-
-
-        $this->sendMail($email_sql, $nonce);
+        $this->sendMail($email_sql, $nonce, $randomNum);
 
         $this->view->render($response, 'success.twig');
         return $response;
@@ -124,7 +174,7 @@ final class HomeController extends BaseController
             $sql = "UPDATE Auth SET stateflag = 'T' WHERE nonce = '$nonce'"; 
             $stmt = $this->em->getConnection()->prepare($sql);
             $stmt->execute();
-            $this->view->render($response, 'success.twig');
+            $this->view->render($response, 'signup.twig');
             return $response;
         }
     }
@@ -134,24 +184,35 @@ final class HomeController extends BaseController
 
 
         $username_sql = $_POST['username'];
-        $password_sql = $_POST['password'];
+        $password_sql = $_POST['first_password'];
         $email_sql = $_POST['email'];
         $phone_number_sql = $_POST['phone_number'];
         $birth_sql = $_POST['birth'];
         $gender_sql = $_POST['gender'];
 
-
-
         $hashed_password = password_hash($password_sql, PASSWORD_DEFAULT);
 
-        $sql = "insert into Users(username, h_password, email, birth, phone_number, gender, loginflag) values ('$username_sql','$hashed_password','$email_sql','$birth_sql','$phone_number_sql','$gender_sql', 'T')";
+        $sql = "select stateflag from Auth where username = '$username_sql'";
         $stmt = $this->em->getConnection()->prepare($sql);
         $stmt->execute();
 
-        // $results = $stmt->fetchAll();
+        $results = $stmt->fetchAll();
 
-        $this->view->render($response, 'success.twig');
-        return $response;
+        if($results[0]['stateflag']=="T"){
+            $sql = "insert into Users(username, h_password, email, birth, phone_number, gender, loginflag) values ('$username_sql','$hashed_password','$email_sql','$birth_sql','$phone_number_sql','$gender_sql', 'T')";
+            $stmt = $this->em->getConnection()->prepare($sql);
+            $stmt->execute();
+
+            $this->view->render($response, 'success.twig');
+            return $response;
+        }
+        else{
+            $this->view->render($response, 'errorpage.twig');
+            return $response;
+        }
+
+
+
     }
 
     public function signin(Request $request, Response $response, $args)
@@ -186,28 +247,15 @@ final class HomeController extends BaseController
     }
 
 
-    public function sendMail($email, $nonce)
+    public function sendMail($email, $nonce, $randomNum)
     {
-        // $username_sql = $_GET['username'];
-
-        // $sql = "select email from Users where username = '$username_sql'";
-        // $stmt = $this->em->getConnection()->query($sql);
-        // $stmt->execute();
-
-        // $results = $stmt->fetchAll();
-        
-        // if($results == NULL)){
-        //     $json_array = array("status" => "fail", "message" => "Incorrect Username");
-        //     $this->view->render($response, 'errorpage.twig');
-        //     return $response;
-        // }
         $results = $email;
 
         $mail = new PHPMailer(true);
 
         try {
         //Server settings
-        $mail->SMTPDebug = SMTP::DEBUG_SERVER;                      // Enable verbose debug output
+        // $mail->SMTPDebug = SMTP::DEBUG_SERVER;                      // Enable verbose debug output
         $mail->isSMTP();                                            // Send using SMTP
         $mail->Host       = 'smtp.gmail.com';                    // Set the SMTP server to send through
         $mail->SMTPAuth   = true;                                   // Enable SMTP authentication
@@ -231,11 +279,11 @@ final class HomeController extends BaseController
         // Content
         $mail->isHTML(true);                                  // Set email format to HTML
         $mail->Subject = 'Whattssssup bro~~';
-        $mail->Body    = '<h1>LIKER Message</h1><a href="http://192.168.33.99/confirm_verify?nonce=' . $nonce . '">Click me!</a>';
+        $mail->Body    = '<h1>LIKER Message</h1><a href="http://192.168.33.99/confirm_verify?nonce=' . $nonce . '">Sign-In? Click me!</a><br>your temporary password is :' . $randomNum . '';
         $mail->AltBody = 'HeyHey~';
 
         $mail->send();
-        echo 'Message has been sent';
+        //echo 'Message has been sent';
         }
         catch (Exception $e) {
         echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
@@ -243,6 +291,40 @@ final class HomeController extends BaseController
 
     }
 
+public function sendMail2($email, $nonce)
+    {
+        $results = $email;
+
+        $mail = new PHPMailer(true);
+
+        try {
+        //Server settings
+        // $mail->SMTPDebug = SMTP::DEBUG_SERVER;                      // Enable verbose debug output
+        $mail->isSMTP();                                            // Send using SMTP
+        $mail->Host       = 'smtp.gmail.com';                    // Set the SMTP server to send through
+        $mail->SMTPAuth   = true;                                   // Enable SMTP authentication
+        $mail->Username   = 'wkdgurwls1211@gmail.com';                     // SMTP username
+        $mail->Password   = 'gurwls1080524';                               // SMTP password
+        $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;         // Enable TLS encryption; `PHPMailer::ENCRYPTION_SMTPS` also accepted
+        $mail->Port       = 587;                                    // TCP port to connect to
+
+        //Recipients
+        $mail->setFrom('wkdgurwls1211@gmail.com', 'HyukJin');
+        $mail->addAddress($results);     // Add a recipient
+
+        $mail->isHTML(true);                                  // Set email format to HTML
+        $mail->Subject = 'Whattssssup bro~~';
+        $mail->Body    = '<h1>LIKER Message</h1><a href="http://192.168.33.99/self_confirm_verify?nonce=' . $nonce . '">Sign-In? Click me!</a>';
+        $mail->AltBody = 'HeyHey~';
+
+        $mail->send();
+        // echo 'Message has been sent';
+        }
+        catch (Exception $e) {
+        echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
+        }
+
+    }
 
     
     public function testQuery(Request $request, Response $response, $args){

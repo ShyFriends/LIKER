@@ -10,11 +10,20 @@ $app->get('/userinfo', 'App\Controller\HomeController:userinfo')
 $app->get('/sendmail', 'App\Controller\HomeController:sendMail')
     ->setName('sendmail');
 
+$app->get('/sendmail2', 'App\Controller\HomeController:sendMail2')
+    ->setName('sendmail2');
+
+$app->get('/self_verify/{username}/{email}', 'App\Controller\HomeController:self_verify')
+    ->setName('self_verify');
+
 $app->post('/verify', 'App\Controller\HomeController:verify')
     ->setName('verify');
 
 $app->get('/confirm_verify', 'App\Controller\HomeController:confirm_verify')
     ->setName('confirm_verify');
+
+$app->get('/self_confirm_verify', 'App\Controller\HomeController:self_confirm_verify')
+    ->setName('self_confirm_verify');
 
 $app->get('/signup', 'App\Controller\HomeController:signup')
     ->setName('signup');
