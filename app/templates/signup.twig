@@ -496,32 +496,46 @@ input[type=button], input[type=submit], input[type=reset]  {
           
           <input type="text" id="email" class="fadeIn first" name="email" placeholder="email" style= " width: 50%; ">
           <button type="button" class="fadeIn second"  onclick="alert('we are working now..')" style="width: 30%;" value="Verfiy" style=" width: 30%;font-weight: bolder;font-size: 10px; text-align: center;">Verify</button>
-          <input type="password" id="password" class="fadeIn first" name="password" placeholder="password">
-        
+
+ <!--          <input type="password" class="fadeIn second" placeholder="password" id="password" required>
+          <input type="password" class="fadeIn second" placeholder="confirm_password" id="confirm_password" required>
+ -->
+          <fieldset>
+
+            <input type="password" placeholder="Password" class="fadeIn second" id="first_password" required>
+            <input type="password" placeholder="Confirm Password" class="fadeIn second" id="confirm_password" required>
+
+          </fieldset>
+
+          <script type="text/javascript">
+            var password = document.getElementById("first_password")
+            , confirm_password = document.getElementById("confirm_password");
+
+            function validatePassword(){
+                if(password.value != confirm_password.value) {
+                    confirm_password.setCustomValidity("Passwords Don't Match");
+                } else {
+                    confirm_password.setCustomValidity('');
+                }
+            }
+
+            password.onchange = validatePassword;
+            confirm_password.onkeyup = validatePassword;
+          </script>
+
+
+
+
           <input type="text" id="phone_number" class="fadeIn second" name="phone_number" placeholder="phone_number">
                
           <input type="text" id="birth" class="fadeIn second" name="birth" placeholder="Birth Year(ex.1996)">
          
-<!--          
-          <input type="button" id="gender_M" class="fadeIn second" name="gender" value="M"  style="width: 35%; box-sizing: border-box;height: 20%;"/>
-           
 
-          <input type="button" id="gender_F" class="fadeIn second" value="F" name="gender"  style="width: 35%; box-sizing: border-box; background-color:#d3d1de;height: 90%;"/> -->
-<!-- 
-          <div class="custom-control custom-checkbox" style="float: left;padding-left: 38%;padding-right: 10%">
-            <input class="custom-control-input" type="checkbox" id="Male" value="option1">
-            <label for="Male" class="custom-control-label">Male</label>
-          </div>
-          <div class="custom-control custom-checkbox" style="float: left;">
-            <input class="custom-control-input" type="checkbox" id="Female" checked>
-            <label for="Female" class="custom-control-label">Female</label>
-          </div>
- -->
           <div class="form-group fadeIn second">
                         <label style="color: #808080;padding-right: 10%;align-items: center;" >Gender</label>
-                        <select class="custom-select" style="background-color: #f6f6f6;width: 60%;color: #808080">
-                          <option style="color: #808080">Male</option>
-                          <option style="color: #808080">Female</option>
+                        <select class="custom-select" id="gender" name="gender" style="background-color: #f6f6f6;width: 60%;color: #808080">
+                          <option value="M" style="color: #808080">Male</option>
+                          <option value="F" style="color: #808080">Female</option>
                         </select>
                       </div>
 
@@ -542,7 +556,6 @@ input[type=button], input[type=submit], input[type=reset]  {
 <script type="text/javascript">
   function duplicate_check(){
       var uid = $('#uid').val();
-      alert("we are working now..");
 
       $.ajax({
         type:"GET",
@@ -552,7 +565,7 @@ input[type=button], input[type=submit], input[type=reset]  {
             console.log("SUCCESS: ", data);
             if(data['status']=='success'){
               alert("Available Username!");
-              document.getElementById("uid").disabled = true;
+              document.getElementById("uid").readOnly = true;
             }
             else{
               alert("Try another username!");
