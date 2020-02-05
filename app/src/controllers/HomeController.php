@@ -51,6 +51,15 @@ final class HomeController extends BaseController
     }
 
 
+    public function userinfo(Request $request, Response $response, $args)
+    {
+        $this->logger->info("Home page action dispatched");
+
+        $this->flash->addMessage('info', 'Sample flash message');
+
+        $this->view->render($response, 'userinfo.twig');
+        return $response;
+    }
 
     public function signup(Request $request, Response $response, $args)
     {
@@ -68,6 +77,58 @@ final class HomeController extends BaseController
         return $response;
     }
 
+    public function verify(Request $request, Response $response, $args)
+    {
+
+        $nonce = password_hash($email_sql, PASSWORD_DEFAULT);
+
+        $username_sql = $_POST['username'];
+
+        $sql = "select email from Users where username = '$username_sql'";
+        $stmt = $this->em->getConnection()->prepare($sql);
+        $stmt->execute();
+
+        $results = $stmt->fetchAll();
+        
+        $email_sql = $results[0]['email'];
+
+        $sql = "insert into Auth(username, temp_password, nonce, email, stateflag) values ('$username_sql','T', '$nonce','$email_sql', 'F')";
+        $stmt = $this->em->getConnection()->prepare($sql);
+        $stmt->execute();
+
+
+
+
+        $this->sendMail($email_sql, $nonce);
+
+        $this->view->render($response, 'success.twig');
+        return $response;
+    }
+
+    public function confirm_verify(Request $request, Response $response, $args)
+    {
+        
+        $nonce = $_GET['nonce'];
+
+        $sql = "select username from Auth where nonce = '$nonce'";
+        $stmt = $this->em->getConnection()->prepare($sql);
+        $stmt->execute();
+
+        $results = $stmt->fetchAll();
+                
+        if($results == NULL){
+            $this->view->render($response, 'errorpage.twig');
+            return $response;
+        }
+        else{
+            $sql = "UPDATE Auth SET stateflag = 'T' WHERE nonce = '$nonce'"; 
+            $stmt = $this->em->getConnection()->prepare($sql);
+            $stmt->execute();
+            $this->view->render($response, 'success.twig');
+            return $response;
+        }
+    }
+
     public function register(Request $request, Response $response, $args)
     {
 
@@ -77,7 +138,7 @@ final class HomeController extends BaseController
         $email_sql = $_POST['email'];
         $phone_number_sql = $_POST['phone_number'];
         $birth_sql = $_POST['birth'];
-        $gender_sql = 'M';
+        $gender_sql = $_POST['gender'];
 
 
 
@@ -102,7 +163,6 @@ final class HomeController extends BaseController
         $password_sql = $_POST['password'];
 
 
-
         $sql = "select h_password from Users where username = '$username_sql'";
         $stmt = $this->em->getConnection()->query($sql);
         $stmt->execute();
@@ -125,7 +185,8 @@ final class HomeController extends BaseController
 
     }
 
-    public function sendMail(Request $request, Response $response, $args)
+
+    public function sendMail($email, $nonce)
     {
         // $username_sql = $_GET['username'];
 
@@ -140,7 +201,8 @@ final class HomeController extends BaseController
         //     $this->view->render($response, 'errorpage.twig');
         //     return $response;
         // }
-        $results='wkdgurwls00@naver.com';
+        $results = $email;
+
         $mail = new PHPMailer(true);
 
         try {
@@ -168,8 +230,8 @@ final class HomeController extends BaseController
 
         // Content
         $mail->isHTML(true);                                  // Set email format to HTML
-        $mail->Subject = 'Whattssssup bro';
-        $mail->Body    = '<h1>Thanksss a lot</h1>';
+        $mail->Subject = 'Whattssssup bro~~';
+        $mail->Body    = '<h1>LIKER Message</h1><a href="http://192.168.33.99/confirm_verify?nonce=' . $nonce . '">Click me!</a>';
         $mail->AltBody = 'HeyHey~';
 
         $mail->send();
@@ -181,6 +243,8 @@ final class HomeController extends BaseController
 
     }
 
+
+    
     public function testQuery(Request $request, Response $response, $args){
         
         $sql = "select * from Users";
