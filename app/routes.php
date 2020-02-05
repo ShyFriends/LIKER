@@ -4,8 +4,17 @@
 $app->get('/', 'App\Controller\HomeController:dispatch')
     ->setName('homepage');
 
+$app->get('/userinfo', 'App\Controller\HomeController:userinfo')
+    ->setName('userinfo');
+
 $app->get('/sendmail', 'App\Controller\HomeController:sendMail')
     ->setName('sendmail');
+
+$app->post('/verify', 'App\Controller\HomeController:verify')
+    ->setName('verify');
+
+$app->get('/confirm_verify', 'App\Controller\HomeController:confirm_verify')
+    ->setName('confirm_verify');
 
 $app->get('/signup', 'App\Controller\HomeController:signup')
     ->setName('signup');
@@ -13,8 +22,17 @@ $app->get('/signup', 'App\Controller\HomeController:signup')
 $app->get('/forgot_password', 'App\Controller\HomeController:forgot_password')
     ->setName('forgot_password');
 
+$app->get('/polar', 'App\Controller\DeviceController:polar')
+    ->setName('polar');
+
+$app->get('/udoo', 'App\Controller\DeviceController:udoo')
+    ->setName('udoo');
+
 $app->get('/aqi', 'App\Controller\DeviceController:aqi')
     ->setName('aqi');
+
+$app->get('/heartrate', 'App\Controller\DeviceController:heartrate')
+    ->setName('heartrate');
 
 $app->post('/signin', 'App\Controller\HomeController:signin')
     ->setName('signin');
