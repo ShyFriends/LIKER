@@ -4,7 +4,7 @@
 $app->get('/', 'App\Controller\HomeController:dispatch')
     ->setName('homepage');
 
-$app->get('/userinfo', 'App\Controller\HomeController:userinfo')
+$app->post('/userinfo', 'App\Controller\HomeController:userinfo')
     ->setName('userinfo');
 
 $app->get('/sendmail', 'App\Controller\HomeController:sendMail')

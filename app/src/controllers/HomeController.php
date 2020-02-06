@@ -53,11 +53,19 @@ final class HomeController extends BaseController
 
     public function userinfo(Request $request, Response $response, $args)
     {
-        $this->logger->info("Home page action dispatched");
+        $username_sql = $_POST['username'];
 
-        $this->flash->addMessage('info', 'Sample flash message');
+        $sql = "select username, birth, gender, email, phone_number from Users where username = '$username_sql'";
+        $stmt = $this->em->getConnection()->query($sql);
+        $stmt->execute();
 
-        $this->view->render($response, 'userinfo.twig');
+        $results = $stmt->fetchAll();
+        $birth_sql = $results[0]['birth'];
+        $gender_sql = $results[0]['gender'];
+        $email_sql = $results[0]['email'];
+        $phone_number_sql = $results[0]['phone_number'];
+
+        $this->view->render($response, 'userinfo.twig', ['username'=>$username_sql, 'birth'=>$birth_sql, 'gender'=>$gender_sql, 'email'=>$email_sql, 'phone_number'=>$phone_number_sql ]);
         return $response;
     }
 
@@ -222,7 +230,6 @@ final class HomeController extends BaseController
         
         $username_sql = $_POST['username'];
         $password_sql = $_POST['password'];
-
 
         $sql = "select h_password from Users where username = '$username_sql'";
         $stmt = $this->em->getConnection()->query($sql);
