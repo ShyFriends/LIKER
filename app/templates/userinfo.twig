@@ -72,6 +72,7 @@
 
     .profile-head h5{
         color: #333;
+        display: inline;
     }
 
     .profile-head h6{
@@ -81,9 +82,9 @@
     .profile-edit-btn{
         border: none;
         border-radius: 1.5rem;
-        width: 70%;
-        padding: 2%;
-        font-weight: 600;
+        width: 30%;
+        padding: 1%;
+        font-weight: 400;
         color: #6c757d;
         cursor: pointer;
     }
@@ -454,45 +455,45 @@
       </div><!-- /.container-fluid -->
     </div>
     <!-- /.content-header -->
-    <div class="container emp-profile">
-            <form method="post">
-                <div class="row">
+     <form method="post" >
+    <div class="container emp-profile">           
+<!--                <div class="row">
                     <div class="col-md-4">
                         <div class="profile-img">
-                            <!--이미지 태그-->
                             <div class="file btn btn-lg btn-primary">
                                 Change Photo 
                                 <input type="file" name="file"/>
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-6">
+-->                    <div class="col-md-6">
                         <div class="profile-head">
-                                    <h5>
-                                        {{username}}
-                                    </h5>
-                                    <br/>
-                                    <h6>
-                                        User type
-                                    </h6>
+                          <br/>
+                                    <h2>
+                                        {{username}} </h2>
+                          <div class="row">
+                                    &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;<input type="button" class="profile-edit-btn" name="changepasswd" data-toggle="modal" data-target="#exampleModalCenter" value="Change Password"/>
+                                    <input type="button" class="profile-edit-btn" id="id_removal" value="ID Removal" onclick="remove()"></button>
+                          </div>
+                                    <br/><br/>
                                     <!--<p class="proile-rating">RANKINGS : <span>8/10</span></p>-->
                                     <br/>
                             <ul class="nav nav-tabs" id="myTab" role="tablist">
                                 <li class="nav-item">
                                     <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">About</a>
                                 </li>
-                               <!-- <li class="nav-item">
-                                    <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Timeline</a>
-                                </li> -->
+                                <li class="nav-item">
+                                    <a class="nav-link" id="polar-tab" data-toggle="tab" href="#polar" role="tab" aria-controls="home" aria-selected="false">Polar Sensor</a>
+                                </li>
+                                 <li class="nav-item">
+                                    <a class="nav-link" id="udoo-tab" data-toggle="tab" href="#udoo" role="tab" aria-controls="profile" aria-selected="false">Udoo Sensor</a>
+                                </li>
                             </ul>
                         </div>
                     </div>
-                    <div class="col-md-2">
-                        <input type="submit" class="profile-edit-btn" name="btnAddMore" value="Edit Profile"/>
-                    </div>
-                </div>
+              
                 <div class="row">
-                    <div class="col-md-4">
+<!--                    <div class="col-md-4">
                         <div class="profile-work">
                             <p>WORK LINK</p>
                             <a href="">Website Link</a><br/>
@@ -503,15 +504,15 @@
                             <a href="">Web Developer</a><br/>
                             <a href="">WordPress</a><br/>
                             <a href="">WooCommerce</a><br/>
-                            <a href="">PHP, .Net</a><br/>
+                            <a href="">PHP, .Net</a><br/> 
                         </div>
-                    </div>
+-->                    </div>
                     <div class="col-md-8">
                         <div class="tab-content profile-tab" id="myTabContent">
                             <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
                                         <div class="row">
                                             <div class="col-md-6">
-                                                <label>User Id</label>
+                                                <label>Username</label>
                                             </div>
                                             <div class="col-md-6">
                                                 <p>{{username}}</p>
@@ -549,13 +550,67 @@
                                                 <p>{{gender}}</p>
                                             </div>
                                         </div>
-                                        <button type="button" id="id_removal" onclick="remove()"></button>
                             </div>
-                          </div>
-                        </div>
-                      </div>
-                    </form>
-                  </div>
+                            <div class="tab-pane fade" id="polar" role="tabpanel" aria-labelledby="polar-tab">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <label>Heartrate Sensor</label>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <p>00098c006963</p>
+                                            </div>
+                                        </div>
+                              </div>
+                              <div class="tab-pane fade" id="udoo" role="tabpanel" aria-labelledby="udoo-tab">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <label>CO</label>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <p>00098c006964</p>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <label>NO2</label>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <p>00098c006965</p>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <label>SO2</label>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <p>00098c006969</p>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <label>O3</label>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <p>00098c006908</p>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <label>pm2.5</label>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <p>00098c008392</p>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <label>pm10</label>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <p>00098c002847</p>
+                                            </div>
+                                        </div>
+                          </div></div></div></form></div>
     <!-- Main content -->
     
             </div>  
@@ -592,14 +647,101 @@
 
 
 
+  </div>
+
+  <!-- Modal -->
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Changing Password</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+         <form>
+          <div class="form-group">
+            <label for="message-name" class="col-form-label">Current Password:</label>
+            <input type="password" class="form-control" id="current_pwd">
+          </div>
+          <div class="form-group">
+            <label for="message-text" class="col-form-label">New Password:</label>
+             <input type="password" class="form-control" id="new_pwd">
+          </div>
+          <div class="form-group">
+            <label for="message-text" class="col-form-label">Confirm Password:</label>
+             <input type="password" class="form-control" id="confirm_pwd">
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" onclick="confirmed_pwd()">SUBMIT</button>
+      </div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+  function confirmed_pwd(){
+      var new_pwd = $('#new_pwd').val();
+      var confirm_pwd = $('#confirm_pwd').val();
+      if(new_pwd==confirm_pwd){
+        check_pwd();
+      }
+      else{
+        alert("New Password and Confirm Password DO NOT MATCH");
+      }
+    }
+
+ function check_pwd(){
+    var username = '{{username}}';
+    var current_pwd = $('#current_pwd').val();
+    $.ajax({
+       type:"POST",
+        url:"/check_pwd/{username}/{current_pwd}",
+        data: { "username":username, "current_pwd":current_pwd }, 
+          success: function(data){
+              console.log("SUCCESS: ", data);
+              if(data['status']==0){
+                change_pwd();
+              }
+              else{
+                alert("WRONG PASSWORD. Check your password again!");
+              }
+            },
+            error: function(data){
+             console.log('ERROR: ', data);
+            },
+    }); 
+  }
+ function change_pwd(){
+    var username = '{{username}}';
+    var new_pwd = $('#new_pwd').val();
+      $.ajax({
+          type:"POST",
+          url:"/change_pwd/{username}/{new_pwd}",
+          data: {"username":username, "new_pwd":new_pwd},
+            success: function(data){
+              console.log("SUCCESS: ", data);
+              alert("PASSWORD Changed");
+              location.replace("./signup");
+            },
+            error: function(data){
+             console.log('ERROR: ', data);
+            },
+          });
+  }
+</script>
+</form>
   <!-- /.content-wrapper -->
-  <footer class="main-footer">
+  <!--<footer class="main-footer">
     <strong>Copyright &copy; 2014-2019 <a href="http://adminlte.io">AdminLTE.io</a>.</strong>
     All rights reserved.
     <div class="float-right d-none d-sm-inline-block">
       <b>Version</b> 3.0.3-pre
     </div>
-  </footer>
+  </footer> -->
 
   <!-- Control Sidebar -->
   <aside class="control-sidebar control-sidebar-dark">
