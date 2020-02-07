@@ -178,7 +178,34 @@
         </div>
       </div>
     </form>
+    <button type="button" id="logout" onclick="signout()"></button>
 
+    <script type="text/javascript">
+      function signout(){
+          var username = '{{ username }}';
+
+          $.ajax({
+            type:"GET",
+            url:"/signout/{username}",
+            data: { "username":username },
+            success: function(data) {
+                console.log("SUCCESS: ", data);
+                if(data['status']=='success'){
+                  alert("Signout Success!");
+                }
+                else{
+                  alert("Signout Fail..!");
+                }
+
+            },
+            error: function(data) {
+                console.log('ERROR: ', data);
+            },
+
+        });
+        event.preventDefault();
+      }
+    </script>
     <!-- Right navbar links -->
     <ul class="navbar-nav ml-auto">
       <!-- Messages Dropdown Menu -->
@@ -434,7 +461,7 @@
                         <div class="profile-img">
                             <!--이미지 태그-->
                             <div class="file btn btn-lg btn-primary">
-                                Change Photo
+                                Change Photo 
                                 <input type="file" name="file"/>
                             </div>
                         </div>
@@ -522,11 +549,49 @@
                                                 <p>{{gender}}</p>
                                             </div>
                                         </div>
+                                        <button type="button" id="id_removal" onclick="remove()"></button>
                             </div>
-                          </div></div></div></form></div>
+                          </div>
+                        </div>
+                      </div>
+                    </form>
+                  </div>
     <!-- Main content -->
     
-  </div>
+            </div>  
+
+<script>
+    function remove(){
+      var username = '{{ username }}';
+      alert(username);
+
+      $.ajax({
+        type:"GET",
+        url:"/remove/{username}",
+        data: { "username":username },
+        success: function(data) {
+            console.log("SUCCESS: ", data);
+            if(data['status']=='success'){
+              alert("Remove Success!");
+            }
+            else{
+              alert("Remove Fail..!");
+            }
+
+        },
+        error: function(data) {
+            console.log('ERROR: ', data);
+        },
+
+    });
+    event.preventDefault();
+  }
+</script>
+
+
+
+
+
   <!-- /.content-wrapper -->
   <footer class="main-footer">
     <strong>Copyright &copy; 2014-2019 <a href="http://adminlte.io">AdminLTE.io</a>.</strong>
