@@ -99,9 +99,9 @@ final class HomeController extends BaseController
         ->write(json_encode($json_array));
     }
 
-
     public function userinfo(Request $request, Response $response, $args)
     {
+        session_start();
         $username_sql = $_POST['username'];
 
         $sql = "select username, birth, gender, email, phone_number from Users where username = '$username_sql'";
@@ -278,16 +278,11 @@ final class HomeController extends BaseController
             $this->view->render($response, 'errorpage.twig');
             return $response;
         }
-
-
-
     }
 
     public function signin(Request $request, Response $response, $args)
-    {
-
+    {    
         // print_r($_POST['password']);
-        
         $username_sql = $_POST['username'];
         $password_sql = $_POST['password'];
 
@@ -317,6 +312,48 @@ final class HomeController extends BaseController
 
     }
 
+
+    public function check_pwd(Request $request, Response $response, $args)
+    {
+        $username_sql = $_POST['username'];
+        $password_sql = $_POST['current_pwd'];
+
+        $sql = "select h_password from Users where username = '$username_sql'";
+        $stmt = $this->em->getConnection()->query($sql);
+        $stmt->execute();
+
+        $results = $stmt->fetchAll();
+
+        if(password_verify($password_sql, $results[0]['h_password'])){
+            $json_array = array("status" => 0);
+            return $response->withStatus(200)
+            ->withHeader('Content-Type', 'application/json')
+            ->write(json_encode($json_array));
+
+        }
+        else{
+            $json_array = array("status" => 1);
+            return $response->withStatus(200)
+            ->withHeader('Content-Type', 'application/json')
+            ->write(json_encode($json_array));
+        }
+    } 
+
+    public function change_pwd(Request $request, Response $response, $args)
+    {
+        $username_sql = $_POST['username'];
+        $password_sql = $_POST['new_pwd'];
+
+        $nonce = password_hash($password_sql, PASSWORD_DEFAULT);
+
+        $sql = "UPDATE Users SET h_password = '$nonce', loginflag = 'F' WHERE username = '$username_sql'"; 
+        $stmt = $this->em->getConnection()->prepare($sql);
+        $stmt->execute();
+          
+        $this->view->render($response, 'userinfo.twig');
+        return $response;     
+
+    }
 
     public function sendMail($email, $nonce, $randomNum)
     {
@@ -436,9 +473,7 @@ public function sendMail2($email, $nonce)
             print_r($field);
         }
         var_dump($data);
-
     }
-
 
     public function testJSON(Request $request, Response $response, $args){
         $my_array=array("name"=>"HyukJin","address"=>"5734 Scripps St");

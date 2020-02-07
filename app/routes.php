@@ -31,6 +31,12 @@ $app->get('/signup', 'App\Controller\HomeController:signup')
 $app->get('/forgot_password', 'App\Controller\HomeController:forgot_password')
     ->setName('forgot_password');
 
+$app->post('/check_pwd/{username}/{current_pwd}', 'App\Controller\HomeController:check_pwd')
+    ->setName('check_pwd');
+
+$app->post('/change_pwd/{username}/{new_pwd}', 'App\Controller\HomeController:change_pwd')
+    ->setName('change_pwd');
+
 $app->get('/polar', 'App\Controller\DeviceController:polar')
     ->setName('polar');
 
