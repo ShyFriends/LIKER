@@ -197,10 +197,10 @@
                 f.username.value = '{{username}}';
 
                 // input태그의 값들을 전송하는 주소
-                f.action = "./userinfo"
+                f.action = "./userinfo";
 
                 // 전송 방식 : post
-                f.method = "post"
+                f.method = "post";
                 f.submit();
             }
           </script>
@@ -219,7 +219,7 @@
             <a href="#" class="nav-link" style="background-color: whitesmoke;">
               <i class="nav-icon fas fa-tachometer-alt"></i>
               <p style="color : navy;">
-                Dashboard 
+                Dashboard
               </p>
             </a>
             <!-- <ul class="nav nav-treeview">
@@ -254,6 +254,23 @@
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
+ <!--               <script type="text/javascript">
+                function sendusernames(){
+                  // name이 paging인 태그
+                  var f = document.sendusernames;
+
+                  // form 태그의 하위 태그 값 매개 변수로 대입
+                  f.username.value = '{{username}}';
+
+                  // input태그의 값들을 전송하는 주소
+                  f.action = "./heartrate";
+
+                  // 전송 방식 : post
+                  f.method = "post";
+                  f.submit();
+                }
+          </script> 
+          <form name="sendusernames"> <input type="hidden" name="username"/></form> -->
                 <a href="/heartrate" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Heart Rate</p>
@@ -293,7 +310,8 @@
             </ul>
           </li>
           <li class="nav-item">
-            <a href="/userinfo" class="nav-link">
+  <!--        <form name="sendusername"> <input type="hidden" name="username"/></form> -->
+            <a href="javascript:sendusername();" class="nav-link"> 
               <i class="nav-icon fas fa-users"></i>
               <p>User</p>
             </a>
@@ -326,7 +344,7 @@
     <!-- /.content-header -->
     {{username}}
     <!-- Main content -->
-    {{ usn }}    
+    
   </div>
   <!-- /.content-wrapper -->
   <footer class="main-footer">

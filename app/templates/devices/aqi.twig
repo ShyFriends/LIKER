@@ -192,7 +192,24 @@
           <img src="{{ base_url() }}/dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
         </div>
         <div class="info">
-          <a href="#" class="d-block">Team_B</a>
+          <script type="text/javascript">
+            function sendusername(){
+                // name이 paging인 태그
+                var f = document.sendusername;
+
+                // form 태그의 하위 태그 값 매개 변수로 대입
+                f.username.value = '{{username}}';
+
+                // input태그의 값들을 전송하는 주소
+                f.action = "./userinfo"
+
+                // 전송 방식 : post
+                f.method = "post"
+                f.submit();
+            }
+          </script>
+          <form name="sendusername"> <input type="hidden" name="username"/></form>
+          <a href="javascript:sendusername();" class="d-block">{{username}}</a>
         </div>
       </div>
 
@@ -260,7 +277,7 @@
             </ul>
           </li>
           <li class="nav-item">
-            <a href="/userinfo" class="nav-link">
+            <a href="javascript:sendusername();" class="nav-link">
               <i class="nav-icon fas fa-users"></i>
               <p>User</p>
             </a>
