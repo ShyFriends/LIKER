@@ -55,6 +55,12 @@ $app->get('/testJSON', 'App\Controller\HomeController:testJSON')
 $app->get('/check_duplicate/{id}', 'App\Controller\HomeController:check_duplicate')
     ->setName('check_duplicate');
 
+$app->get('/remove/{username}', 'App\Controller\HomeController:remove')
+    ->setName('remove');
+
+$app->get('/signout/{username}', 'App\Controller\HomeController:signout')
+    ->setName('signout');
+
 $app->get('/testQuery', 'App\Controller\HomeController:testQuery')
     ->setName('testQuery');
 

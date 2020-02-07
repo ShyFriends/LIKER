@@ -23,6 +23,7 @@ final class HomeController extends BaseController
     public function check_duplicate(Request $request, Response $response, $args)
     {
         $username_sql = $_GET['id'];
+
         $json_array = array("username"=>$_GET['id']);
 
         $sql = "select * from Users where username = '$username_sql'";
@@ -47,7 +48,55 @@ final class HomeController extends BaseController
         return $response->withStatus(200)
         ->withHeader('Content-Type', 'application/json')
         ->write(json_encode($json_array));
+    }
 
+    public function remove(Request $request, Response $response, $args)
+    {
+        $username_sql = $_GET['username'];
+        // $username_sql = 'chocho';
+
+        $sql = "select usn from Users where username = '$username_sql'";
+        $stmt = $this->em->getConnection()->query($sql);
+        $stmt->execute();
+
+        $results = $stmt->fetchAll();
+
+
+        $usn = $results[0]['usn'];
+
+        $sql = "UPDATE Devices SET usn = 1 WHERE usn = $usn"; 
+        $stmt = $this->em->getConnection()->prepare($sql);
+        $stmt->execute();
+        
+
+        $sql = "DELETE FROM Users WHERE username = '$username_sql'"; 
+        $stmt = $this->em->getConnection()->prepare($sql);
+        $stmt->execute();
+
+
+        $sql = "select * from Users where username = '$username_sql'";
+        $stmt = $this->em->getConnection()->query($sql);
+        $stmt->execute();
+
+        $results = $stmt->fetchAll();
+
+
+        if($results == NULL){
+            $json_array = array("status" => "success");
+                return $response->withStatus(200)
+                ->withHeader('Content-Type', 'application/json')
+                ->write(json_encode($json_array));
+        }
+        else{
+            $json_array = array("status" => "fail");
+                return $response->withStatus(200)
+                ->withHeader('Content-Type', 'application/json')
+                ->write(json_encode($json_array));
+        }
+
+        return $response->withStatus(200)
+        ->withHeader('Content-Type', 'application/json')
+        ->write(json_encode($json_array));
     }
 
 
@@ -74,6 +123,17 @@ final class HomeController extends BaseController
         $this->logger->info("Home page action dispatched");
 
         $this->flash->addMessage('info', 'Sample flash message');
+
+        $this->view->render($response, 'signup.twig');
+        return $response;
+    }
+
+    public function signout(Request $request, Response $response, $args)
+    {
+
+        // $sql = "UPDATE Users SET loginflag = 'F' WHERE $_SESSION[]"; 
+        // $stmt = $this->em->getConnection()->prepare($sql);
+        // $stmt->execute();
 
         $this->view->render($response, 'signup.twig');
         return $response;
@@ -207,7 +267,7 @@ final class HomeController extends BaseController
         $results = $stmt->fetchAll();
 
         if($results[0]['stateflag']=="T"){
-            $sql = "insert into Users(username, h_password, email, birth, phone_number, gender, loginflag) values ('$username_sql','$hashed_password','$email_sql','$birth_sql','$phone_number_sql','$gender_sql', 'T')";
+            $sql = "insert into Users(username, h_password, email, birth, phone_number, gender, loginflag) values ('$username_sql','$hashed_password','$email_sql','$birth_sql','$phone_number_sql','$gender_sql', 'F')";
             $stmt = $this->em->getConnection()->prepare($sql);
             $stmt->execute();
 
@@ -231,17 +291,21 @@ final class HomeController extends BaseController
         $username_sql = $_POST['username'];
         $password_sql = $_POST['password'];
 
-        $sql = "select h_password from Users where username = '$username_sql'";
+        $sql = "select h_password, usn from Users where username = '$username_sql'";
         $stmt = $this->em->getConnection()->query($sql);
         $stmt->execute();
 
         $results = $stmt->fetchAll();
         
         $data = ['username' => $username_sql];
-        
+
         if(password_verify($password_sql, $results[0]['h_password'])){
             $json_array = array("status" => "success");
-            $this->view->render($response, 'home.twig', ['username'=>$username_sql]);
+            session_start();
+            $_SESSION['usn'] = $results[0]['usn'];
+            $usn = $_SESSION['usn'];
+
+            $this->view->render($response, 'home.twig', ['username'=>$username_sql], ['usn'=>$usn]);
             return $response;
 
         }
