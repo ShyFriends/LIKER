@@ -172,7 +172,7 @@
   <!-- /.navbar -->
 
   <!-- Main Sidebar Container -->
-  <aside class="main-sidebar sidebar-dark-primary elevation-4">
+  <aside class="main-sidebar sidebar-dark-primary elevation-4" style="background-color: rgb(20,6,79)">
     <!-- Brand Logo -->
     <a href="./index3.html" class="brand-link">
       <img src="{{ base_url() }}/dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
@@ -181,27 +181,44 @@
     </a>
 
     <!-- Sidebar -->
-    <div class="sidebar">
+    <div class="sidebar" style="background-color: rgb(20,6,79)">
       <!-- Sidebar user panel (optional) -->
       <div class="user-panel mt-3 pb-3 mb-3 d-flex">
         <div class="image">
           <img src="{{ base_url() }}/dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
         </div>
         <div class="info">
-          <a href="#" class="d-block">{{username}}</a>
+          <script type="text/javascript">
+            function sendusername(){
+                // name이 paging인 태그
+                var f = document.sendusername;
+
+                // form 태그의 하위 태그 값 매개 변수로 대입
+                f.username.value = '{{username}}';
+
+                // input태그의 값들을 전송하는 주소
+                f.action = "./userinfo"
+
+                // 전송 방식 : post
+                f.method = "post"
+                f.submit();
+            }
+          </script>
+          <form name="sendusername"> <input type="hidden" name="username"/></form>
+          <a href="javascript:sendusername();" class="d-block">{{username}}</a>
         </div>
       </div>
 
       <!-- Sidebar Menu -->
-      <nav class="mt-2">
+      <nav class="mt-2" style="background-color: rgb(20,6,79)">
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
           <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
 
           <li class="nav-item has-treeview">
-            <a href="#" class="nav-link active">
+            <a href="#" class="nav-link" style="background-color: whitesmoke;">
               <i class="nav-icon fas fa-tachometer-alt"></i>
-              <p>
+              <p style="color : navy;">
                 Dashboard
               </p>
             </a>

@@ -27,7 +27,11 @@
   <!-- Google Font: Source Sans Pro -->
   <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
 
+  <!-- Ionicons -->
+  <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+  <!-- Google Font: Source Sans Pro -->
 
     <style>
       /* Always set the map height explicitly to define the size of the div
@@ -270,107 +274,278 @@
 
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
-    <!-- Content Header (Page header) -->
-    <div class="content-header">
+<!--     <div class="content-header">
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
             <h1 class="m-0 text-dark">Dashboard</h1>
-          </div><!-- /.col -->
+          </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item"><a href="#">Home</a></li>
               <li class="breadcrumb-item active">Dashboard v1</li>
             </ol>
-          </div><!-- /.col -->
-        </div><!-- /.row -->
-      </div><!-- /.container-fluid -->
-    </div>
+          </div>
+        </div>
+      </div>
+    </div> -->
     <!-- /.content-header -->
 
-<div style="width: 700px;height: 700px; padding-left: 50px;">
-        <div id="map"></div>
-    <script>
-      var customLabel = {
-        restaurant: {
-          label: 'R'
-        },
-        bar: {
-          label: 'B'
-        }
-      };
+<div class="row">
+          <div class="col-12">
+            <!-- jQuery Knob -->
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">
+                  <i class="far fa-chart-bar"></i>
+                  Your Air Quality Index
+                </h3>
 
-        function initMap() {
-        var map = new google.maps.Map(document.getElementById('map'), {
-          center: new google.maps.LatLng(-33.863276, 151.207977),
-          zoom: 12
-        });
-        var infoWindow = new google.maps.InfoWindow;
-///////////////////////////////////////////////////////////////////////////////
-          // Change this depending on the name of your PHP or XML file
-          downloadUrl('https://storage.googleapis.com/mapsdevsite/json/mapmarkers2.xml', function(data) {
-            var xml = data.responseXML;
-            var markers = xml.documentElement.getElementsByTagName('marker');
+                <div class="card-tools">
+                  <button type="button" class="btn btn-tool" data-card-widget="collapse"><i
+                      class="fas fa-minus"></i>
+                  </button>
+                  <button type="button" class="btn btn-tool" data-card-widget="remove"><i class="fas fa-times"></i>
+                  </button>
+                </div>
+              </div>
+              <!-- /.card-header -->
+              <div class="card-body" style="height: 200px;align-items: center;align-content: center;align-self: center;">
 
-            Array.prototype.forEach.call(markers, function(markerElem) {
-              var id = markerElem.getAttribute('id');
-              var name = markerElem.getAttribute('name');
-              var address = markerElem.getAttribute('address');
-              var type = markerElem.getAttribute('type');
-              var point = new google.maps.LatLng(
-                  parseFloat(markerElem.getAttribute('lat')),
-                  parseFloat(markerElem.getAttribute('lng')));
+  
 
-//////////////////////////////////////////////////////////////////////////////
-              var infowincontent = document.createElement('div');
-              var strong = document.createElement('strong');
-              strong.textContent = name                                      //name
-              infowincontent.appendChild(strong);
-              infowincontent.appendChild(document.createElement('br'));
+<!--                     <div class="knob-label">data-width="90"</div>
+ -->
+                    <input type="text" class="knob" value="30" data-width="150" data-height="150" data-fgColor="#3c8dbc" data-readonly="true" >pm2.5
 
-              var text = document.createElement('text');
-              text.textContent = address                                     //address
-              infowincontent.appendChild(text);
-              var icon = customLabel[type] || {};                            //type
-              var marker = new google.maps.Marker({
-                map: map,
-                position: point,                                             //point
-                label: icon.label                                            
-              });
-              marker.addListener('click', function() {
-                infoWindow.setContent(infowincontent);
-                infoWindow.open(map, marker);
-              });
-            });
+<!--                     <div class="knob-label">New Visitors</div>
+ -->
+                    <input type="text" class="knob" value="70" data-width="150" data-height="150" data-fgColor="#f56954" data-readonly="true">pm10
 
-          });
-        }
+<!--                     <div class="knob-label">Bounce Rate</div>
+ -->
+                    <input type="text" class="knob" value="-80" data-min="-150" data-max="150" data-width="150"
+                           data-height="150" data-fgColor="#00a65a" data-readonly="true">NO2
+
+<!--                     <div class="knob-label">Server Load</div>
+ -->
+                    <input type="text" class="knob" value="40" data-width="150" data-height="150" data-fgColor="#00c0ef" data-readonly="true" >CO
+
+<!--                     <div class="knob-label">Disk Space</div>
+ -->
+
+                    <input type="text" class="knob" value="90" data-width="150" data-height="150" data-fgColor="#932ab6" data-readonly="true" >SO2
+
+<!--                     <div class="knob-label">Bandwidth</div>
+ -->                    
+                    <input type="text" class="knob" value="50" data-width="150" data-height="150" data-fgColor="#39CCCC" data-readonly="true" >O3
+
+<!--                     <div class="knob-label">CPU</div>
+
+              </div>
+              <!-- /.card-body -->
+            </div>
+            <!-- /.card -->
+          </div>
+          <!-- /.col -->
+        </div>
+        <!-- /.row -->
+
+        <div>
+          <div style="width: 700px;height: 700px; padding-left: 50px;float: left;">
+            <div class="column" id="map"></div>
+
+
+            <script>
+              var customLabel = {
+                restaurant: {
+                  label: 'R'
+                },
+                bar: {
+                  label: 'B'
+                }
+              };
+
+                function initMap() {
+                var map = new google.maps.Map(document.getElementById('map'), {
+                  center: new google.maps.LatLng(-33.863276, 151.207977),
+                  zoom: 12
+                });
+                var infoWindow = new google.maps.InfoWindow;
+        ///////////////////////////////////////////////////////////////////////////////
+                  // Change this depending on the name of your PHP or XML file
+                  downloadUrl('https://storage.googleapis.com/mapsdevsite/json/mapmarkers2.xml', function(data) {
+                    var xml = data.responseXML;
+                    var markers = xml.documentElement.getElementsByTagName('marker');
+
+                    Array.prototype.forEach.call(markers, function(markerElem) {
+                      var id = markerElem.getAttribute('id');
+                      var name = markerElem.getAttribute('name');
+                      var address = markerElem.getAttribute('address');
+                      var type = markerElem.getAttribute('type');
+                      var point = new google.maps.LatLng(
+                          parseFloat(markerElem.getAttribute('lat')),
+                          parseFloat(markerElem.getAttribute('lng')));
+
+        //////////////////////////////////////////////////////////////////////////////
+                      var infowincontent = document.createElement('div');
+                      var strong = document.createElement('strong');
+                      strong.textContent = name                                      //name
+                      infowincontent.appendChild(strong);
+                      infowincontent.appendChild(document.createElement('br'));
+
+                      var text = document.createElement('text');
+                      text.textContent = address                                     //address
+                      infowincontent.appendChild(text);
+                      var icon = customLabel[type] || {};                            //type
+                      var marker = new google.maps.Marker({
+                        map: map,
+                        position: point,                                             //point
+                        label: icon.label                                            
+                      });
+                      marker.addListener('click', function() {
+                        infoWindow.setContent(infowincontent);
+                        infoWindow.open(map, marker);
+                      });
+                    });
+
+                  });
+                }
 
 
 
-      function downloadUrl(url, callback) {
-        var request = window.ActiveXObject ?
-            new ActiveXObject('Microsoft.XMLHTTP') :
-            new XMLHttpRequest;
+              function downloadUrl(url, callback) {
+                var request = window.ActiveXObject ?
+                    new ActiveXObject('Microsoft.XMLHTTP') :
+                    new XMLHttpRequest;
 
-        request.onreadystatechange = function() {
-          if (request.readyState == 4) {
-            request.onreadystatechange = doNothing;
-            callback(request, request.status);
-          }
-        };
+                request.onreadystatechange = function() {
+                  if (request.readyState == 4) {
+                    request.onreadystatechange = doNothing;
+                    callback(request, request.status);
+                  }
+                };
 
-        request.open('GET', url, true);
-        request.send(null);
-      }
+                request.open('GET', url, true);
+                request.send(null);
+              }
 
-      function doNothing() {}
-    </script>
-   </div>
+              function doNothing() {}
+            </script>
+           </div>
 
     <!-- Main content -->
     
-  </div>
+
+<!-- DONUT CHART -->
+
+        <div style="float: left;">
+          <div>
+              <div style="width: 300px;height: 300px;float: left;">
+                <canvas id="donutChart" style="height:230px; min-height:230px"></canvas>
+              </div>
+              <!-- /.card-body -->
+
+              <div class="card-body" style="float: left;">
+                <canvas class="chart" id="line-chart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
+              </div>
+          </div>
+              <script type="text/javascript">
+                  new Chart(document.getElementById("line-chart"), {
+                  type: 'line',
+                  data: {
+                    labels: [1500,1600,1700,1750,1800,1850,1900,1950,1999,2050],
+                    datasets: [{ 
+                        data: [86,114,106,106,107,111,133,221,783,2478],
+                        label: "Africa",
+                        borderColor: "#3e95cd",
+                        fill: false
+                      }, { 
+                        data: [282,350,411,502,635,809,947,1402,3700,5267],
+                        label: "Asia",
+                        borderColor: "#8e5ea2",
+                        fill: false
+                      }, { 
+                        data: [168,170,178,190,203,276,408,547,675,734],
+                        label: "Europe",
+                        borderColor: "#3cba9f",
+                        fill: false
+                      }, { 
+                        data: [40,20,10,16,24,38,74,167,508,784],
+                        label: "Latin America",
+                        borderColor: "#e8c3b9",
+                        fill: false
+                      }, { 
+                        data: [6,3,2,2,7,26,82,172,312,433],
+                        label: "North America",
+                        borderColor: "#c45850",
+                        fill: false
+                      }
+                    ]
+                  },
+                  options: {
+                    title: {
+                      display: true,
+                      text: 'World population per region (in millions)'
+                    }
+                  }
+                });
+
+            </script>
+
+
+
+
+
+
+
+          <div class="container" style="width: 100%;margin-top: 40%">
+                     
+              <table class="table table-striped">
+                <thead>
+                  <tr>
+                    <th>Firstname</th>
+                    <th>Lastname</th>
+                    <th>Email</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>John</td>
+                    <td>Doe</td>
+                    <td>john@example.com</td>
+                  </tr>
+                  <tr>
+                    <td>Mary</td>
+                    <td>Moe</td>
+                    <td>mary@example.com</td>
+                  </tr>
+                  <tr>
+                    <td>July</td>
+                    <td>Dooley</td>
+                    <td>july@example.com</td>
+                  </tr>
+                  <tr>
+                    <td>July</td>
+                    <td>Dooley</td>
+                    <td>july@example.com</td>
+                  </tr>
+                  <tr>
+                    <td>July</td>
+                    <td>Dooley</td>
+                    <td>july@example.com</td>
+                  </tr>
+                  <tr>
+                    <td>July</td>
+                    <td>Dooley</td>
+                    <td>july@example.com</td>
+                  </tr>
+                </tbody>
+              </table>
+          </div>
+
+        </div>
+      </div>
   <!-- /.content-wrapper -->
   <footer class="main-footer">
     <strong>Copyright &copy; 2014-2019 <a href="http://adminlte.io">AdminLTE.io</a>.</strong>
@@ -391,6 +566,12 @@
     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA52Ka6h4PSlrzq594lkybvqL6FOQ9Bx_c&callback=initMap">
     </script>
  
+<script src="{{ base_url() }}/dist/js/adminlte.min.js"></script>
+<!-- AdminLTE for demo purposes -->
+
+<script src="{{ base_url() }}/plugins/sparklines/sparkline.js"></script>
+<!-- page script -->
+
 <!-- jQuery -->
 <script src="{{ base_url() }}/plugins/jquery/jquery.min.js"></script>
 <!-- jQuery UI 1.11.4 -->
@@ -405,9 +586,9 @@
 <script src="{{ base_url() }}/plugins/chart.js/Chart.min.js"></script>
 <!-- Sparkline -->
 <script src="{{ base_url() }}/plugins/sparklines/sparkline.js"></script>
+
+
 <!-- JQVMap -->
-<script src="{{ base_url() }}/plugins/jqvmap/jquery.vmap.min.js"></script>
-<script src="{{ base_url() }}/plugins/jqvmap/maps/jquery.vmap.usa.js"></script>
 <!-- jQuery Knob Chart -->
 <script src="{{ base_url() }}/plugins/jquery-knob/jquery.knob.min.js"></script>
 <!-- daterangepicker -->
@@ -423,6 +604,325 @@
 <script src="{{ base_url() }}/dist/js/pages/dashboard.js"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="{{ base_url() }}/dist/js/demo.js"></script>
+
+
+
+<script src="{{ base_url() }}/plugins/summernote/summernote-bs4.min.js"></script>
+<!-- overlayScrollbars -->
+
+
+
+
+<script>
+
+
+//-------------
+    //- DONUT CHART -
+    //-------------
+    // Get context with jQuery - using jQuery's .get() method.
+    var donutChartCanvas = $('#donutChart').get(0).getContext('2d')
+    var donutData        = {
+      labels: [
+          'pm2.5', 
+          'pm10',
+          'NO2', 
+          'CO', 
+          'SO2', 
+          'O3', 
+      ],
+      datasets: [
+        {
+          data: [700,500,400,600,300,100],
+          backgroundColor : ['#f56954', '#00a65a', '#f39c12', '#00c0ef', '#3c8dbc', '#d2d6de'],
+        }
+      ]
+    }
+    var donutOptions     = {
+      maintainAspectRatio : false,
+      responsive : true,
+    }
+    //Create pie or douhnut chart
+    // You can switch between pie and douhnut using the method below.
+    var donutChart = new Chart(donutChartCanvas, {
+      type: 'doughnut',
+      data: donutData,
+      options: donutOptions      
+    })
+
+
+
+  $(function () {
+    /* jQueryKnob */
+
+    $('.knob').knob({
+      /*change : function (value) {
+       //console.log("change : " + value);
+       },
+       release : function (value) {
+       console.log("release : " + value);
+       },
+       cancel : function () {
+       console.log("cancel : " + this.value);
+       },*/
+      draw: function () {
+
+        // "tron" case
+        if (this.$.data('skin') == 'tron') {
+
+          var a   = this.angle(this.cv)  // Angle
+            ,
+              sa  = this.startAngle          // Previous start angle
+            ,
+              sat = this.startAngle         // Start angle
+            ,
+              ea                            // Previous end angle
+            ,
+              eat = sat + a                 // End angle
+            ,
+              r   = true
+
+          this.g.lineWidth = this.lineWidth
+
+          this.o.cursor
+          && (sat = eat - 0.3)
+          && (eat = eat + 0.3)
+
+          if (this.o.displayPrevious) {
+            ea = this.startAngle + this.angle(this.value)
+            this.o.cursor
+            && (sa = ea - 0.3)
+            && (ea = ea + 0.3)
+            this.g.beginPath()
+            this.g.strokeStyle = this.previousColor
+            this.g.arc(this.xy, this.xy, this.radius - this.lineWidth, sa, ea, false)
+            this.g.stroke()
+          }
+
+          this.g.beginPath()
+          this.g.strokeStyle = r ? this.o.fgColor : this.fgColor
+          this.g.arc(this.xy, this.xy, this.radius - this.lineWidth, sat, eat, false)
+          this.g.stroke()
+
+          this.g.lineWidth = 2
+          this.g.beginPath()
+          this.g.strokeStyle = this.o.fgColor
+          this.g.arc(this.xy, this.xy, this.radius - this.lineWidth + 1 + this.lineWidth * 2 / 3, 0, 2 * Math.PI, false)
+          this.g.stroke()
+
+          return false
+        }
+      }
+    })
+    /* END JQUERY KNOB */
+
+    //INITIALIZE SPARKLINE CHARTS
+    $('.sparkline').each(function () {
+      var $this = $(this)
+      $this.sparkline('html', $this.data())
+    })
+
+    /* SPARKLINE DOCUMENTATION EXAMPLES http://omnipotent.net/jquery.sparkline/#s-about */
+    drawDocSparklines()
+    drawMouseSpeedDemo()
+
+  })
+
+  function drawDocSparklines() {
+
+    // Bar + line composite charts
+    $('#compositebar').sparkline('html', {
+      type    : 'bar',
+      barColor: '#aaf'
+    })
+    $('#compositebar').sparkline([4, 1, 5, 7, 9, 9, 8, 7, 6, 6, 4, 7, 8, 4, 3, 2, 2, 5, 6, 7],
+      {
+        composite: true,
+        fillColor: false,
+        lineColor: 'red'
+      })
+
+
+    // Line charts taking their values from the tag
+    $('.sparkline-1').sparkline()
+
+    // Larger line charts for the docs
+    $('.largeline').sparkline('html',
+      {
+        type  : 'line',
+        height: '2.5em',
+        width : '4em'
+      })
+
+    // Customized line chart
+    $('#linecustom').sparkline('html',
+      {
+        height      : '1.5em',
+        width       : '8em',
+        lineColor   : '#f00',
+        fillColor   : '#ffa',
+        minSpotColor: false,
+        maxSpotColor: false,
+        spotColor   : '#77f',
+        spotRadius  : 3
+      })
+
+    // Bar charts using inline values
+    $('.sparkbar').sparkline('html', { type: 'bar' })
+
+
+
+    // Tri-state charts using inline values
+    $('.sparktristate').sparkline('html', { type: 'tristate' })
+    $('.sparktristatecols').sparkline('html',
+      {
+        type    : 'tristate',
+        colorMap: {
+          '-2': '#fa7',
+          '2' : '#44f'
+        }
+      })
+
+    // Composite line charts, the second using values supplied via javascript
+    $('#compositeline').sparkline('html', {
+      fillColor     : false,
+      changeRangeMin: 0,
+      chartRangeMax : 10
+    })
+    $('#compositeline').sparkline([4, 1, 5, 7, 9, 9, 8, 7, 6, 6, 4, 7, 8, 4, 3, 2, 2, 5, 6, 7],
+      {
+        composite     : true,
+        fillColor     : false,
+        lineColor     : 'red',
+        changeRangeMin: 0,
+        chartRangeMax : 10
+      })
+
+    // Line charts with normal range marker
+    $('#normalline').sparkline('html',
+      {
+        fillColor     : false,
+        normalRangeMin: -1,
+        normalRangeMax: 8
+      })
+    $('#normalExample').sparkline('html',
+      {
+        fillColor       : false,
+        normalRangeMin  : 80,
+        normalRangeMax  : 95,
+        normalRangeColor: '#4f4'
+      })
+
+    // Discrete charts
+    $('.discrete1').sparkline('html',
+      {
+        type     : 'discrete',
+        lineColor: 'blue',
+        xwidth   : 18
+      })
+    $('#discrete2').sparkline('html',
+      {
+        type          : 'discrete',
+        lineColor     : 'blue',
+        thresholdColor: 'red',
+        thresholdValue: 4
+      })
+
+    // Bullet charts
+    $('.sparkbullet').sparkline('html', { type: 'bullet' })
+
+    // Pie charts
+    $('.sparkpie').sparkline('html', {
+      type  : 'pie',
+      height: '1.0em'
+    })
+
+    // Box plots
+    $('.sparkboxplot').sparkline('html', { type: 'box' })
+    $('.sparkboxplotraw').sparkline([1, 3, 5, 8, 10, 15, 18],
+      {
+        type        : 'box',
+        raw         : true,
+        showOutliers: true,
+        target      : 6
+      })
+
+    // Box plot with specific field order
+    $('.boxfieldorder').sparkline('html', {
+      type                     : 'box',
+      tooltipFormatFieldlist   : ['med', 'lq', 'uq'],
+      tooltipFormatFieldlistKey: 'field'
+    })
+
+    // click event demo sparkline
+    $('.clickdemo').sparkline()
+    $('.clickdemo').bind('sparklineClick', function (ev) {
+      var sparkline = ev.sparklines[0],
+          region    = sparkline.getCurrentRegionFields()
+      value         = region.y
+      alert('Clicked on x=' + region.x + ' y=' + region.y)
+    })
+
+    // mouseover event demo sparkline
+    $('.mouseoverdemo').sparkline()
+    $('.mouseoverdemo').bind('sparklineRegionChange', function (ev) {
+      var sparkline = ev.sparklines[0],
+          region    = sparkline.getCurrentRegionFields()
+      value         = region.y
+      $('.mouseoverregion').text('x=' + region.x + ' y=' + region.y)
+    }).bind('mouseleave', function () {
+      $('.mouseoverregion').text('')
+    })
+  }
+
+  /**
+   ** Draw the little mouse speed animated graph
+   ** This just attaches a handler to the mousemove event to see
+   ** (roughly) how far the mouse has moved
+   ** and then updates the display a couple of times a second via
+   ** setTimeout()
+   **/
+  function drawMouseSpeedDemo() {
+    var mrefreshinterval = 500 // update display every 500ms
+    var lastmousex       = -1
+    var lastmousey       = -1
+    var lastmousetime
+    var mousetravel      = 0
+    var mpoints          = []
+    var mpoints_max      = 30
+    $('html').mousemove(function (e) {
+      var mousex = e.pageX
+      var mousey = e.pageY
+      if (lastmousex > -1) {
+        mousetravel += Math.max(Math.abs(mousex - lastmousex), Math.abs(mousey - lastmousey))
+      }
+      lastmousex = mousex
+      lastmousey = mousey
+    })
+    var mdraw = function () {
+      var md      = new Date()
+      var timenow = md.getTime()
+      if (lastmousetime && lastmousetime != timenow) {
+        var pps = Math.round(mousetravel / (timenow - lastmousetime) * 1000)
+        mpoints.push(pps)
+        if (mpoints.length > mpoints_max) {
+          mpoints.splice(0, 1)
+        }
+        mousetravel = 0
+        $('#mousespeed').sparkline(mpoints, {
+          width        : mpoints.length * 2,
+          tooltipSuffix: ' pixels per second'
+        })
+      }
+      lastmousetime = timenow
+      setTimeout(mdraw, mrefreshinterval)
+    }
+    // We could use setInterval instead, but I prefer to do it this way
+    setTimeout(mdraw, mrefreshinterval);
+  }
+</script>
+
+
+
 
 </body>
 </html>

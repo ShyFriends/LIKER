@@ -41,7 +41,7 @@
 
     .wrapper {
       display: flex;
-      background-color: #14064f;
+      background-color: white;
       align-items: center;
       flex-direction: column; 
       justify-content: center;
@@ -146,7 +146,7 @@ input[type=button], input[type=submit], input[type=reset]  {
       text-transform: uppercase;
       font-size: 13px;
       -webkit-box-shadow: 0 10px 30px 0 rgba(95,186,233,0.4);
-      box-shadow: 0 10px 30px 0 rgba(95,186,233,0.4);
+      box-shadow: 0 10px 30px 0 rgba(243,156,18,0.4);
       -webkit-border-radius: 5px 5px 5px 5px;
       border-radius: 5px 5px 5px 5px;
       margin: 5px 20px 40px 20px;
@@ -169,38 +169,18 @@ input[type=button], input[type=submit], input[type=reset]  {
       transform: scale(0.95);
     }
 
-    input[type=text] {
-      background-color: #f6f6f6;
-      border: none;
-      color: #0d0d0d;
-      padding: 15px 32px 10px 10px ;
-      text-align: center;
-      text-decoration: none;
-      display: inline-block;
-      font-size: 16px;
-      margin: 5px  ;
-      width: 85%;
-      border: 2px solid #f6f6f6;
-      -webkit-transition: all 0.5s ease-in-out;
-      -moz-transition: all 0.5s ease-in-out;
-      -ms-transition: all 0.5s ease-in-out;
-      -o-transition: all 0.5s ease-in-out;
-      transition: all 0.5s ease-in-out;
-      -webkit-border-radius: 5px 5px 5px 5px;
-      border-radius: 5px 5px 5px 5px;
-    }
+
 
     input[type=text]:focus {
-      background-color: #fff;
-      border-bottom: 2px solid #5fbae9;
+      background-color: white;
+      border-bottom: 2px solid orange;
     }
 
     input[type=text]:placeholder {
       color: #cccccc;
     }
      input[type=text] {
-      background-color: #f6f6f6;
-      border: none;
+      background-color: whitesmoke;
       color: #0d0d0d;
       padding: 15px 32px;
       text-align: center;
@@ -210,6 +190,8 @@ input[type=button], input[type=submit], input[type=reset]  {
       margin: 5px;
       width: 85%;
       border: 2px solid #f6f6f6;
+      border-bottom: 2px solid rgb(20,6,79);
+
       -webkit-transition: all 0.5s ease-in-out;
       -moz-transition: all 0.5s ease-in-out;
       -ms-transition: all 0.5s ease-in-out;
@@ -219,7 +201,7 @@ input[type=button], input[type=submit], input[type=reset]  {
       border-radius: 5px 5px 5px 5px;
     }
 
-    input[type=text]:focus {
+/*    input[type=text]:focus {
       background-color: #fff;
       border-bottom: 2px solid #5fbae9;
     }
@@ -227,11 +209,18 @@ input[type=button], input[type=submit], input[type=reset]  {
     input[type=text]:placeholder {
       color: #cccccc;
     }
+*/
+    input[type=password]:focus {
+      background-color: white;
+      border-bottom: 2px solid orange;
+    }
 
+    input[type=password]:placeholder {
+      color: #cccccc;
+    }
 
      input[type=password] {
-      background-color: #f6f6f6;
-      border: none;
+      background-color: whitesmoke;
       color: #0d0d0d;
       padding: 15px 32px;
       text-align: center;
@@ -241,6 +230,8 @@ input[type=button], input[type=submit], input[type=reset]  {
       margin: 5px;
       width: 85%;
       border: 2px solid #f6f6f6;
+      border-bottom: 2px solid rgb(20,6,79);
+
       -webkit-transition: all 0.5s ease-in-out;
       -moz-transition: all 0.5s ease-in-out;
       -ms-transition: all 0.5s ease-in-out;
@@ -469,7 +460,7 @@ input[type=button], input[type=submit], input[type=reset]  {
   </script>
 
   <div class="wrapper" style="padding-bottom: 100px;">
- <img src="{{base_url}}/img/Likerlogo2.png" class="fadeIn first" style="height: 200px;width: 300px;">
+ <img src="{{base_url}}/img/Likerlogo.png" class="fadeIn first" style="height: 200px;width: 300px;">
 
     <div id="formContent" class="wrapper fadeInDown" >
 
@@ -485,25 +476,25 @@ input[type=button], input[type=submit], input[type=reset]  {
         </div>
         <!-- Login Form -->
             <form id="login-form" method="post" action="signin" style="background-color:#fff">
-      <input type="text" id="login" class="fadeIn second" name="username" placeholder="username">
-      <input type="password" id="password" class="fadeIn third" name="password" placeholder="password">
+      <input type="text" id="login" class="fadeIn second" name="username" placeholder="username" required>
+      <input type="password" id="password" class="fadeIn third" name="password" placeholder="password" required>
       <input type="submit" class="fadeIn fourth" value="Log In" style="font-weight: bolder;width: 90%;margin-top: 20px; height: 50px;font-weight: bolder;">
     </form>
     <form id="register-form" method="post" action="register" style="background-color: #fff; display: none;" >
          
-            <input type="text" id="uid" class="fadeIn first" name="username" placeholder="username" style= "width: 50%; height: 30%;">
+            <input type="text" id="uid" class="fadeIn first" name="username" placeholder="username" style= "width: 50%; height: 30%;" required>
             <button type="button" class="fadeIn second" onclick="duplicate_check()" style=" width: 30%;font-weight: bolder;font-size: 10px; text-align: center;">Check Duplication</button>
           
-          <input type="text" id="email" class="fadeIn first" name="email" placeholder="email" style= " width: 50%; ">
-          <button type="button" class="fadeIn second"  onclick="alert('we are working now..')" style="width: 30%;" value="Verfiy" style=" width: 30%;font-weight: bolder;font-size: 10px; text-align: center;">Verify</button>
+          <input type="text" id="email" class="fadeIn first" name="email" placeholder="email" style= " width: 50%;" required>
+          <button type="button" class="fadeIn second"  onclick="self_verify()" style="width: 30%;" value="Verfiy" style=" width: 30%;font-weight: bolder;font-size: 10px; text-align: center;">Verify</button>
 
  <!--          <input type="password" class="fadeIn second" placeholder="password" id="password" required>
           <input type="password" class="fadeIn second" placeholder="confirm_password" id="confirm_password" required>
  -->
           <fieldset>
 
-            <input type="password" placeholder="Password" class="fadeIn second" id="first_password" required>
-            <input type="password" placeholder="Confirm Password" class="fadeIn second" id="confirm_password" required>
+            <input type="password" placeholder="Password" class="fadeIn second" name="first_password" id="first_password" required>
+            <input type="password" placeholder="Confirm Password" class="fadeIn second" name="confirm_password" id="confirm_password" required>
 
           </fieldset>
 
@@ -526,9 +517,9 @@ input[type=button], input[type=submit], input[type=reset]  {
 
 
 
-          <input type="text" id="phone_number" class="fadeIn second" name="phone_number" placeholder="phone_number">
+          <input type="text" id="phone_number" class="fadeIn second" name="phone_number" placeholder="phone_number" required>
                
-          <input type="text" id="birth" class="fadeIn second" name="birth" placeholder="Birth Year(ex.1996)">
+          <input type="text" id="birth" class="fadeIn second" name="birth" placeholder="Birth Year(ex.1996)" required>
          
 
           <div class="form-group fadeIn second">
@@ -556,7 +547,7 @@ input[type=button], input[type=submit], input[type=reset]  {
 <script type="text/javascript">
   function duplicate_check(){
       var uid = $('#uid').val();
-
+      alert(uid);
       $.ajax({
         type:"GET",
         url:"/check_duplicate/{id}",
@@ -569,6 +560,33 @@ input[type=button], input[type=submit], input[type=reset]  {
             }
             else{
               alert("Try another username!");
+            }
+
+        },
+        error: function(data) {
+            console.log('ERROR: ', data);
+        },
+
+    });
+    event.preventDefault();
+  }
+    function self_verify(){
+      var username = $('#uid').val();
+      var email = $('#email').val();
+
+      $.ajax({
+        type:"GET",
+        url:"/self_verify/{username}/{email}",
+        data: { "username":username, "email": email },
+        success: function(data) {
+            console.log("SUCCESS: ", data);
+            if(data['status']=='success'){
+              alert("Check Your Email!");
+              document.getElementById("email").readOnly = true;
+
+            }
+            else{
+              alert("Verify Fail..!");
             }
 
         },
