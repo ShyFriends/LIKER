@@ -474,12 +474,15 @@ input[type=button], input[type=submit], input[type=reset]  {
         <div style="float: right; width: 50%; margin-bottom: 20px;">
           <a href="#" id="register-form-link" style="float: center;">Register</a>
         </div>
+
         <!-- Login Form -->
             <form id="login-form" method="post" action="signin" style="background-color:#fff">
       <input type="text" id="login" class="fadeIn second" name="username" placeholder="username" required>
       <input type="password" id="password" class="fadeIn third" name="password" placeholder="password" required>
       <input type="submit" class="fadeIn fourth" value="Log In" style="font-weight: bolder;width: 90%;margin-top: 20px; height: 50px;font-weight: bolder;">
     </form>
+
+
     <form id="register-form" method="post" action="register" style="background-color: #fff; display: none;" >
          
             <input type="text" id="uid" class="fadeIn first" name="username" placeholder="username" style= "width: 50%; height: 30%;" required>
@@ -547,7 +550,6 @@ input[type=button], input[type=submit], input[type=reset]  {
 <script type="text/javascript">
   function duplicate_check(){
       var uid = $('#uid').val();
-      alert(uid);
       $.ajax({
         type:"GET",
         url:"/check_duplicate/{id}",

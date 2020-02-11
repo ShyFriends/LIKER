@@ -4,7 +4,7 @@
 $app->get('/', 'App\Controller\HomeController:dispatch')
     ->setName('homepage');
 
-$app->post('/userinfo', 'App\Controller\HomeController:userinfo')
+$app->get('/userinfo', 'App\Controller\HomeController:userinfo')
     ->setName('userinfo');
 
 $app->get('/sendmail', 'App\Controller\HomeController:sendMail')
@@ -31,10 +31,10 @@ $app->get('/signup', 'App\Controller\HomeController:signup')
 $app->get('/forgot_password', 'App\Controller\HomeController:forgot_password')
     ->setName('forgot_password');
 
-$app->post('/check_pwd/{username}/{current_pwd}', 'App\Controller\HomeController:check_pwd')
+$app->post('/check_pwd/{current_pwd}', 'App\Controller\HomeController:check_pwd')
     ->setName('check_pwd');
 
-$app->post('/change_pwd/{username}/{new_pwd}', 'App\Controller\HomeController:change_pwd')
+$app->post('/change_pwd/{new_pwd}', 'App\Controller\HomeController:change_pwd')
     ->setName('change_pwd');
 
 $app->get('/polar', 'App\Controller\DeviceController:polar')
@@ -61,10 +61,10 @@ $app->get('/testJSON', 'App\Controller\HomeController:testJSON')
 $app->get('/check_duplicate/{id}', 'App\Controller\HomeController:check_duplicate')
     ->setName('check_duplicate');
 
-$app->get('/remove/{username}', 'App\Controller\HomeController:remove')
+$app->get('/remove', 'App\Controller\HomeController:remove')
     ->setName('remove');
 
-$app->get('/signout/{username}', 'App\Controller\HomeController:signout')
+$app->get('/signout', 'App\Controller\HomeController:signout')
     ->setName('signout');
 
 $app->get('/testQuery', 'App\Controller\HomeController:testQuery')

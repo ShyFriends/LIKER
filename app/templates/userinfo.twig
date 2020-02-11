@@ -1,440 +1,11 @@
-<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>LIKER</title>
-  <!-- Tell the browser to be responsive to screen width -->
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <!-- Font Awesome -->
-  <link rel="stylesheet" type='text/css' href='{{ base_url() }}/plugins/fontawesome-free/css/all.min.css'>
-  <!-- Ionicons -->
-  <link rel="stylesheet" type='text/css' href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
-  <!-- Tempusdominus Bbootstrap 4 -->
-  <link rel="stylesheet" type='text/css' href="{{ base_url() }}/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
-  <!-- iCheck -->
-  <link rel="stylesheet" type='text/css' href="{{ base_url() }}/plugins/icheck-bootstrap/icheck-bootstrap.min.css">
-  <!-- JQVMap -->
-  <link rel="stylesheet" type='text/css' href="{{ base_url() }}/plugins/jqvmap/jqvmap.min.css">
-  <!-- Theme style -->
-  <link rel="stylesheet" type='text/css' href="{{ base_url() }}/dist/css/adminlte.min.css">
-  <!-- overlayScrollbars -->
-  <link rel="stylesheet" type='text/css' href="{{ base_url() }}/plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
-  <!-- Daterange picker -->
-  <link rel="stylesheet" type='text/css' href="{{ base_url() }}/plugins/daterangepicker/daterangepicker.css">
-  <!-- summernote -->
-  <link rel="stylesheet" type='text/css' href="{{ base_url() }}/plugins/summernote/summernote-bs4.css">
-  <!-- Google Font: Source Sans Pro -->
-  <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
- <style type="text/css">
-    
-    body{
-        background: -webkit-linear-gradient(left, #3931af, #00c6ff);
-    }
-
-    .emp-profile{
-        padding: 3%;
-        margin-top: 3%;
-        margin-bottom: 3%;
-        border-radius: 0.5rem;
-        background: #fff;
-    }
-
-    .profile-img{
-        text-align: center;
-    }
-
-    .profile-img img{
-        width: 70%;
-        height: 100%;
-    }
-
-    .profile-img .file {
-        position: relative;
-        overflow: hidden;
-        margin-top: -20%;
-        width: 70%;
-        border: none;
-        border-radius: 0;
-        font-size: 15px;
-        background: #212529b8;
-    }
-
-    .profile-img .file input {
-        position: absolute;
-        opacity: 0;
-        right: 0;
-        top: 0;
-    }
-
-    .profile-head h5{
-        color: #333;
-        display: inline;
-    }
-
-    .profile-head h6{
-        color: #0062cc;
-    }
-
-    .profile-edit-btn{
-        border: none;
-        border-radius: 1.5rem;
-        width: 30%;
-        padding: 1%;
-        font-weight: 400;
-        color: #6c757d;
-        cursor: pointer;
-    }
-
-    .proile-rating{
-        font-size: 12px;
-        color: #818182;
-        margin-top: 5%;
-    }
-
-    .proile-rating span{
-        color: #495057;
-        font-size: 15px;
-        font-weight: 600;
-    }
-
-    .profile-head .nav-tabs{
-        margin-bottom:5%;
-    }
-
-    .profile-head .nav-tabs .nav-link{
-        font-weight:600;
-        border: none;
-    }
-
-    .profile-head .nav-tabs .nav-link.active{
-        border: none;
-        border-bottom:2px solid #0062cc;
-    }
-
-    .profile-work{
-        padding: 14%;
-        margin-top: -15%;
-    }
-
-    .profile-work p{
-        font-size: 12px;
-        color: #818182;
-        font-weight: 600;
-        margin-top: 10%;
-    }
-
-    .profile-work a{
-        text-decoration: none;
-        color: #495057;
-        font-weight: 600;
-        font-size: 14px;
-    }
-
-    .profile-work ul{
-        list-style: none;
-    }
-
-    .profile-tab label{
-        font-weight: 600;
-    }
-
-    .profile-tab p{
-        font-weight: 600;
-        color: #0062cc;
-    }
-</style>
+  {% include('nav.twig') %}
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
-
-
-<div class="wrapper">
-
-  <!-- Navbar -->
-  <nav class="main-header navbar navbar-expand navbar-white navbar-light">
-    <!-- Left navbar links -->
-    <ul class="navbar-nav">
-      <li class="nav-item">
-        <a class="nav-link" data-widget="pushmenu" href="#"><i class="fas fa-bars"></i></a>
-      </li>
-      <li class="nav-item d-none d-sm-inline-block">
-        <a href="./index3.html" class="nav-link">Home</a>
-      </li>
-      <li class="nav-item d-none d-sm-inline-block">
-        <a href="#" class="nav-link">Contact</a>
-      </li>
-    </ul>
-
-    <!-- SEARCH FORM -->
-    <form class="form-inline ml-3">
-      <div class="input-group input-group-sm">
-        <input class="form-control form-control-navbar" type="search" placeholder="Search" aria-label="Search">
-        <div class="input-group-append">
-          <button class="btn btn-navbar" type="submit">
-            <i class="fas fa-search"></i>
-          </button>
-        </div>
-      </div>
-    </form>
-    <button type="button" id="logout" onclick="signout()"></button>
-
-    <script type="text/javascript">
-      function signout(){
-          var username = '{{ username }}';
-
-          $.ajax({
-            type:"GET",
-            url:"/signout/{username}",
-            data: { "username":username },
-            success: function(data) {
-                console.log("SUCCESS: ", data);
-                if(data['status']=='success'){
-                  alert("Signout Success!");
-                }
-                else{
-                  alert("Signout Fail..!");
-                }
-
-            },
-            error: function(data) {
-                console.log('ERROR: ', data);
-            },
-
-        });
-        event.preventDefault();
-      }
-    </script>
-    <!-- Right navbar links -->
-    <ul class="navbar-nav ml-auto">
-      <!-- Messages Dropdown Menu -->
-      <li class="nav-item dropdown">
-        <a class="nav-link" data-toggle="dropdown" href="#">
-          <i class="far fa-comments"></i>
-          <span class="badge badge-danger navbar-badge">3</span>
-        </a>
-        <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-          <a href="#" class="dropdown-item">
-            <!-- Message Start -->
-            <div class="media">
-              <img src="{{ base_url() }}/dist/img/user1-128x128.jpg" alt="User Avatar" class="img-size-50 mr-3 img-circle">
-              <div class="media-body">
-                <h3 class="dropdown-item-title">
-                  Brad Diesel
-                  <span class="float-right text-sm text-danger"><i class="fas fa-star"></i></span>
-                </h3>
-                <p class="text-sm">Call me whenever you can...</p>
-                <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> 4 Hours Ago</p>
-              </div>
-            </div>
-            <!-- Message End -->
-          </a>
-          <div class="dropdown-divider"></div>
-          <a href="#" class="dropdown-item">
-            <!-- Message Start -->
-            <div class="media">
-              <img src="{{ base_url() }}/dist/img/user8-128x128.jpg" alt="User Avatar" class="img-size-50 img-circle mr-3">
-              <div class="media-body">
-                <h3 class="dropdown-item-title">
-                  John Pierce
-                  <span class="float-right text-sm text-muted"><i class="fas fa-star"></i></span>
-                </h3>
-                <p class="text-sm">I got your message bro</p>
-                <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> 4 Hours Ago</p>
-              </div>
-            </div>
-            <!-- Message End -->
-          </a>
-          <div class="dropdown-divider"></div>
-          <a href="#" class="dropdown-item">
-            <!-- Message Start -->
-            <div class="media">
-              <img src="{{ base_url() }}/dist/img/user3-128x128.jpg" alt="User Avatar" class="img-size-50 img-circle mr-3">
-              <div class="media-body">
-                <h3 class="dropdown-item-title">
-                  Nora Silvester
-                  <span class="float-right text-sm text-warning"><i class="fas fa-star"></i></span>
-                </h3>
-                <p class="text-sm">The subject goes here</p>
-                <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> 4 Hours Ago</p>
-              </div>
-            </div>
-            <!-- Message End -->
-          </a>
-          <div class="dropdown-divider"></div>
-          <a href="#" class="dropdown-item dropdown-footer">See All Messages</a>
-        </div>
-      </li>
-      <!-- Notifications Dropdown Menu -->
-      <li class="nav-item dropdown">
-        <a class="nav-link" data-toggle="dropdown" href="#">
-          <i class="far fa-bell"></i>
-          <span class="badge badge-warning navbar-badge">15</span>
-        </a>
-        <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-          <span class="dropdown-item dropdown-header">15 Notifications</span>
-          <div class="dropdown-divider"></div>
-          <a href="#" class="dropdown-item">
-            <i class="fas fa-envelope mr-2"></i> 4 new messages
-            <span class="float-right text-muted text-sm">3 mins</span>
-          </a>
-          <div class="dropdown-divider"></div>
-          <a href="#" class="dropdown-item">
-            <i class="fas fa-users mr-2"></i> 8 friend requests
-            <span class="float-right text-muted text-sm">12 hours</span>
-          </a>
-          <div class="dropdown-divider"></div>
-          <a href="#" class="dropdown-item">
-            <i class="fas fa-file mr-2"></i> 3 new reports
-            <span class="float-right text-muted text-sm">2 days</span>
-          </a>
-          <div class="dropdown-divider"></div>
-          <a href="#" class="dropdown-item dropdown-footer">See All Notifications</a>
-        </div>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" data-widget="control-sidebar" data-slide="true" href="#">
-          <i class="fas fa-th-large"></i>
-        </a>
-      </li>
-    </ul>
-  </nav>
-  <!-- /.navbar -->
-
-  <!-- Main Sidebar Container -->
-  <aside class="main-sidebar sidebar-dark-primary elevation-4">
-    <!-- Brand Logo -->
-    <a href="./index3.html" class="brand-link">
-      <img src="{{ base_url() }}/dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
-           style="opacity: .8">
-      <span class="brand-text font-weight-light">LIKER</span>
-    </a>
-
-    <!-- Sidebar -->
-    <div class="sidebar">
-      <!-- Sidebar user panel (optional) -->
-      <div class="user-panel mt-3 pb-3 mb-3 d-flex">
-        <div class="image">
-          <img src="{{ base_url() }}/dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
-        </div>
-        <div class="info"><a href="javascript:sendusername();" class="d-block">{{username}}</a>
-          <script type="text/javascript">
-            function sendusername(){
-                // name이 paging인 태그
-                var f = document.sendusername;
-
-                // form 태그의 하위 태그 값 매개 변수로 대입
-                f.username.value = '{{username}}';
-
-                // input태그의 값들을 전송하는 주소
-                f.action = "./userinfo"
-
-                // 전송 방식 : post
-                f.method = "post"
-                f.submit();
-            }
-          </script>
-          <form name="sendusername"> <input type="hidden" name="username"/></form>
-        </div>
-      </div>
-
-      <!-- Sidebar Menu -->
-      <nav class="mt-2">
-        <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-          <!-- Add icons to the links using the .nav-icon class
-               with font-awesome or any other icon font library -->
-
-          <li class="nav-item has-treeview">
-            <a href="/" class="nav-link active">
-              <i class="nav-icon fas fa-tachometer-alt"></i>
-              <p>
-                Dashboard
-              </p>
-            </a>
-            <!-- <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="./index.html" class="nav-link active">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Dashboard v1</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="./index2.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Dashboard v2</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="./index3.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Dashboard v3</p>
-                </a>
-              </li>
-            </ul>
- -->          </li>
-          
-          <li class="nav-item has-treeview">
-            <a href="/" class="nav-link">
-              <i class="nav-icon fas fa-chart-pie"></i>
-              <p>
-                Charts
-                <i class="right fas fa-angle-left"></i>
-              </p>
-            </a>
-            <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="/heartrate" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Heart Rate</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="/aqi" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>AQI</p>
-                </a>
-              </li>
-            </ul>
-          </li>
-          
-          
-          <li class="nav-item has-treeview">
-            <a href="/" class="nav-link">
-              <i class="nav-icon fas fa-table"></i>
-              <p>
-                Management
-                <i class="fas fa-angle-left right"></i>
-              </p>
-            </a>
-            <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="/polar" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Polar Sensor</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="/udoo" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Udoo Sensor</p>
-                </a>
-              </li>
-            </ul>
-          </li>
-          <li class="nav-item">
-            <a href="javascript:sendusername();" class="nav-link">
-              <i class="nav-icon fas fa-users"></i>
-              <p>User</p>
-            </a>
-          </li>
-        </ul>
-      </nav>
-      <!-- /.sidebar-menu -->
-    </div>
-    <!-- /.sidebar -->
-  </aside>
+ {% include('sidebar.twig') %}
+      {% include('css_userinfo.twig') %}
 
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
@@ -443,11 +14,12 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
+            <br/><br/><br/>
             <h1 class="m-0 text-dark">Profile</h1>
           </div><!-- /.col -->
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
-              <li class="breadcrumb-item"><a href="#">Home</a></li>
+              <li class="breadcrumb-item"><a href="/">Home</a></li>
               <li class="breadcrumb-item active">Dashboard v1</li>
             </ol>
           </div><!-- /.col -->
@@ -469,12 +41,34 @@
 -->                    <div class="col-md-6">
                         <div class="profile-head">
                           <br/>
-                                    <h2>
-                                        {{username}} </h2>
+                          <h2>{{username}} </h2>
                           <div class="row">
-                                    &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;<input type="button" class="profile-edit-btn" name="changepasswd" data-toggle="modal" data-target="#exampleModalCenter" value="Change Password"/>
-                                    <input type="button" class="profile-edit-btn" id="id_removal" value="ID Removal" onclick="remove()"></button>
+                                  &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;<input type="button" class="profile-edit-btn" name="changepasswd" data-toggle="modal" data-target="#exampleModalCenter"value="Change Password"/>
+                                  <input type="button" class="profile-edit-btn" id="id_removal" value="ID Removal" onclick="remove()"></button>
                           </div>
+                         <script>
+                              function remove(){
+                                alert("Are you SURE for REMOVAL?");
+                                $.ajax({
+                                  type:"GET",
+                                  url:"/remove",
+                                  success: function(data) {
+                                      console.log("SUCCESS: ", data);
+                                      if(data['status']=='success'){
+                                        alert("Remove Success!");
+                                        window.location = "http://192.168.33.99/signup";
+                                      }
+                                      else{
+                                        alert("Remove Fail..!");
+                                      }
+                                  },
+                                  error: function(data) {
+                                      console.log('ERROR: ', data);
+                                  },
+                              });
+                              event.preventDefault();
+                            }
+                          </script>
                                     <br/><br/>
                                     <!--<p class="proile-rating">RANKINGS : <span>8/10</span></p>-->
                                     <br/>
@@ -614,40 +208,6 @@
     <!-- Main content -->
     
             </div>  
-
-<script>
-    function remove(){
-      var username = '{{ username }}';
-      alert(username);
-
-      $.ajax({
-        type:"GET",
-        url:"/remove/{username}",
-        data: { "username":username },
-        success: function(data) {
-            console.log("SUCCESS: ", data);
-            if(data['status']=='success'){
-              alert("Remove Success!");
-              window.location = "http://192.168.33.99/signup";
-            }
-            else{
-              alert("Remove Fail..!");
-            }
-
-        },
-        error: function(data) {
-            console.log('ERROR: ', data);
-        },
-
-    });
-    event.preventDefault();
-  }
-</script>
-
-
-
-
-
   </div>
 
   <!-- Modal -->
@@ -696,12 +256,11 @@
     }
 
  function check_pwd(){
-    var username = '{{username}}';
     var current_pwd = $('#current_pwd').val();
     $.ajax({
        type:"POST",
-        url:"/check_pwd/{username}/{current_pwd}",
-        data: { "username":username, "current_pwd":current_pwd }, 
+        url:"/check_pwd/{current_pwd}",
+        data: {"current_pwd":current_pwd }, 
           success: function(data){
               console.log("SUCCESS: ", data);
               if(data['status']==0){
@@ -717,12 +276,11 @@
     }); 
   }
  function change_pwd(){
-    var username = '{{username}}';
     var new_pwd = $('#new_pwd').val();
       $.ajax({
           type:"POST",
-          url:"/change_pwd/{username}/{new_pwd}",
-          data: {"username":username, "new_pwd":new_pwd},
+          url:"/change_pwd/{new_pwd}",
+          data: {"new_pwd":new_pwd},
             success: function(data){
               console.log("SUCCESS: ", data);
               alert("PASSWORD Changed");
