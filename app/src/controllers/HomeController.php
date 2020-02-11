@@ -12,12 +12,16 @@ final class HomeController extends BaseController
 {
     public function dispatch(Request $request, Response $response, $args)
     {
-        $this->logger->info("Home page action dispatched");
-
-        $this->flash->addMessage('info', 'Sample flash message');
-
-        $this->view->render($response, 'home.twig');
-        return $response;
+        if(empty($_SESSION['usn'])){
+            $this->view->render($response, 'signup.twig');
+            return $response;
+        }
+        else{
+            $this->logger->info("Home page action dispatched");
+            $this->flash->addMessage('info', 'Sample flash message');
+            $this->view->render($response, 'home.twig');
+            return $response;
+        }
     }
 
     public function check_duplicate(Request $request, Response $response, $args)
@@ -52,17 +56,11 @@ final class HomeController extends BaseController
 
     public function remove(Request $request, Response $response, $args)
     {
-        $username_sql = $_GET['username'];
-        // $username_sql = 'chocho';
+        $username_sql = $_SESSION['username'];
+        $usn = $_SESSION['usn'];
 
-        $sql = "select usn from Users where username = '$username_sql'";
-        $stmt = $this->em->getConnection()->query($sql);
-        $stmt->execute();
-
-        $results = $stmt->fetchAll();
-
-
-        $usn = $results[0]['usn'];
+        //echo $_SESSION['username'].$_SESSION['usn']."test";
+        //die("hello"); 
 
         $sql = "UPDATE Devices SET usn = 1 WHERE usn = $usn"; 
         $stmt = $this->em->getConnection()->prepare($sql);
@@ -72,13 +70,6 @@ final class HomeController extends BaseController
         $sql = "DELETE FROM Users WHERE username = '$username_sql'"; 
         $stmt = $this->em->getConnection()->prepare($sql);
         $stmt->execute();
-
-
-        $sql = "select * from Users where username = '$username_sql'";
-        $stmt = $this->em->getConnection()->query($sql);
-        $stmt->execute();
-
-        $results = $stmt->fetchAll();
 
 
         if($results == NULL){
@@ -101,8 +92,7 @@ final class HomeController extends BaseController
 
     public function userinfo(Request $request, Response $response, $args)
     {
-        session_start();
-        $username_sql = $_POST['username'];
+        $username_sql = $_SESSION['username'];
 
         $sql = "select username, birth, gender, email, phone_number from Users where username = '$username_sql'";
         $stmt = $this->em->getConnection()->query($sql);
@@ -118,6 +108,40 @@ final class HomeController extends BaseController
         return $response;
     }
 
+        public function signin(Request $request, Response $response, $args)
+    {    
+        // print_r($_POST['password']);
+        $username_sql = $_POST['username'];
+        $password_sql = $_POST['password'];
+
+        $sql = "select h_password, usn, username from Users where username = '$username_sql'";
+        $stmt = $this->em->getConnection()->query($sql);
+        $stmt->execute();
+        $results = $stmt->fetchAll();
+
+        if(password_verify($password_sql, $results[0]['h_password'])){
+            $sql = "UPDATE Users SET loginflag = 'T' WHERE username = '$username_sql'"; 
+            $stmt = $this->em->getConnection()->prepare($sql);
+            $stmt->execute();
+
+            $json_array = array("status" => "success");
+            $_SESSION['usn'] = $results[0]['usn'];
+            $_SESSION['username'] = $results[0]['username'];
+            //echo $_SESSION['usn'] . " is the session .... ";
+            //die("test");
+            $this->view->render($response, 'home.twig', ['username'=>$_SESSION['username']]);
+            //$this->view->render($response, 'nav.twig', ['username'=>$_SESSION['username']]);
+            //$this->view->render($response, 'sidebar.twig', ['username'=>$_SESSION['username']]);
+            return $response;
+        }
+        else{
+            $json_array = array("status" => "fail", "message" => "User already exists");
+            $this->view->render($response, 'errorpage.twig');
+            return $response;
+        }
+
+    }
+
     public function signup(Request $request, Response $response, $args)
     {
         $this->logger->info("Home page action dispatched");
@@ -130,12 +154,15 @@ final class HomeController extends BaseController
 
     public function signout(Request $request, Response $response, $args)
     {
+        $usn_sql = $_SESSION['usn'];
+        $sql = "UPDATE Users SET loginflag = 'F' WHERE usn = '$usn_sql'"; 
+        $stmt = $this->em->getConnection()->prepare($sql);
+        $stmt->execute();
 
-        // $sql = "UPDATE Users SET loginflag = 'F' WHERE $_SESSION[]"; 
-        // $stmt = $this->em->getConnection()->prepare($sql);
-        // $stmt->execute();
+        session_unset();
+        session_destroy();
 
-        $this->view->render($response, 'signup.twig');
+        $this->view->render($response, 'nav.twig');
         return $response;
     }
 
@@ -160,9 +187,9 @@ final class HomeController extends BaseController
         $this->sendMail2($email_sql, $nonce);
 
         $json_array = array("status" => "success");
-                return $response->withStatus(200)
-                ->withHeader('Content-Type', 'application/json')
-                ->write(json_encode($json_array));
+        return $response->withStatus(200)
+        ->withHeader('Content-Type', 'application/json')
+        ->write(json_encode($json_array));
     }
 
     public function self_confirm_verify(Request $request, Response $response, $args)
@@ -249,8 +276,6 @@ final class HomeController extends BaseController
 
     public function register(Request $request, Response $response, $args)
     {
-
-
         $username_sql = $_POST['username'];
         $password_sql = $_POST['first_password'];
         $email_sql = $_POST['email'];
@@ -271,6 +296,10 @@ final class HomeController extends BaseController
             $stmt = $this->em->getConnection()->prepare($sql);
             $stmt->execute();
 
+            $sql = "DELETE FROM Auth WHERE username = '$username_sql'"; 
+            $stmt = $this->em->getConnection()->prepare($sql);
+            $stmt->execute();
+
             $this->view->render($response, 'success.twig');
             return $response;
         }
@@ -280,42 +309,9 @@ final class HomeController extends BaseController
         }
     }
 
-    public function signin(Request $request, Response $response, $args)
-    {    
-        // print_r($_POST['password']);
-        $username_sql = $_POST['username'];
-        $password_sql = $_POST['password'];
-
-        $sql = "select h_password, usn from Users where username = '$username_sql'";
-        $stmt = $this->em->getConnection()->query($sql);
-        $stmt->execute();
-
-        $results = $stmt->fetchAll();
-        
-        $data = ['username' => $username_sql];
-
-        if(password_verify($password_sql, $results[0]['h_password'])){
-            $json_array = array("status" => "success");
-            session_start();
-            $_SESSION['usn'] = $results[0]['usn'];
-            $usn = $_SESSION['usn'];
-
-            $this->view->render($response, 'home.twig', ['username'=>$username_sql], ['usn'=>$usn]);
-            return $response;
-
-        }
-        else{
-            $json_array = array("status" => "fail", "message" => "User already exists");
-            $this->view->render($response, 'errorpage.twig');
-            return $response;
-        }
-
-    }
-
-
     public function check_pwd(Request $request, Response $response, $args)
     {
-        $username_sql = $_POST['username'];
+        $username_sql = $_SESSION['username'];
         $password_sql = $_POST['current_pwd'];
 
         $sql = "select h_password from Users where username = '$username_sql'";
@@ -341,7 +337,7 @@ final class HomeController extends BaseController
 
     public function change_pwd(Request $request, Response $response, $args)
     {
-        $username_sql = $_POST['username'];
+        $username_sql = $_SESSION['username'];
         $password_sql = $_POST['new_pwd'];
 
         $nonce = password_hash($password_sql, PASSWORD_DEFAULT);
@@ -349,7 +345,9 @@ final class HomeController extends BaseController
         $sql = "UPDATE Users SET h_password = '$nonce', loginflag = 'F' WHERE username = '$username_sql'"; 
         $stmt = $this->em->getConnection()->prepare($sql);
         $stmt->execute();
-          
+        
+        session_unset();
+        session_destroy();  
         $this->view->render($response, 'userinfo.twig');
         return $response;     
 
@@ -367,8 +365,8 @@ final class HomeController extends BaseController
         $mail->isSMTP();                                            // Send using SMTP
         $mail->Host       = 'smtp.gmail.com';                    // Set the SMTP server to send through
         $mail->SMTPAuth   = true;                                   // Enable SMTP authentication
-        $mail->Username   = 'wkdgurwls1211@gmail.com';                     // SMTP username
-        $mail->Password   = 'gurwls1080524';                               // SMTP password
+        $mail->Username   = 'QI.8.teamb@gmail.com';                     // SMTP username
+        $mail->Password   = 'codusdlWkd';                                   // SMTP password
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;         // Enable TLS encryption; `PHPMailer::ENCRYPTION_SMTPS` also accepted
         $mail->Port       = 587;                                    // TCP port to connect to
 
@@ -411,13 +409,13 @@ public function sendMail2($email, $nonce)
         $mail->isSMTP();                                            // Send using SMTP
         $mail->Host       = 'smtp.gmail.com';                    // Set the SMTP server to send through
         $mail->SMTPAuth   = true;                                   // Enable SMTP authentication
-        $mail->Username   = 'wkdgurwls1211@gmail.com';                     // SMTP username
-        $mail->Password   = 'gurwls1080524';                               // SMTP password
+        $mail->Username   = 'QI.8.teamb@gmail.com';                     // SMTP username
+        $mail->Password   = 'codusdlWkd';                               // SMTP password
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;         // Enable TLS encryption; `PHPMailer::ENCRYPTION_SMTPS` also accepted
         $mail->Port       = 587;                                    // TCP port to connect to
 
         //Recipients
-        $mail->setFrom('wkdgurwls1211@gmail.com', 'HyukJin');
+        $mail->setFrom('QI.8.teamb@gmail.com', 'HyukJin');
         $mail->addAddress($results);     // Add a recipient
 
         $mail->isHTML(true);                                  // Set email format to HTML

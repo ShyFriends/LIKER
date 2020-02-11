@@ -22,41 +22,29 @@ final class DeviceController extends BaseController
 
     public function polar(Request $request, Response $response, $args)
     {
-        $this->logger->info("Home page action dispatched");
-
-        $this->flash->addMessage('info', 'Sample flash message');
-
-        $this->view->render($response, 'devices/polar.twig');
+        $username_sql = $_SESSION['username'];
+        $this->view->render($response, 'devices/polar.twig',['username'=>$username_sql]);
         return $response;
     }
 
     public function udoo(Request $request, Response $response, $args)
-    {
-        $this->logger->info("Home page action dispatched");
-
-        $this->flash->addMessage('info', 'Sample flash message');
-
-        $this->view->render($response, 'devices/udoo.twig');
+    {   
+        $username_sql = $_SESSION['username'];
+        $this->view->render($response, 'devices/udoo.twig', ['username'=>$username_sql]);
         return $response;
     }
 
-    public function aqi(Request $request, Response $response, $args)
+    public function aqi(Request $request, Response $response, $args) 
     {
-        $this->logger->info("Home page action dispatched");
-
-        $this->flash->addMessage('info', 'Sample flash message');
-
-        $this->view->render($response, 'devices/aqi.twig');
+        $username_sql = $_SESSION['username'];
+        $this->view->render($response, 'devices/aqi.twig',['username'=>$username_sql]);
         return $response;
     }
 
     public function heartrate(Request $request, Response $response, $args)
     {
-        $this->logger->info("Home page action dispatched");
-
-        $this->flash->addMessage('info', 'Sample flash message');
-
-        $this->view->render($response, 'devices/heartrate.twig');
+        $username_sql = $_SESSION['username'];
+        $this->view->render($response, 'devices/heartrate.twig',['username'=>$username_sql]);
         return $response;
     }
 
