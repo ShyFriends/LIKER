@@ -19,7 +19,7 @@ final class HomeController extends BaseController
         else{
             $this->logger->info("Home page action dispatched");
             $this->flash->addMessage('info', 'Sample flash message');
-            $this->view->render($response, 'home.twig');
+            $this->view->render($response, 'home.twig', ['username'=>$_SESSION['username']]);
             return $response;
         }
     }
@@ -27,8 +27,6 @@ final class HomeController extends BaseController
     public function check_duplicate(Request $request, Response $response, $args)
     {
         $username_sql = $_GET['id'];
-
-        $json_array = array("username"=>$_GET['id']);
 
         $sql = "select * from Users where username = '$username_sql'";
         $stmt = $this->em->getConnection()->query($sql);
@@ -49,9 +47,6 @@ final class HomeController extends BaseController
                 ->write(json_encode($json_array));
         }
 
-        return $response->withStatus(200)
-        ->withHeader('Content-Type', 'application/json')
-        ->write(json_encode($json_array));
     }
 
     public function remove(Request $request, Response $response, $args)
@@ -365,8 +360,8 @@ final class HomeController extends BaseController
         $mail->isSMTP();                                            // Send using SMTP
         $mail->Host       = 'smtp.gmail.com';                    // Set the SMTP server to send through
         $mail->SMTPAuth   = true;                                   // Enable SMTP authentication
-        $mail->Username   = 'QI.8.teamb@gmail.com';                     // SMTP username
-        $mail->Password   = 'codusdlWkd';                                   // SMTP password
+        $mail->Username   = 'wkdgurwls1211@gmail.com';                     // SMTP username
+        $mail->Password   = 'gurwls00!';                                   // SMTP password
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;         // Enable TLS encryption; `PHPMailer::ENCRYPTION_SMTPS` also accepted
         $mail->Port       = 587;                                    // TCP port to connect to
 
@@ -409,8 +404,8 @@ public function sendMail2($email, $nonce)
         $mail->isSMTP();                                            // Send using SMTP
         $mail->Host       = 'smtp.gmail.com';                    // Set the SMTP server to send through
         $mail->SMTPAuth   = true;                                   // Enable SMTP authentication
-        $mail->Username   = 'QI.8.teamb@gmail.com';                     // SMTP username
-        $mail->Password   = 'codusdlWkd';                               // SMTP password
+        $mail->Username   = 'wkdgurwls1211@gmail.com';                     // SMTP username
+        $mail->Password   = 'gurwls00!';                               // SMTP password
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;         // Enable TLS encryption; `PHPMailer::ENCRYPTION_SMTPS` also accepted
         $mail->Port       = 587;                                    // TCP port to connect to
 

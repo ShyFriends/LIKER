@@ -78,3 +78,12 @@ $app->post('/receiveData', 'App\Controller\HomeController:receiveData')
 
 $app->get('/post/{id}', 'App\Controller\HomeController:viewPost')
     ->setName('view_post');
+
+$app->get('/signup_app', 'App\Controller\AppController:signup_app')
+    ->setName('signup_app');
+
+$app->post('/signin_app', 'App\Controller\AppController:signin_app')
+    ->setName('signin_app');
+
+$app->get('/signout_app', 'App\Controller\AppController:signout_app')
+    ->setName('signout_app');
