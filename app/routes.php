@@ -52,6 +52,18 @@ $app->get('/heartrate', 'App\Controller\DeviceController:heartrate')
 $app->post('/signin', 'App\Controller\HomeController:signin')
     ->setName('signin');
 
+$app->post('/check_sensor', 'App\Controller\HomeController:check_sensor')
+    ->setName('check_sensor');
+
+// $app->post('/check_sensor/{mac_addr}', 'App\Controller\HomeController:check_sensor')
+//     ->setName('check_sensor');
+
+$app->post('/regist_sensor/{s_name}/{s_type}', 'App\Controller\HomeController:regist_sensor')
+    ->setName('regist_sensor');
+
+$app->post('/remove_sensor/{dsn}', 'App\Controller\HomeController:remove_sensor')
+    ->setName('remove_sensor');
+
 $app->post('/register', 'App\Controller\HomeController:register')
     ->setName('register');
 
