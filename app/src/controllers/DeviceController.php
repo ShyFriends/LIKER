@@ -64,4 +64,36 @@ final class DeviceController extends BaseController
         $this->view->render($response, 'post.twig', ['post' => $post, 'flash' => $messages]);
         return $response;
     }
+
+
+
+    public function get_aqi(Request $request, Response $response, $args)
+    {
+        $usn_sql = $_SESSION['usn'];
+        //$usn_sql = '105';
+        $sql = "select dsn from Devices where usn = '$usn_sql' and s_type = 'udoo'";
+        $stmt = $this->em->getConnection()->query($sql);
+        $stmt->execute();
+        $results = $stmt->fetchAll();
+
+        $dsn_sql = $results[0]['dsn'];
+
+        $sql = "select udoo_sn, co_aqi, no2_aqi, so2_aqi, o3_aqi, pm2_5_aqi, pm10_aqi, longitude, latitude from Udoo where dsn = '$dsn_sql'";
+        $stmt = $this->em->getConnection()->query($sql);
+        $stmt->execute();
+
+        $results = $stmt->fetchAll();
+
+        $co_aqi = $results[0]['co_aqi'];
+        $no2_aqi = $results[0]['no2_aqi'];
+        $so2_aqi = $results[0]['so2_aqi'];
+        $o3_aqi = $results[0]['o3_aqi'];
+        $pm2_5_aqi = $results[0]['pm2_5_aqi'];
+        $pm10_aqi = $results[0]['co_aqi'];
+
+        $json_array = $results;
+                return $response->withStatus(200)
+                ->withHeader('Content-Type', 'application/json')
+                ->write(json_encode($json_array));
+    }
 }

@@ -2,6 +2,12 @@
 <html>
 <head>
 {% include('nav.twig') %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+
+  <!-- Ionicons -->
+  <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+  <!-- Google Font: Source Sans Pro -->
+
 </head>
 <body>
    {% include('sidebar.twig') %}
@@ -65,29 +71,29 @@
 
 <!--                     <div class="knob-label">data-width="90"</div>
  -->
-                    <input type="text" class="knob" value="30" data-width="150" data-height="150" data-fgColor="#3c8dbc" data-readonly="true" >pm2.5
+                    <input type="text" class="knob" id="pm2_5_aqi" value="90" data-width="150" data-height="150" data-fgColor="#00a65a" data-readonly="true" >pm2.5
 
 <!--                     <div class="knob-label">New Visitors</div>
  -->
-                    <input type="text" class="knob" value="70" data-width="150" data-height="150" data-fgColor="#f56954" data-readonly="true">pm10
+                    <input type="text" class="knob" id="pm10_aqi" value="70" data-width="150" data-height="150" data-fgColor="#f56954" data-readonly="true">pm10
 
 <!--                     <div class="knob-label">Bounce Rate</div>
  -->
-                    <input type="text" class="knob" value="80" data-min="-150" data-max="150" data-width="150"
+                    <input type="text" class="knob" id="no2_aqi" value="80" data-min="-150" data-max="150" data-width="150"
                            data-height="150" data-fgColor="#00a65a" data-readonly="true">NO2
 
 <!--                     <div class="knob-label">Server Load</div>
  -->
-                    <input type="text" class="knob" value="40" data-width="150" data-height="150" data-fgColor="#00c0ef" data-readonly="true" >CO
+                    <input type="text" class="knob" id="co_aqi" value="40" data-width="150" data-height="150" data-fgColor="#00a65a" data-readonly="true" >CO
 
 <!--                     <div class="knob-label">Disk Space</div>
  -->
 
-                    <input type="text" class="knob" value="90" data-width="150" data-height="150" data-fgColor="#932ab6" data-readonly="true" >SO2
+                    <input type="text" class="knob" id="so2_aqi" value="90" data-width="150" data-height="150" data-fgColor="#00a65a" data-readonly="true" >SO2
 
 <!--                     <div class="knob-label">Bandwidth</div>
  -->                    
-                    <input type="text" class="knob" value="50" data-width="150" data-height="150" data-fgColor="#39CCCC" data-readonly="true" >O3
+                    <input type="text" class="knob" id="o3_aqi" value="50" data-width="150" data-height="150" data-fgColor="#00a65a" data-readonly="true" >O3
 
 <!--                     <div class="knob-label">CPU</div>
 
@@ -102,85 +108,56 @@
 
         <div>
           <div style="width: 700px;height: 700px; padding-left: 50px;float: left;">
-            <div class="column" id="map"></div>
+            <div id="map"></div>
+    <script>
+      // This example creates circles on the map, representing populations in North
+      // America.
 
+      // First, create an object containing LatLng and population for each city.
+      var citymap = {
+        chicago: {
+          center: {lat: 41.878, lng: -87.629},
+          population: 2714856
+        },
+        newyork: {
+          center: {lat: 40.714, lng: -74.005},
+          population: 8405837
+        },
+        losangeles: {
+          center: {lat: 34.052, lng: -118.243},
+          population: 3857799
+        },
+        vancouver: {
+          center: {lat: 49.25, lng: -123.1},
+          population: 603502
+        }
+      };
 
-            <script>
-              var customLabel = {
-                restaurant: {
-                  label: 'R'
-                },
-                bar: {
-                  label: 'B'
-                }
-              };
+      function initMap() {
+        // Create the map.
+        var map = new google.maps.Map(document.getElementById('map'), {
+          zoom: 4,
+          center: {lat: 37.090, lng: -95.712},
+          mapTypeId: 'terrain'
+        });
 
-                function initMap() {
-                var map = new google.maps.Map(document.getElementById('map'), {
-                  center: new google.maps.LatLng(-33.863276, 151.207977),
-                  zoom: 12
-                });
-                var infoWindow = new google.maps.InfoWindow;
-        ///////////////////////////////////////////////////////////////////////////////
-                  // Change this depending on the name of your PHP or XML file
-                  downloadUrl('https://storage.googleapis.com/mapsdevsite/json/mapmarkers2.xml', function(data) {
-                    var xml = data.responseXML;
-                    var markers = xml.documentElement.getElementsByTagName('marker');
-
-                    Array.prototype.forEach.call(markers, function(markerElem) {
-                      var id = markerElem.getAttribute('id');
-                      var name = markerElem.getAttribute('name');
-                      var address = markerElem.getAttribute('address');
-                      var type = markerElem.getAttribute('type');
-                      var point = new google.maps.LatLng(
-                          parseFloat(markerElem.getAttribute('lat')),
-                          parseFloat(markerElem.getAttribute('lng')));
-
-        //////////////////////////////////////////////////////////////////////////////
-                      var infowincontent = document.createElement('div');
-                      var strong = document.createElement('strong');
-                      strong.textContent = name                                      //name
-                      infowincontent.appendChild(strong);
-                      infowincontent.appendChild(document.createElement('br'));
-
-                      var text = document.createElement('text');
-                      text.textContent = address                                     //address
-                      infowincontent.appendChild(text);
-                      var icon = customLabel[type] || {};                            //type
-                      var marker = new google.maps.Marker({
-                        map: map,
-                        position: point,                                             //point
-                        label: icon.label                                            
-                      });
-                      marker.addListener('click', function() {
-                        infoWindow.setContent(infowincontent);
-                        infoWindow.open(map, marker);
-                      });
-                    });
-
-                  });
-                }
-
-
-
-              function downloadUrl(url, callback) {
-                var request = window.ActiveXObject ?
-                    new ActiveXObject('Microsoft.XMLHTTP') :
-                    new XMLHttpRequest;
-
-                request.onreadystatechange = function() {
-                  if (request.readyState == 4) {
-                    request.onreadystatechange = doNothing;
-                    callback(request, request.status);
-                  }
-                };
-
-                request.open('GET', url, true);
-                request.send(null);
-              }
-
-              function doNothing() {}
-            </script>
+        // Construct the circle for each value in citymap.
+        // Note: We scale the area of the circle based on the population.
+        for (var city in citymap) {
+          // Add the circle for this city to the map.
+          var cityCircle = new google.maps.Circle({
+            strokeColor: '#FF0000',
+            strokeOpacity: 0.8,
+            strokeWeight: 2,
+            fillColor: '#FF0000',
+            fillOpacity: 0.35,
+            map: map,
+            center: citymap[city].center,
+            radius: Math.sqrt(citymap[city].population) * 100
+          });
+        }
+      }
+    </script>
            </div>
 
     <!-- Main content -->
@@ -190,9 +167,7 @@
 
         <div style="float: left;">
           <div>
-              <div style="width: 300px;height: 300px;float: left;">
-                <canvas id="donutChart" style="height:230px; min-height:230px"></canvas>
-              </div>
+
               <!-- /.card-body -->
 
               <div class="card-body" style="float: left;">
@@ -200,6 +175,58 @@
               </div>
           </div>
               <script type="text/javascript">
+                  var aqi_data; 
+                  $.ajax({
+                    type:"GET",
+                    url:"/get_aqi",
+                    success: function(data) {
+                        console.log("SUCCESS: ", data);
+                        aqi_data = data;
+                        
+                        alert(aqi_data);
+                        for (i in aqi_data[0]) {
+                          if(i!="longitude"&&i!="latitude"&&i!="udoo_sn"){
+                            document.getElementById(i).value = aqi_data[0][i];
+                            if(document.getElementById(i).value>50){
+                              if(i=="pm2_5_aqi"){
+                                $('#pm2_5_aqi').knob({
+                                  fgColor: 'red'
+                                });  
+                              }
+                              if(i=="pm10_aqi"){
+                                $('#pm10_aqi').knob({
+                                  fgColor: 'red'
+                                });  
+                              }
+                              if(i=="co_aqi"){
+                                $('#co_aqi').knob({
+                                  fgColor: 'red'
+                                });  
+                              }
+                              if(i=="no2_aqi"){
+                                $('#no2_aqi').knob({
+                                  fgColor: 'red'
+                                });  
+                              }
+                              if(i=="so2_aqi"){
+                                $('#so2_aqi').knob({
+                                  fgColor: 'red'
+                                });  
+                              }
+                              if(i=="o3_aqi"){
+                                $('#o3_aqi').knob({
+                                  fgColor: 'red'
+                                });  
+                              }
+                            }
+                          }
+                        }
+                    },
+                    error: function(data) {
+                        console.log('ERROR: ', data);
+                    },
+                  });
+
                   new Chart(document.getElementById("line-chart"), {
                   type: 'line',
                   data: {
@@ -363,40 +390,6 @@
 
 
 <script>
-
-
-//-------------
-    //- DONUT CHART -
-    //-------------
-    // Get context with jQuery - using jQuery's .get() method.
-    var donutChartCanvas = $('#donutChart').get(0).getContext('2d')
-    var donutData        = {
-      labels: [
-          'pm2.5', 
-          'pm10',
-          'NO2', 
-          'CO', 
-          'SO2', 
-          'O3', 
-      ],
-      datasets: [
-        {
-          data: [700,500,400,600,300,100],
-          backgroundColor : ['#f56954', '#00a65a', '#f39c12', '#00c0ef', '#3c8dbc', '#d2d6de'],
-        }
-      ]
-    }
-    var donutOptions     = {
-      maintainAspectRatio : false,
-      responsive : true,
-    }
-    //Create pie or douhnut chart
-    // You can switch between pie and douhnut using the method below.
-    var donutChart = new Chart(donutChartCanvas, {
-      type: 'doughnut',
-      data: donutData,
-      options: donutOptions      
-    })
 
 
 
