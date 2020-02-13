@@ -43,8 +43,9 @@
                           <br/>
                           <h2>{{username}} </h2>
                           <div class="row">
-                                  &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;<input type="button" class="profile-edit-btn" name="changepasswd" data-toggle="modal" data-target="#exampleModalCenter"value="Change Password"/>
-                                  <input type="button" class="profile-edit-btn" id="id_removal" value="ID Removal" onclick="remove()"></button>
+                                  &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+                                  <input type="button" class="profile-edit-btn" name="changepasswd" data-toggle="modal" data-target="#changepwd"value="Change Password"/>&emsp;
+                                  <input type="button" class="profile-edit-btn" id="id_removal" value="ID Removal" onclick="remove()"/>
                           </div>
                          <script>
                               function remove(){
@@ -82,6 +83,7 @@
                                  <li class="nav-item">
                                     <a class="nav-link" id="udoo-tab" data-toggle="tab" href="#udoo" role="tab" aria-controls="profile" aria-selected="false">Udoo Sensor</a>
                                 </li>
+                                <input type="button" class="profile-edit-btn3" name="addsensor" data-toggle="modal" data-target="#addsensor" value="Add Sensor"/>
                             </ul>
                         </div>
                     </div>
@@ -101,6 +103,8 @@
                             <a href="">PHP, .Net</a><br/> 
                         </div>
 -->                    </div>
+
+               {% for user in user_results %}
                     <div class="col-md-8">
                         <div class="tab-content profile-tab" id="myTabContent">
                             <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
@@ -109,7 +113,7 @@
                                                 <label>Username</label>
                                             </div>
                                             <div class="col-md-6">
-                                                <p>{{username}}</p>
+                                              <p>{{user.username}}</p>
                                             </div>
                                         </div>
                                         <div class="row">
@@ -117,7 +121,122 @@
                                                 <label>Birth</label>
                                             </div>
                                             <div class="col-md-6">
-                                                <p>{{birth}}</p>
+                                                <p>{{user.birth}}</p>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <label>Email</label>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <p>{{user.email}}</p>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <label>Phone Number</label>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <p>{{user.phone_number}}</p>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <label>Gender</label>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <p>{{user.gender}}</p>
+                                            </div>
+                                        </div>
+                            </div>
+              {% endfor %}
+
+                   <div class="tab-pane fade" id="polar" role="tabpanel" aria-labelledby="polar-tab">
+                   {% for polar in polar_results %}
+                   <div>
+                                        <div class="row">            
+                                            <div class="col-md-6">
+                                               <label>{{polar.s_name}}</label>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <p>{{polar.mac_addr}}&emsp;&emsp;<input type="button" class="profile-edit-btn2" id="sensor_removal" value="-" onclick="remove_sensor('{{polar.dsn}}')"/></p>
+                                            </div>
+                                        </div>
+                  </div>
+                  {% endfor %}
+                </div>
+
+                <div class="tab-pane fade" id="udoo" role="tabpanel" aria-labelledby="udoo-tab">
+                   {% for udoo in udoo_results %}
+                   <div>
+                                        <div class="row">            
+                                            <div class="col-md-6">
+                                               <label>{{udoo.s_name}}</label>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <p>{{udoo.mac_addr}}&emsp;&emsp;<input type="button" class="profile-edit-btn2" id="sensor_removal" value="-" onclick="remove_sensor('{{udoo.dsn}}')"/></p>
+                                            </div>
+                                        </div>
+                  </div>
+                  {% endfor %}
+                </div>
+                 <script type="text/javascript">
+                            function remove_sensor(dsn){
+                              alert("Are you SURE for REMOVAL?");
+                              $.ajax({
+                                  type:"POST",
+                                  url:"/remove_sensor/{dsn}",
+                                  data: {"dsn":dsn }, 
+                                    success: function(data){
+                                        console.log("SUCCESS: ", data);
+                                        alert("SUCCESS Sensor Removal");
+                                        location.replace("./userinfo");
+                                      },
+                                      error: function(data){
+                                       console.log('ERROR: ', data);
+                                      },
+                              }); 
+                            }
+                          </script>
+        </div>
+  </div>
+
+
+<!--                            
+<div class="tab-pane fade" id="polar{{polar.zdsn}}" role="tabpanel" aria-labelledby="polar-tab">
+              {% for polar in polar_results %}
+              {{polar.s_name}}{{polar.mac_addr}}{{polar.s_name}}
+              <div>
+                             <script>
+                            document.write("<div class='row'>");
+                            for(var i=0; i<{{polar_no}}; i++){                              
+                              var polar_name = '{{polar.s_name}}';
+                              var polar_addr = '{{polar.mac_addr}}';
+                              document.write("<div class='col-md-6'><label>"+polar_name+"</label></div><div class='col-md-6'><p>"+polar_addr+"<input type='button' class='profile-edit-btn' id='sensor_removal' value='-' onclick='remove_sensor()'/></p></div></div>"); 
+                            } 
+                             </script>
+              </div>
+              {% endfor %}   -->           
+                     
+ <!-- mikeeee
+ {% for user in myresults %}
+
+                    <div class="col-md-8">
+                        <div class="tab-content profile-tab" id="myTabContent">
+                            <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <label>Username</label>
+                                            </div>
+                                            <div class="col-md-6">{{ user.username}}
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <label>Birth</label>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <p>{{user.birth}}</p>
                                             </div>
                                         </div>
                                         <div class="row">
@@ -146,72 +265,39 @@
                                         </div>
                             </div>
                             <div class="tab-pane fade" id="polar" role="tabpanel" aria-labelledby="polar-tab">
-                                        <div class="row">
+                                        <div class="row">            
                                             <div class="col-md-6">
-                                                <label>Heartrate Sensor</label>
+                                               <label>polar_name</label>
                                             </div>
                                             <div class="col-md-6">
-                                                <p>00098c006963</p>
+                                                <p>polar_addr<input type="button" class="profile-edit-btn" id="sensor_removal" value="-" onclick="remove_sensor()"/></p>
                                             </div>
                                         </div>
                               </div>
                               <div class="tab-pane fade" id="udoo" role="tabpanel" aria-labelledby="udoo-tab">
                                         <div class="row">
                                             <div class="col-md-6">
-                                                <label>CO</label>
+                                                <label>udoo_name</label>
                                             </div>
                                             <div class="col-md-6">
-                                                <p>00098c006964</p>
+                                                <p>udoo_addr<input type="button" class="profile-edit-btn" id="sensor_removal" value="-" onclick="remove_sensor()"/></p>
                                             </div>
                                         </div>
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                <label>NO2</label>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <p>00098c006965</p>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                <label>SO2</label>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <p>00098c006969</p>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                <label>O3</label>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <p>00098c006908</p>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                <label>pm2.5</label>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <p>00098c008392</p>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                <label>pm10</label>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <p>00098c002847</p>
-                                            </div>
-                                        </div>
-                          </div></div></div></form></div>
+                          </div>
+
+                        </div>
+                      </div>
+      {% endfor %}
+-->
+                    </form></div>
+                         
     <!-- Main content -->
     
             </div>  
   </div>
 
-  <!-- Modal -->
-<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+<!-- change pwd start-->
+<div class="modal fade" id="changepwd" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -254,11 +340,10 @@
         alert("New Password and Confirm Password DO NOT MATCH");
       }
     }
-
  function check_pwd(){
     var current_pwd = $('#current_pwd').val();
     $.ajax({
-       type:"POST",
+        type:"POST",
         url:"/check_pwd/{current_pwd}",
         data: {"current_pwd":current_pwd }, 
           success: function(data){
@@ -277,7 +362,7 @@
   }
  function change_pwd(){
     var new_pwd = $('#new_pwd').val();
-      $.ajax({
+      $.ajax({ 
           type:"POST",
           url:"/change_pwd/{new_pwd}",
           data: {"new_pwd":new_pwd},
@@ -292,6 +377,87 @@
           });
   }
 </script>
+<!-- change pwd end-->
+
+<!-- add sensor start-->
+<div class="modal fade" id="addsensor" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Adding Sensor</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+      <!--<form id="sensor_regist" method="POST" action="regist_sensor">-->
+        <form>
+          <div class="form-group">
+            <label for="message-name" class="col-form-label">Sensor Name:</label>
+            <input type="text" class="form-control" id="s_name">
+          </div>
+          <div class="form-group">
+            <label for="message-text" class="col-form-label">Sensor Type:</label>
+            <label class="form-control" for="s_type_polar"><input type="radio" id="s_type_polar" name="s_type" value="polar">&emsp; Polar Sensor</label>
+            <label class="form-control" for="s_type_udoo"><input type="radio" id="s_type_udoo" name="s_type" value="udoo">&emsp; Udoo Sensor</label>
+          </div>
+<!--hidden-->          <input type="hidden" id="mac_addr" value="mac_addr"/>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" onclick="check_sensor()">SUBMIT</button>
+      </div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+  function check_sensor(){
+    //var mac_addr = $('#mac_addr').val();
+       $.ajax({ 
+           type:"POST",
+           //url:"/check_sensor/{mac_addr}"
+           url:"/check_sensor",
+          //data: {"mac_addr":mac_addr},
+            success: function(data){
+                console.log("SUCCESS: ", data);
+                if(data['status']==1){
+                  alert("Sensor Already Exist");
+                }
+                else{
+                  regist_sensor();
+                }
+            },
+            error: function(data){
+             console.log('ERROR: ', data);
+            },
+          });
+  }
+  function regist_sensor(){
+    var s_name_data = $('#s_name').val();
+    var s_type_data = $('input[name="s_type"]:checked').val()
+    //var mac_addr = $('#mac_addr').val();
+     $.ajax({ 
+        type:"POST",
+        url:"/regist_sensor/{s_name}/{s_type}",
+        data: { "s_name":s_name_data, "s_type": s_type_data },
+        success: function(data) {
+            console.log("SUCCESS: ", data);
+              alert("SUCCESS Sensor Registration");
+              location.replace("./userinfo");
+        },
+        error: function(data) {
+            console.log('ERROR: ', data);
+        },
+
+    });
+    event.preventDefault();
+  }
+
+</script>
+<!-- add sensor end-->
+
+
 </form>
   <!-- /.content-wrapper -->
   <!--<footer class="main-footer">

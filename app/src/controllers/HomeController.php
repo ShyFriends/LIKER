@@ -19,7 +19,7 @@ final class HomeController extends BaseController
         else{
             $this->logger->info("Home page action dispatched");
             $this->flash->addMessage('info', 'Sample flash message');
-            $this->view->render($response, 'home.twig', ['username'=>$_SESSION['username']]);
+            $this->view->render($response, 'home.twig',['username'=>$_SESSION['username']]);
             return $response;
         }
     }
@@ -85,23 +85,111 @@ final class HomeController extends BaseController
         ->write(json_encode($json_array));
     }
 
+        /*public function userinfo(Request $request, Response $response, $args)
+            {
+                $username_sql = $_SESSION['username'];
+
+                $sql = "select username, birth, gender, email, phone_number from Users limit 2";
+
+        $stmt = $this->em->getConnection()->query($sql);
+                $stmt->execute();
+                $results = $stmt->fetchAll();
+                $user_results = $results;
+
+
+
+        $this->view->render($response, 'userinfo.twig', ['username'=>$_SESSION['username'], 'myresults'=>$user_results]);
+
+        }*/
+
     public function userinfo(Request $request, Response $response, $args)
     {
         $username_sql = $_SESSION['username'];
+        $usn_sql  = $_SESSION['usn'];
 
-        $sql = "select username, birth, gender, email, phone_number from Users where username = '$username_sql'";
+        //userinfo
+        $sql = "select username, birth, gender, email, phone_number from Users where usn = '$usn_sql'";
         $stmt = $this->em->getConnection()->query($sql);
         $stmt->execute();
+        $user_results = $stmt->fetchAll();
 
-        $results = $stmt->fetchAll();
-        $birth_sql = $results[0]['birth'];
-        $gender_sql = $results[0]['gender'];
-        $email_sql = $results[0]['email'];
-        $phone_number_sql = $results[0]['phone_number'];
+        //polar sensor info
+        $sql = "select dsn, s_name, s_type, mac_addr from Devices where usn = '$usn_sql' and s_type = 'polar'" ;
+        $stmt = $this->em->getConnection()->query($sql);
+        $stmt->execute();
+        $polar_results = $stmt->fetchAll();
 
-        $this->view->render($response, 'userinfo.twig', ['username'=>$username_sql, 'birth'=>$birth_sql, 'gender'=>$gender_sql, 'email'=>$email_sql, 'phone_number'=>$phone_number_sql ]);
+        //udoo sensor info
+        $sql = "select dsn, s_name, s_type, mac_addr from Devices where usn = '$usn_sql' and s_type = 'udoo'";
+        $stmt = $this->em->getConnection()->query($sql);
+        $stmt->execute();
+        $udoo_results = $stmt->fetchAll();
+
+        $this->view->render($response, 'userinfo.twig', ['username'=>$_SESSION['username'], 'user_results'=>$user_results, 'polar_results'=>$polar_results, 'udoo_results'=>$udoo_results]);
+    }
+
+     public function remove_sensor(Request $request, Response $response, $args)
+    {
+        $usn_sql = $_SESSION['usn'];
+        $dsn_sql = $_POST['dsn'];
+
+        $sql = "UPDATE Polar SET dsn = -1 WHERE dsn = '$dsn_sql'";
+        $stmt = $this->em->getConnection()->prepare($sql);
+        $stmt->execute();
+
+        $sql = "UPDATE Udoo SET dsn = -1 WHERE dsn = '$dsn_sql'";
+        $stmt = $this->em->getConnection()->prepare($sql);
+        $stmt->execute();
+
+        $sql = "DELETE FROM Devices WHERE dsn = '$dsn_sql'";
+        $stmt = $this->em->getConnection()->prepare($sql);
+        $stmt->execute();
+
+        $this->view->render($response, 'userinfo.twig');
         return $response;
     }
+
+    public function regist_sensor(Request $request, Response $response, $args)
+    {
+        $usn_sql = $_SESSION['usn'];
+        $s_name_sql = $_POST['s_name'];
+        $s_type_sql = $_POST['s_type'];
+
+        $randomNum = mt_rand(10000000000000000, 100000000000000000);
+        $mac_addr = $randomNum;
+        //$mac_addr = $_POST['mac_addr'];
+
+        $sql = "insert into Devices(usn, s_name, s_type, mac_addr) values ('$usn_sql','$s_name_sql','$s_type_sql','$mac_addr')";
+        $stmt = $this->em->getConnection()->prepare($sql);
+        $stmt->execute();
+
+        $this->view->render($response, 'userinfo.twig');
+        return $response;
+    }
+
+    public function check_sensor(Request $request, Response $response, $args)
+    {
+        $usn_sql = $_SESSION['usn'];
+        $randomNum = mt_rand(10000000000000000, 100000000000000000);
+        $mac_addr = $randomNum;
+        //$mac_addr = $_POST['mac_addr']; 
+        $sql = "select mac_addr from Devices where usn = '$usn_sql'";
+        $stmt = $this->em->getConnection()->query($sql);
+        $stmt->execute();
+        $sensor_results = $stmt->fetchAll();
+        
+        $resultsno = count($sensor_results);
+
+        for($i=0; $i<$resultsno; $i++){
+            if($sensor_results[$i]['mac_addr'] == $mac_addr){
+                $json_array = array("status" => 1);
+                return $response->withStatus(200)
+                ->withHeader('Content-Type', 'application/json')
+                ->write(json_encode($json_array));
+            }
+        }
+    }
+
 
         public function signin(Request $request, Response $response, $args)
     {    
@@ -119,18 +207,18 @@ final class HomeController extends BaseController
             $stmt = $this->em->getConnection()->prepare($sql);
             $stmt->execute();
 
-            $json_array = array("status" => "success");
+            //$json_array = array("status" => "success");
             $_SESSION['usn'] = $results[0]['usn'];
             $_SESSION['username'] = $results[0]['username'];
             //echo $_SESSION['usn'] . " is the session .... ";
             //die("test");
+            
             $this->view->render($response, 'home.twig', ['username'=>$_SESSION['username']]);
-            //$this->view->render($response, 'nav.twig', ['username'=>$_SESSION['username']]);
-            //$this->view->render($response, 'sidebar.twig', ['username'=>$_SESSION['username']]);
             return $response;
         }
+
         else{
-            $json_array = array("status" => "fail", "message" => "User already exists");
+            //$json_array = array("status" => "fail", "message" => "signin fail...");
             $this->view->render($response, 'errorpage.twig');
             return $response;
         }
@@ -366,7 +454,7 @@ final class HomeController extends BaseController
         $mail->Port       = 587;                                    // TCP port to connect to
 
         //Recipients
-        $mail->setFrom('wkdgurwls1211@gmail.com', 'HyukJin');
+        $mail->setFrom('QI.8.teamb@gmail.com', 'Team B');
         $mail->addAddress($results);     // Add a recipient
         //$mail->addAddress('ellen@example.com');               // Name is optional
         // $mail->addReplyTo('info@example.com', 'Information');
@@ -392,7 +480,7 @@ final class HomeController extends BaseController
 
     }
 
-public function sendMail2($email, $nonce)
+    public function sendMail2($email, $nonce)
     {
         $results = $email;
 
@@ -410,7 +498,7 @@ public function sendMail2($email, $nonce)
         $mail->Port       = 587;                                    // TCP port to connect to
 
         //Recipients
-        $mail->setFrom('QI.8.teamb@gmail.com', 'HyukJin');
+        $mail->setFrom('QI.8.teamb@gmail.com', 'Team B');
         $mail->addAddress($results);     // Add a recipient
 
         $mail->isHTML(true);                                  // Set email format to HTML
