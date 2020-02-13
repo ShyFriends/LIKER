@@ -24,7 +24,7 @@ final class HomeController extends BaseController
         }
     }
 
-public function check_duplicate(Request $request, Response $response, $args)
+    public function check_duplicate_app(Request $request, Response $response, $args)
     {
         $username_sql = $_GET['id'];
 
@@ -35,19 +35,16 @@ public function check_duplicate(Request $request, Response $response, $args)
         $results = $stmt->fetchAll();
 
         if($results == NULL){
-            $json_array = array("status" => "success");
-                return $response->withStatus(200)
-                ->withHeader('Content-Type', 'application/json')
-                ->write(json_encode($json_array));
+            $data = array("message" => "true");
+            echo json_encode($data);
         }
         else{
-            $json_array = array("status" => "fail");
-                return $response->withStatus(200)
-                ->withHeader('Content-Type', 'application/json')
-                ->write(json_encode($json_array));
+            $data = array("message" => "false");
+            echo json_encode($data);
         }
 
     }
+    
     public function self_verify_app(Request $request, Response $response, $args)
     {
         $email_sql = $_GET['email'];
