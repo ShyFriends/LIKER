@@ -91,9 +91,6 @@ $app->post('/receiveData', 'App\Controller\HomeController:receiveData')
 $app->get('/post/{id}', 'App\Controller\HomeController:viewPost')
     ->setName('view_post');
 
-
-
-
 $app->get('/get_aqi', 'App\Controller\DeviceController:get_aqi')
     ->setName('get_aqi');
 
@@ -109,3 +106,27 @@ $app->post('/signin_app', 'App\Controller\AppController:signin_app')
 
 $app->get('/signout_app', 'App\Controller\AppController:signout_app')
     ->setName('signout_app');
+
+$app->get('/sendmail_app', 'App\Controller\AppController:sendMail_app')
+->setName('sendmail_app');
+
+$app->get('/sendmail2_app', 'App\Controller\AppController:sendMail2_app')
+    ->setName('sendmail2_app');
+
+$app->get('/self_verify_app/{username}/{email}', 'App\Controller\AppController:self_verify_app')
+    ->setName('self_verify_app');
+
+$app->post('/verify_app', 'App\Controller\AppController:verify_app')
+    ->setName('verify_app');
+
+$app->get('/confirm_verify_app', 'App\Controller\AppController:confirm_verify_app')
+    ->setName('confirm_verify_app');
+
+$app->get('/self_confirm_verify_app', 'App\Controller\AppController:self_confirm_verify_app')
+    ->setName('self_confirm_verify_app');
+
+$app->get('/check_duplicate_app/{id}', 'App\Controller\AppController:check_duplicate_app')
+    ->setName('check_duplicate_app');
+
+$app->post('/register_app', 'App\Controller\AppController:register_app')
+    ->setName('register_app');
