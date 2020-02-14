@@ -96,4 +96,54 @@ final class DeviceController extends BaseController
                 ->withHeader('Content-Type', 'application/json')
                 ->write(json_encode($json_array));
     }
+
+    public function location_aqi(Request $request, Response $response, $args)
+    {
+        $usn_sql = $_SESSION['usn'];
+        $dsn_sql = $_GET['udoo_id'];
+
+        $sql = "select co_aqi, no2_aqi, so2_aqi, o3_aqi, pm2_5_aqi, pm10_aqi from Udoo where dsn = '$dsn_sql' order by time ASC ";
+        $stmt = $this->em->getConnection()->query($sql);
+        $stmt->execute();
+
+        $results = $stmt->fetchAll();
+
+        $json_array = $results;
+                return $response->withStatus(200)
+                ->withHeader('Content-Type', 'application/json')
+                ->write(json_encode($json_array));
+    }
+
+    public function device_data(Request $request, Response $response, $args)
+    {
+        $usn_sql = $_SESSION['usn'];
+        $dsn_sql = $_GET['udoo_id'];
+
+        $sql = "select mac_addr, s_name, s_type from Devices where dsn = '$dsn_sql'";
+        $stmt = $this->em->getConnection()->query($sql);
+        $stmt->execute();
+
+        $results = $stmt->fetchAll();
+
+        $json_array = $results;
+                return $response->withStatus(200)
+                ->withHeader('Content-Type', 'application/json')
+                ->write(json_encode($json_array));
+    }
+
+    public function locations(Request $request, Response $response, $args)
+    {
+        $usn_sql = $_SESSION['usn'];
+
+        $sql = "select distinct longitude, latitude, dsn from Udoo";
+        $stmt = $this->em->getConnection()->query($sql);
+        $stmt->execute();
+
+        $results = $stmt->fetchAll();
+
+        $json_array = $results;
+                return $response->withStatus(200)
+                ->withHeader('Content-Type', 'application/json')
+                ->write(json_encode($json_array));
+    }
 }
