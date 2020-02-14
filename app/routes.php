@@ -58,7 +58,7 @@ $app->post('/check_sensor', 'App\Controller\HomeController:check_sensor')
 // $app->post('/check_sensor/{mac_addr}', 'App\Controller\HomeController:check_sensor')
 //     ->setName('check_sensor');
 
-$app->post('/regist_sensor/{s_name}/{s_type}', 'App\Controller\HomeController:regist_sensor')
+$app->post('/regist_sensor/{s_name}/{s_type}/{mac_addr}', 'App\Controller\HomeController:regist_sensor')
     ->setName('regist_sensor');
 
 $app->post('/remove_sensor/{dsn}', 'App\Controller\HomeController:remove_sensor')

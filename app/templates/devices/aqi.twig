@@ -45,7 +45,21 @@
       </div>
     </div> -->
     <!-- /.content-header -->
-
+    <section class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1>Air Quality Index</h1>
+          </div>
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item"><a href="#">Home</a></li>
+              <li class="breadcrumb-item active">AQI</li>
+            </ol>
+          </div>
+        </div>
+      </div><!-- /.container-fluid -->
+    </section>
 <div class="row">
           <div class="col-12">
             <!-- jQuery Knob -->
@@ -71,29 +85,29 @@
 
 <!--                     <div class="knob-label">data-width="90"</div>
  -->
-                    <input type="text" class="knob" id="pm2_5_aqi" value="90" data-width="150" data-height="150" data-fgColor="#00a65a" data-readonly="true" >pm2.5
+                    <input type="text" class="knob" id="pm2_5_aqi" value="90" data-width="150" data-max = "500" data-height="150" data-fgColor="#00a65a" data-readonly="true" >pm2.5
 
 <!--                     <div class="knob-label">New Visitors</div>
  -->
-                    <input type="text" class="knob" id="pm10_aqi" value="70" data-width="150" data-height="150" data-fgColor="#f56954" data-readonly="true">pm10
+                    <input type="text" class="knob" id="pm10_aqi" value="70" data-max = "500" data-width="150" data-height="150" data-fgColor="#f56954" data-readonly="true">pm10
 
 <!--                     <div class="knob-label">Bounce Rate</div>
  -->
-                    <input type="text" class="knob" id="no2_aqi" value="80"data-width="150"
+                    <input type="text" class="knob" id="no2_aqi" value="80"data-width="150" data-max = "500"
                            data-height="150" data-fgColor="#00a65a" data-readonly="true">NO2
 
 <!--                     <div class="knob-label">Server Load</div>
  -->
-                    <input type="text" class="knob" id="co_aqi" value="40" data-width="150" data-height="150" data-fgColor="#00a65a" data-readonly="true" >CO
+                    <input type="text" class="knob" id="co_aqi" value="40" data-width="150" data-height="150" data-max = "500" data-fgColor="#00a65a" data-readonly="true" >CO
 
 <!--                     <div class="knob-label">Disk Space</div>
  -->
 
-                    <input type="text" class="knob" id="so2_aqi" value="90" data-width="150" data-height="150" data-fgColor="#00a65a" data-readonly="true" >SO2
+                    <input type="text" class="knob" id="so2_aqi" value="90" data-width="150" data-height="150" data-max = "500" data-fgColor="#00a65a" data-readonly="true" >SO2
 
 <!--                     <div class="knob-label">Bandwidth</div>
  -->                    
-                    <input type="text" class="knob" id="o3_aqi" value="50" data-width="150" data-height="150" data-fgColor="#00a65a" data-readonly="true" >O3
+                    <input type="text" class="knob" id="o3_aqi" value="50" data-width="150" data-height="150" data-max = "500" data-fgColor="#00a65a" data-readonly="true" >O3
 
 <!--                     <div class="knob-label">CPU</div>
 
@@ -356,37 +370,44 @@
                         for (i in aqi_data[0]) {
                           if(i!="longitude"&&i!="latitude"&&i!="udoo_sn"){
                             document.getElementById(i).value = aqi_data[0][i];
-                            if(document.getElementById(i).value>50){
+                            if(document.getElementById(i).value>100&&document.getElementById(i).value<150){
                               if(i=="pm2_5_aqi"){
                                 $('#pm2_5_aqi').knob({
-                                  fgColor: 'red'
+                                  fgColor: 'orange'
                                 });  
                               }
                               if(i=="pm10_aqi"){
                                 $('#pm10_aqi').knob({
-                                  fgColor: 'red'
+                                  fgColor: 'orange'
                                 });  
                               }
                               if(i=="co_aqi"){
                                 $('#co_aqi').knob({
-                                  fgColor: 'red'
+                                  fgColor: 'orange'
                                 });  
                               }
                               if(i=="no2_aqi"){
                                 $('#no2_aqi').knob({
-                                  fgColor: 'red'
+                                  fgColor: 'orange'
                                 });  
                               }
                               if(i=="so2_aqi"){
                                 $('#so2_aqi').knob({
-                                  fgColor: 'red'
+                                  fgColor: 'orange'
                                 });  
                               }
                               if(i=="o3_aqi"){
                                 $('#o3_aqi').knob({
-                                  fgColor: 'red'
+                                  fgColor: 'orange'
                                 });  
                               }
+                            }
+                            if(document.getElementById(i).value>150){
+                                if(i=="co_aqi"){
+                                $('#co_aqi').knob({
+                                  fgColor: 'red'
+                                });  
+                              }  
                             }
                           }
                         }
@@ -442,7 +463,6 @@
                     }
                   });
                 }
-                  alert(mychart.data.datasets[0].data[0]);
 
 
 

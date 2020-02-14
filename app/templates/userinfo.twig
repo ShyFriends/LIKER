@@ -401,7 +401,12 @@
             <label class="form-control" for="s_type_polar"><input type="radio" id="s_type_polar" name="s_type" value="polar">&emsp; Polar Sensor</label>
             <label class="form-control" for="s_type_udoo"><input type="radio" id="s_type_udoo" name="s_type" value="udoo">&emsp; Udoo Sensor</label>
           </div>
-<!--hidden-->          <input type="hidden" id="mac_addr" value="mac_addr"/>
+           <div class="form-group">
+            <label for="message-name" class="col-form-label">Mac Address (Check on your App):</label>
+            <input type="text" class="form-control" id="mac_addr">
+          </div>
+
+<!--hidden-->      <!--    <input type="hidden" id="mac_addr" value="mac_addr"/>-->
         </form>
       </div>
       <div class="modal-footer">
@@ -436,11 +441,11 @@
   function regist_sensor(){
     var s_name_data = $('#s_name').val();
     var s_type_data = $('input[name="s_type"]:checked').val()
-    //var mac_addr = $('#mac_addr').val();
+    var mac_addr = $('#mac_addr').val();
      $.ajax({ 
         type:"POST",
-        url:"/regist_sensor/{s_name}/{s_type}",
-        data: { "s_name":s_name_data, "s_type": s_type_data },
+        url:"/regist_sensor/{s_name}/{s_type}/{mac_addr}",
+        data: { "s_name":s_name_data, "s_type": s_type_data, "mac_addr":mac_addr },
         success: function(data) {
             console.log("SUCCESS: ", data);
               alert("SUCCESS Sensor Registration");

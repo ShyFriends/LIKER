@@ -156,9 +156,9 @@ final class HomeController extends BaseController
         $s_name_sql = $_POST['s_name'];
         $s_type_sql = $_POST['s_type'];
 
-        $randomNum = mt_rand(10000000000000000, 100000000000000000);
-        $mac_addr = $randomNum;
-        //$mac_addr = $_POST['mac_addr'];
+        //$randomNum = mt_rand(10000000000000000, 100000000000000000);
+        //$mac_addr = $randomNum;
+        $mac_addr = $_POST['mac_addr'];
 
         $sql = "insert into Devices(usn, s_name, s_type, mac_addr) values ('$usn_sql','$s_name_sql','$s_type_sql','$mac_addr')";
         $stmt = $this->em->getConnection()->prepare($sql);
