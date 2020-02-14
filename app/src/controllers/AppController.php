@@ -90,7 +90,63 @@ final class HomeController extends BaseController
 
         }
     }
+    
+    public function verify_app(Request $request, Response $response, $args)
+    {
 
+        $nonce = password_hash($email_sql, PASSWORD_DEFAULT);
+
+        $username_sql = $_POST['username'];
+
+        $sql = "select email from Users where username = '$username_sql'";
+        $stmt = $this->em->getConnection()->prepare($sql);
+        $stmt->execute();
+
+        $results = $stmt->fetchAll();
+        
+        $email_sql = $results[0]['email'];
+
+        $randomNum = mt_rand(1000, 10000);
+        $temp_password = password_hash($randomNum, PASSWORD_DEFAULT);
+
+        $sql = "insert into Auth(username, temp_password, nonce, email, stateflag) values ('$username_sql','$temp_password', '$nonce','$email_sql', 'F')";
+        $stmt = $this->em->getConnection()->prepare($sql);
+        $stmt->execute();
+
+        
+        $sql = "UPDATE Users SET h_password = '$temp_password' WHERE username = '$username_sql'"; 
+            $stmt = $this->em->getConnection()->prepare($sql);
+            $stmt->execute();
+
+        $this->sendMail_app($email_sql, $nonce, $randomNum);
+
+        $this->view->render($response, 'success.twig');
+        return $response;
+    }
+
+    public function confirm_verify_app(Request $request, Response $response, $args)
+    {
+        
+        $nonce = $_GET['nonce'];
+
+        $sql = "select username from Auth where nonce = '$nonce'";
+        $stmt = $this->em->getConnection()->prepare($sql);
+        $stmt->execute();
+
+        $results = $stmt->fetchAll();
+                
+        if($results == NULL){
+            $this->view->render($response, 'errorpage.twig');
+            return $response;
+        }
+        else{
+            $sql = "UPDATE Auth SET stateflag = 'T' WHERE nonce = '$nonce'"; 
+            $stmt = $this->em->getConnection()->prepare($sql);
+            $stmt->execute();
+            $this->view->render($response, 'signup.twig');
+            return $response;
+        }
+    }
 
     public function signin_app(Request $request, Response $response, $args)
     {    
@@ -219,7 +275,7 @@ final class HomeController extends BaseController
         // Content
         $mail->isHTML(true);                                  // Set email format to HTML
         $mail->Subject = 'Whattssssup bro~~';
-        $mail->Body    = '<h1>LIKER Message</h1><a href="http://192.168.33.99/confirm_verify?nonce=' . $nonce . '">Sign-In? Click me!</a><br>your temporary password is :' . $randomNum . '';
+        $mail->Body    = '<h1>LIKER Message</h1><a href="http://192.168.33.99/confirm_verify_app?nonce=' . $nonce . '">Sign-In? Click me!</a><br>your temporary password is :' . $randomNum . '';
         $mail->AltBody = 'HeyHey~';
 
         $mail->send();
@@ -254,7 +310,7 @@ final class HomeController extends BaseController
 
         $mail->isHTML(true);                                  // Set email format to HTML
         $mail->Subject = 'Whattssssup bro~~';
-        $mail->Body    = '<h1>LIKER Message</h1><a href="http://teamb-iot.calit2.net/self_confirm_verify?nonce=' . $nonce . '">Sign-In? Click me!</a>';
+        $mail->Body    = '<h1>LIKER Message</h1><a href="http://teamb-iot.calit2.net/self_confirm_verify_app?nonce=' . $nonce . '">Sign-In? Click me!</a>';
         $mail->AltBody = 'HeyHey~';
 
         $mail->send();
