@@ -34,6 +34,7 @@ final class HomeController extends BaseController
 
         $results = $stmt->fetchAll();
                 
+
         if($results == NULL){
             $json_array = array("status" => "success");
                 return $response->withStatus(200)

@@ -94,8 +94,14 @@ $app->get('/post/{id}', 'App\Controller\HomeController:viewPost')
 $app->get('/get_aqi', 'App\Controller\DeviceController:get_aqi')
     ->setName('get_aqi');
 
+$app->get('/location_aqi/{udoo_id}', 'App\Controller\DeviceController:location_aqi')
+    ->setName('location_aqi');
 
+$app->get('/device_data/{udoo_id}', 'App\Controller\DeviceController:device_data')
+    ->setName('device_data');
 
+$app->get('/locations', 'App\Controller\DeviceController:locations')
+    ->setName('locations');
 
 ///////////////////////// app //////////////////////////
 $app->get('/signup_app', 'App\Controller\AppController:signup_app')
@@ -130,3 +136,4 @@ $app->get('/check_duplicate_app/{id}', 'App\Controller\AppController:check_dupli
 
 $app->post('/register_app', 'App\Controller\AppController:register_app')
     ->setName('register_app');
+

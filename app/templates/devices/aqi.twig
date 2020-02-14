@@ -79,7 +79,7 @@
 
 <!--                     <div class="knob-label">Bounce Rate</div>
  -->
-                    <input type="text" class="knob" id="no2_aqi" value="80" data-min="-150" data-max="150" data-width="150"
+                    <input type="text" class="knob" id="no2_aqi" value="80"data-width="150"
                            data-height="150" data-fgColor="#00a65a" data-readonly="true">NO2
 
 <!--                     <div class="knob-label">Server Load</div>
@@ -109,42 +109,44 @@
         <div>
           <div style="width: 700px;height: 700px; padding-left: 50px;float: left;">
             <div id="map"></div>
-    <script>
-      // This example creates circles on the map, representing populations in North
-      // America.
 
-      // First, create an object containing LatLng and population for each city.
+
+            <script src="https://unpkg.com/@google/markerclustererplus@4.0.1/dist/markerclustererplus.min.js"></script>
+    <script>
+
+
       var citymap = {
         chicago: {
-          center: {lat: 41.878, lng: -87.629},
-          population: 2714856
+          center: {lat: -31.563910, lng: 147.154312},
+          population: 840583
         },
         newyork: {
-          center: {lat: 40.714, lng: -74.005},
-          population: 8405837
+          center: {lat: -33.718234, lng: 150.363181},
+          population: 8714856
         },
         losangeles: {
-          center: {lat: 34.052, lng: -118.243},
-          population: 3857799
+          center: {lat: -33.727111, lng: 150.371124},
+          population: 857799
         },
         vancouver: {
-          center: {lat: 49.25, lng: -123.1},
+          center: {lat: -33.848588, lng: 151.209834},
           population: 603502
         }
       };
 
+
+
       function initMap() {
-        // Create the map.
+
         var map = new google.maps.Map(document.getElementById('map'), {
-          zoom: 4,
-          center: {lat: 37.090, lng: -95.712},
-          mapTypeId: 'terrain'
+          zoom: 3,
+          center: {lat: -28.024, lng: 140.887}
         });
 
-        // Construct the circle for each value in citymap.
-        // Note: We scale the area of the circle based on the population.
+
+
+
         for (var city in citymap) {
-          // Add the circle for this city to the map.
           var cityCircle = new google.maps.Circle({
             strokeColor: '#FF0000',
             strokeOpacity: 0.8,
@@ -155,8 +157,175 @@
             center: citymap[city].center,
             radius: Math.sqrt(citymap[city].population) * 100
           });
+
         }
+
+
+
+
+
+        // Create an array of alphabetical characters used to label the markers.
+        var labels = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+
+        // Add some markers to the map.
+        // Note: The code uses the JavaScript Array.prototype.map() method to
+        // create an array of markers based on a given "locations" array.
+        // The map() method here has nothing to do with the Google Maps API.
+        var markers = locations.map(function(location, i) {
+          return new google.maps.Marker({
+            position: location,
+            label: labels[i % labels.length],
+            id : i
+          });
+        });
+
+        for(var i=0;i<markers.length;i++){
+            map.addListener('center_changed', function() {
+                window.setTimeout(function() {
+                    map.panTo(markers[i].getPosition());
+                }, 3000);
+            });
+            markers[i].addListener('click', function() {
+                map.setZoom(8);
+                var udoo_id = this.id;
+                alert(udoo_id);
+ 
+                $.ajax({
+                    type:"GET",
+                    url:"/location_aqi/{udoo_id}",
+                    data: { "udoo_id":udoo_id },
+                    success: function(data) {
+                        console.log("SUCCESS: ", data);
+
+                        for(var i = 0;i<data.length;i++){
+                          mychart.data.datasets[0].data[i] = data[i].pm2_5_aqi;
+                        }
+                        for(var i = 0;i<data.length;i++){
+                          mychart.data.datasets[1].data[i] = data[i].pm10_aqi;
+                        }
+                        for(var i = 0;i<data.length;i++){
+                          mychart.data.datasets[2].data[i] = data[i].no2_aqi;
+                        }
+                        for(var i = 0;i<data.length;i++){
+                          mychart.data.datasets[3].data[i] = data[i].co_aqi;
+                        }
+                        for(var i = 0;i<data.length;i++){
+                          mychart.data.datasets[4].data[i] = data[i].so2_aqi;
+                        }
+                        for(var i = 0;i<data.length;i++){
+                          mychart.data.datasets[5].data[i] = data[i].o3_aqi;
+                        }
+                        
+                        mychart.update();
+                    },
+                    error: function(data) {
+                        console.log('ERROR: ', data);
+                    },
+
+                });
+                $.ajax({
+                    type:"GET",
+                    url:"/device_data/{udoo_id}",
+                    data: { "udoo_id":udoo_id },
+                    success: function(data) {
+                        console.log("SUCCESS: ", data);
+                        $('#sensors').empty();
+                        var sensors = data;
+                        var sensor = new Array();
+                        sensor.push(["Name", "Type", "Mac_address"]);
+
+                        for(var i=0;i<sensors.length;i++){
+                          sensor.push([data[i].s_name, data[i].s_type, data[i].mac_addr]);
+                        }
+                        //Create a HTML Table element.
+                        var table = document.getElementById("sensors");
+                        //Get the count of columns.
+                        var columnCount = sensor[0].length;
+                 
+                        //Add the header row.
+                        var row = table.insertRow(-1);
+                        for (var i = 0; i < columnCount; i++) {
+                            var headerCell = document.createElement("TH");
+                            headerCell.innerHTML = sensor[0][i];
+                            row.appendChild(headerCell);
+                        }
+                 
+                        //Add the data rows.
+                        for (var i = 1; i < sensor.length; i++) {
+                            row = table.insertRow(-1);
+                            for (var j = 0; j < columnCount; j++) {
+                                var cell = row.insertCell(-1);
+                                cell.innerHTML = sensor[i][j];
+                            }
+                        }
+                 
+                        var dvTable = document.getElementById("dvTable");
+                        dvTable.innerHTML = "";
+                        dvTable.appendChild(table);
+                    
+                    },
+                    error: function(data) {
+                        console.log('ERROR: ', data);
+                    },
+
+                });
+            });
+        
+        }
+
+
+
+        // Add a marker clusterer to manage the markers.
+        var markerCluster = new MarkerClusterer(map, markers,
+            {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});
       }
+
+      var locations = [
+        {lat: -33.718234, lng: 150.363181},
+        {lat: -33.727111, lng: 150.371124},
+        {lat: -33.848588, lng: 151.209834},
+        {lat: -33.851702, lng: 151.216968},
+        {lat: -34.671264, lng: 150.863657},
+        {lat: -35.304724, lng: 148.662905},
+        {lat: -36.817685, lng: 175.699196},
+        {lat: -36.828611, lng: 175.790222},
+        {lat: -37.750000, lng: 145.116667},
+        {lat: -37.759859, lng: 145.128708},
+        {lat: -37.765015, lng: 145.133858},
+        {lat: -37.770104, lng: 145.143299},
+        {lat: -37.773700, lng: 145.145187},
+        {lat: -37.774785, lng: 145.137978},
+        {lat: -37.819616, lng: 144.968119},
+        {lat: -38.330766, lng: 144.695692},
+        {lat: -39.927193, lng: 175.053218},
+        {lat: -41.330162, lng: 174.865694},
+        {lat: -42.734358, lng: 147.439506},
+        {lat: -42.734358, lng: 147.501315},
+        {lat: -42.735258, lng: 147.438000},
+        {lat: -43.999792, lng: 170.463352}
+      ]
+      var all_sensors;
+      $.ajax({
+          type:"GET",
+          url:"/locations",
+          success: function(data) {
+              console.log("SUCCESS: ", data);
+              all_sensors = data;
+              for(var i=0; i<all_sensors.length;i++){
+                locations.push({'lat':parseFloat(all_sensors[i].latitude), 'lng':parseFloat(all_sensors[i].longitude)});
+              }
+              console.log(locations);
+
+          },
+          error: function(data) {
+              console.log('ERROR: ', data);
+          },
+      });
+
+    </script>
+    <!-- Replace following script src -->
+    <script src="/maps/documentation/javascript/examples/markerclusterer/markerclustererplus@4.0.1.min.js">
+    </script>
     </script>
            </div>
 
@@ -171,7 +340,7 @@
               <!-- /.card-body -->
 
               <div class="card-body" style="float: left;">
-                <canvas class="chart" id="line-chart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
+                <canvas class="chart" id="line-chart" style="min-height: 250px; height: 350px; max-width: 100%;"></canvas>
               </div>
           </div>
               <script type="text/javascript">
@@ -182,8 +351,8 @@
                     success: function(data) {
                         console.log("SUCCESS: ", data);
                         aqi_data = data;
-                        
-                        alert(aqi_data);
+                        chart_view();
+
                         for (i in aqi_data[0]) {
                           if(i!="longitude"&&i!="latitude"&&i!="udoo_sn"){
                             document.getElementById(i).value = aqi_data[0][i];
@@ -226,58 +395,63 @@
                         console.log('ERROR: ', data);
                     },
                   });
-
-                  new Chart(document.getElementById("line-chart"), {
-                  type: 'line',
-                  data: {
-                    labels: [2,4,6,8,10,12,14,16,18,20,22,24],
-                    datasets: [{ 
-                        data: [36,44,49,36,37,31,43,31,33,38,35,33],
-                        label: "pm2.5",
-                        borderColor: "#3e95cd",
-                        fill: false
-                      }, { 
-                        data: [42,45,51,52,55,59,57,66,70,68,72,70],
-                        label: "pm10",
-                        borderColor: "#8e5ea2",
-                        fill: false
-                      }, { 
-                        data: [86,74,69,56,47,41,43,41,53,48,45,40],
-                        label: "NO2",
-                        borderColor: "#3cba9f",
-                        fill: false
-                      }, { 
-                        data: [40,50,60,66,64,68,74,77,81,85,88,90],
-                        label: "CO",
-                        borderColor: "#e8c3b9",
-                        fill: false
-                      }, { 
-                        data: [56,53,52,52,47,46,42,42,52,57,56,50],
-                        label: "SO2",
-                        borderColor: "#c45850",
-                        fill: false
+                  var mychart;
+                  function chart_view(){
+                    mychart = new Chart(document.getElementById("line-chart"), {
+                    type: 'line',
+                    data: {
+                      labels: [2,4,6,8,10,12,14,16,18,20,22,24],
+                      datasets: [{ 
+                          data: [78,44,49,36,37,31,43,31,33,38,35,33],
+                          label: "pm2.5",
+                          borderColor: "#3e95cd",
+                          fill: false
+                        }, { 
+                          data: [62,45,51,52,55,59,57,66,70,68,72,70],
+                          label: "pm10",
+                          borderColor: "#8e5ea2",
+                          fill: false
+                        }, { 
+                          data: [86,74,69,56,47,41,43,41,53,48,45,40],
+                          label: "NO2",
+                          borderColor: "#3cba9f",
+                          fill: false
+                        }, { 
+                          data: [50,50,60,66,64,68,74,77,81,85,88,90],
+                          label: "CO",
+                          borderColor: "#e8c3b9",
+                          fill: false
+                        }, { 
+                          data: [56,53,52,52,47,46,42,42,52,57,56,50],
+                          label: "SO2",
+                          borderColor: "#c45850",
+                          fill: false
+                        }, { 
+                          data: [56,53,52,52,37,36,12,12,22,27,26,25],
+                          label: "O3",
+                          borderColor: "gray",
+                          fill: false
+                        }
+                      ]
+                    },
+                    options: {
+                      title: {
+                        display: true,
+                        text: 'World population per region (in millions)'
                       }
-                    ]
-                  },
-                  options: {
-                    title: {
-                      display: true,
-                      text: 'World population per region (in millions)'
                     }
-                  }
-                });
+                  });
+                }
+                  alert(mychart.data.datasets[0].data[0]);
+
+
 
             </script>
 
 
-
-
-
-
-
-          <div class="container" style="width: 100%;margin-top: 40%">
+          <div id="dvTable" class="container" style="width: 100%;margin-top: 40%">
                      
-              <table class="table table-striped">
+              <table class="table table-striped" id="sensors">
                 <thead>
                   <tr>
                     <th>Name</th>
@@ -322,6 +496,9 @@
 
         </div>
       </div>
+
+
+
   <!-- /.content-wrapper -->
   <footer class="main-footer">
     <strong>Copyright &copy; 2014-2019 <a href="http://adminlte.io">AdminLTE.io</a>.</strong>
