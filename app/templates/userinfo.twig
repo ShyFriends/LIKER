@@ -442,6 +442,7 @@
     var s_name_data = $('#s_name').val();
     var s_type_data = $('input[name="s_type"]:checked').val()
     var mac_addr = $('#mac_addr').val();
+
      $.ajax({ 
         type:"POST",
         url:"/regist_sensor/{s_name}/{s_type}/{mac_addr}",

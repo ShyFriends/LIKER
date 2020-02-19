@@ -8,7 +8,7 @@ use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
 use PHPMailer\PHPMailer\Exception;
     
-final class HomeController extends BaseController
+final class AppController extends BaseController
 {
     public function dispatch(Request $request, Response $response, $args)
     {
@@ -57,7 +57,7 @@ final class HomeController extends BaseController
         $stmt = $this->em->getConnection()->prepare($sql);
         $stmt->execute();
 
-        $this->sendMail2($email_sql, $nonce);
+        $this->sendMail2_app($email_sql, $nonce);
 
 
         $data = array("message" => "true");
@@ -90,6 +90,7 @@ final class HomeController extends BaseController
 
         }
     }
+
     
     public function verify_app(Request $request, Response $response, $args)
     {
@@ -103,8 +104,9 @@ final class HomeController extends BaseController
         $stmt->execute();
 
         $results = $stmt->fetchAll();
-        
+
         $email_sql = $results[0]['email'];
+
 
         $randomNum = mt_rand(1000, 10000);
         $temp_password = password_hash($randomNum, PASSWORD_DEFAULT);
@@ -113,20 +115,21 @@ final class HomeController extends BaseController
         $stmt = $this->em->getConnection()->prepare($sql);
         $stmt->execute();
 
-        
-        $sql = "UPDATE Users SET h_password = '$temp_password' WHERE username = '$username_sql'"; 
+
+        $sql = "UPDATE Users SET h_password = '$temp_password' WHERE username = '$username_sql'";
             $stmt = $this->em->getConnection()->prepare($sql);
             $stmt->execute();
 
+
         $this->sendMail_app($email_sql, $nonce, $randomNum);
 
-        $this->view->render($response, 'success.twig');
-        return $response;
+        $data = array("message" => "true");
+        echo json_encode($data);
     }
 
     public function confirm_verify_app(Request $request, Response $response, $args)
     {
-        
+
         $nonce = $_GET['nonce'];
 
         $sql = "select username from Auth where nonce = '$nonce'";
@@ -134,22 +137,22 @@ final class HomeController extends BaseController
         $stmt->execute();
 
         $results = $stmt->fetchAll();
-                
+
         if($results == NULL){
-            $this->view->render($response, 'errorpage.twig');
-            return $response;
+            $data = array("message" => "true");
+            echo json_encode($data);
         }
         else{
-            $sql = "UPDATE Auth SET stateflag = 'T' WHERE nonce = '$nonce'"; 
+            $sql = "UPDATE Auth SET stateflag = 'T' WHERE nonce = '$nonce'";
             $stmt = $this->em->getConnection()->prepare($sql);
             $stmt->execute();
-            $this->view->render($response, 'signup.twig');
-            return $response;
+            $data = array("message" => "true");
+            echo json_encode($data);
         }
     }
 
     public function signin_app(Request $request, Response $response, $args)
-    {    
+    {
         // print_r($_POST['password']);
         $username_sql = $_POST['username'];
         $password_sql = $_POST['password'];
@@ -160,26 +163,19 @@ final class HomeController extends BaseController
         $results = $stmt->fetchAll();
 
         if(password_verify($password_sql, $results[0]['h_password'])){
-            $sql = "UPDATE Users SET loginflag = 'T' WHERE username = '$username_sql'"; 
+            $sql = "UPDATE Users SET loginflag = 'T' WHERE username = '$username_sql'";
             $stmt = $this->em->getConnection()->prepare($sql);
             $stmt->execute();
-
-            $json_array = array("status" => "success");
-            $_SESSION['usn'] = $results[0]['usn'];
-            $_SESSION['username'] = $results[0]['username'];
-            //echo $_SESSION['usn'] . " is the session .... ";
-            //die("test");
-            $this->view->render($response, 'home.twig', ['username'=>$_SESSION['username']]);
-            //$this->view->render($response, 'nav.twig', ['username'=>$_SESSION['username']]);
-            //$this->view->render($response, 'sidebar.twig', ['username'=>$_SESSION['username']]);
-            return $response;
+            $sql = "DELETE FROM Auth WHERE username = '$username_sql'";
+            $stmt = $this->em->getConnection()->prepare($sql);
+            $stmt->execute();
+            $data = array("message" => "true");
+            echo json_encode($data);
         }
         else{
-            $json_array = array("status" => "fail", "message" => "User already exists");
-            $this->view->render($response, 'errorpage.twig');
-            return $response;
+            $data = array("message" => "false");
+            echo json_encode($data);
         }
-
     }
 
     public function signup_app(Request $request, Response $response, $args)
@@ -194,20 +190,21 @@ final class HomeController extends BaseController
 
     public function signout_app(Request $request, Response $response, $args)
     {
-        $usn_sql = $_SESSION['usn'];
-        $sql = "UPDATE Users SET loginflag = 'F' WHERE usn = '$usn_sql'"; 
+        $username_sql = $_GET['username'];
+        $sql = "UPDATE Users SET loginflag = 'F' WHERE username = '$username_sql'";
         $stmt = $this->em->getConnection()->prepare($sql);
         $stmt->execute();
 
         session_unset();
         session_destroy();
 
-        $this->view->render($response, 'nav.twig');
-        return $response;
+        $data = array("message" => "true");
+        echo json_encode($data);
     }
 
 
-    public function register(Request $request, Response $response, $args)
+
+   public function register_app(Request $request, Response $response, $args)
     {
         $username_sql = $_POST['username'];
         $password_sql = $_POST['first_password'];
@@ -223,6 +220,7 @@ final class HomeController extends BaseController
         $stmt->execute();
 
         $results = $stmt->fetchAll();
+
 
         if($results[0]['stateflag']=="T"){
             $sql = "insert into Users(username, h_password, email, birth, phone_number, gender, loginflag) values ('$username_sql','$hashed_password','$email_sql','$birth_sql','$phone_number_sql','$gender_sql', 'F')";
@@ -246,7 +244,7 @@ final class HomeController extends BaseController
     public function sendMail_app($email, $nonce, $randomNum)
     {
         $results = $email;
-
+        print_r($results);
         $mail = new PHPMailer(true);
 
         try {
@@ -255,8 +253,8 @@ final class HomeController extends BaseController
         $mail->isSMTP();                                            // Send using SMTP
         $mail->Host       = 'smtp.gmail.com';                    // Set the SMTP server to send through
         $mail->SMTPAuth   = true;                                   // Enable SMTP authentication
-        $mail->Username   = 'wkdgurwls1211@gmail.com';                     // SMTP username
-        $mail->Password   = 'gurwls00!';                                   // SMTP password
+        $mail->Username   = 'pcyeon07@gmail.com';                     // SMTP username
+        $mail->Password   = 'Qkrcodus97!';                                   // SMTP password
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;         // Enable TLS encryption; `PHPMailer::ENCRYPTION_SMTPS` also accepted
         $mail->Port       = 587;                                    // TCP port to connect to
 
@@ -275,7 +273,7 @@ final class HomeController extends BaseController
         // Content
         $mail->isHTML(true);                                  // Set email format to HTML
         $mail->Subject = 'Whattssssup bro~~';
-        $mail->Body    = '<h1>LIKER Message</h1><a href="http://192.168.33.99/confirm_verify_app?nonce=' . $nonce . '">Sign-In? Click me!</a><br>your temporary password is :' . $randomNum . '';
+        $mail->Body    = '<h1>LIKER Message</h1><a href="http://teamb-iot.calit2.net/confirm_verify_app?nonce=' . $nonce . '">Sign-In? Click me!</a><br>your temporary password is :' . $randomNum . '';
         $mail->AltBody = 'HeyHey~';
 
         $mail->send();
@@ -286,6 +284,7 @@ final class HomeController extends BaseController
         }
 
     }
+
 
     public function sendMail2_app($email, $nonce)
     {
@@ -299,8 +298,8 @@ final class HomeController extends BaseController
         $mail->isSMTP();                                            // Send using SMTP
         $mail->Host       = 'smtp.gmail.com';                    // Set the SMTP server to send through
         $mail->SMTPAuth   = true;                                   // Enable SMTP authentication
-        $mail->Username   = 'wkdgurwls1211@gmail.com';                     // SMTP username
-        $mail->Password   = 'gurwls00!';                               // SMTP password
+        $mail->Username   = 'pcyeon07@gmail.com';                     // SMTP username
+        $mail->Password   = 'Qkrcodus97!';                               // SMTP password
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;         // Enable TLS encryption; `PHPMailer::ENCRYPTION_SMTPS` also accepted
         $mail->Port       = 587;                                    // TCP port to connect to
 
@@ -319,6 +318,137 @@ final class HomeController extends BaseController
         catch (Exception $e) {
         echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
         }
+
+    }
+
+    public function check_it_app(Request $request, Response $response, $args)
+    {
+        $username_sql = $_GET['username'];
+
+            $sql = "select stateflag from Auth where username = '$username_sql'";
+        $stmt = $this->em->getConnection()->prepare($sql);
+        $stmt->execute();
+
+        $results = $stmt->fetchAll();
+
+        if($results[0]['stateflag']=="T"){
+            $data = array("message" => "true");
+            echo json_encode($data);
+        }
+        else{
+            $data = array("message" => "false");
+            echo json_encode($data);
+        }
+
+    }
+
+
+
+    public function userinfo_app(Request $request, Response $response, $args)
+    {
+        $username_sql = $_GET['username'];
+        //userinfo
+        $sql = "select usn, birth, gender, email, phone_number from Users where username = '$username_sql'";
+        $stmt = $this->em->getConnection()->query($sql);
+        $stmt->execute();
+        $user_results = $stmt->fetchAll();
+
+        $usn_sql = $user_results[0]['usn'];
+
+        //polar sensor info
+        $sql = "select dsn, s_name, s_type, mac_addr from Devices where usn = '$usn_sql' and s_type = 'polar'" ;
+        $stmt = $this->em->getConnection()->query($sql);
+        $stmt->execute();
+        $polar_results = $stmt->fetchAll();
+
+        //udoo sensor info
+        $sql = "select dsn, s_name, s_type, mac_addr from Devices where usn = '$usn_sql' and s_type = 'udoo'";
+        $stmt = $this->em->getConnection()->query($sql);
+        $stmt->execute();
+        $udoo_results = $stmt->fetchAll();
+
+        $my_array=array("username"=>$_SESSION['username'],"user_results"=>$user_results, 'polar_results'=>$polar_results, 'udoo_results'=>$udoo_results);
+
+        return $response->withStatus(200)
+        ->withHeader('Content-Type','application/json')
+        ->write(json_encode($my_array));
+
+
+        // $this->view->render($response, 'userinfo.twig', ['username'=>$_SESSION['username'], 'user_results'=>$user_results, 'polar_results'=>$polar_results, 'udoo_results'=>$udoo_results]);
+    }
+    
+    public function remove_sensor_app(Request $request, Response $response, $args)
+    {
+        $username_sql = $_POST['username'];
+        $dsn_sql = $_POST['dsn'];
+
+        $sql = "UPDATE Polar SET dsn = -1 WHERE dsn = '$dsn_sql'";
+        $stmt = $this->em->getConnection()->prepare($sql);
+        $stmt->execute();
+
+        $sql = "UPDATE Udoo SET dsn = -1 WHERE dsn = '$dsn_sql'";
+        $stmt = $this->em->getConnection()->prepare($sql);
+        $stmt->execute();
+
+        $sql = "DELETE FROM Devices WHERE dsn = '$dsn_sql'";
+        $stmt = $this->em->getConnection()->prepare($sql);
+        $stmt->execute();
+
+        $data = array("message" => "true");
+        echo json_encode($data);
+    }
+
+    public function regist_sensor_app(Request $request, Response $response, $args)
+    {
+        $username_sql = $_POST['username'];
+        $s_name_sql = $_POST['s_name'];
+        $s_type_sql = $_POST['s_type'];
+        $mac_addr = $_POST['mac_addr'];
+
+
+        $sql = "select usn from Users where username = '$username_sql'";
+        $stmt = $this->em->getConnection()->query($sql);
+        $stmt->execute();
+        $user_results = $stmt->fetchAll();
+
+        $usn_sql = $user_results[0]['usn'];
+        //$randomNum = mt_rand(10000000000000000, 100000000000000000);
+        //$mac_addr = $randomNum;
+
+        $sql = "insert into Devices(usn, s_name, s_type, mac_addr) values ('$usn_sql','$s_name_sql','$s_type_sql','$mac_addr')";
+        $stmt = $this->em->getConnection()->prepare($sql);
+        $stmt->execute();
+
+        $data = array("message" => "true");
+        echo json_encode($data);
+    }
+
+    public function check_sensor_app(Request $request, Response $response, $args)
+    {
+        $username_sql = $_POST['username'];
+
+        $randomNum = mt_rand(10000000000000000, 100000000000000000);
+        $mac_addr = $randomNum;
+        //$mac_addr = $_POST['mac_addr']; 
+        $sql = "select mac_addr from Devices natural join Users where username = '$username_sql'";
+        $stmt = $this->em->getConnection()->query($sql);
+        $stmt->execute();
+        $sensor_results = $stmt->fetchAll();
+        
+        $resultsno = count($sensor_results);
+
+        for($i=0; $i<$resultsno; $i++){
+            if($sensor_results[$i]['mac_addr'] == $mac_addr){
+                $json_array = array("status" => 1);
+                return $response->withStatus(200)
+                ->withHeader('Content-Type', 'application/json')
+                ->write(json_encode($json_array));
+            }
+        }
+        $json_array = array("status" => 1);
+        return $response->withStatus(200)
+        ->withHeader('Content-Type', 'application/json')
+        ->write(json_encode($json_array));
 
     }
 
