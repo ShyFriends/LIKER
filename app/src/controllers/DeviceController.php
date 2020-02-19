@@ -102,7 +102,7 @@ final class DeviceController extends BaseController
         $usn_sql = $_SESSION['usn'];
         $dsn_sql = $_GET['udoo_id'];
 
-        $sql = "select co_aqi, no2_aqi, so2_aqi, o3_aqi, pm2_5_aqi, pm10_aqi from Udoo where dsn = '$dsn_sql' order by time ASC ";
+        $sql = "select co_aqi, no2_aqi, so2_aqi, o3_aqi, pm2_5_aqi, pm10_aqi from Udoo where dsn = '$dsn_sql' order by time ASC limit 12 ";
         $stmt = $this->em->getConnection()->query($sql);
         $stmt->execute();
 
@@ -133,9 +133,46 @@ final class DeviceController extends BaseController
 
     public function locations(Request $request, Response $response, $args)
     {
+
+        $ne_lat_sql = (float)$_GET['ne_lat'];
+        $ne_lng_sql = (float)$_GET['ne_lng'];
+        $sw_lat_sql = (float)$_GET['sw_lat'];
+        $sw_lng_sql = (float)$_GET['sw_lng'];
+
         $usn_sql = $_SESSION['usn'];
 
-        $sql = "select distinct longitude, latitude, dsn from Udoo";
+        if($ne_lng_sql<0&&$sw_lng_sql>0){
+            
+            $sql = "select longitude, latitude, dsn, co_aqi, no2_aqi, so2_aqi, o3_aqi, pm2_5_aqi, pm10_aqi from Udoo where latitude < '$ne_lat_sql' and latitude > '$sw_lat_sql' and longitude < 180 and (longitude < '$ne_lng_sql' or longitude > '$sw_lng_sql') and (time,dsn) in (SELECT max(time),dsn FROM Udoo group by dsn);";
+            $stmt = $this->em->getConnection()->query($sql);
+            $stmt->execute();
+
+            $results = $stmt->fetchAll();
+        }
+        else{
+            $sql = "select longitude, latitude, dsn, co_aqi, no2_aqi, so2_aqi, o3_aqi, pm2_5_aqi, pm10_aqi from Udoo where latitude < '$ne_lat_sql' and latitude > '$sw_lat_sql' and longitude < '$ne_lng_sql' and longitude > '$sw_lng_sql' and (time,dsn) in (SELECT max(time),dsn FROM Udoo group by dsn);";
+            $stmt = $this->em->getConnection()->query($sql);
+            $stmt->execute();
+
+            $results = $stmt->fetchAll();
+        }
+
+        
+
+        //print_r($results);
+        $json_array = $results;
+                return $response->withStatus(200)
+                ->withHeader('Content-Type', 'application/json')
+                ->write(json_encode($json_array));
+    }
+
+    public function historic_aqi(Request $request, Response $response, $args)
+    {
+        $usn_sql = $_SESSION['usn'];
+        $date_sql = $_GET['date'];
+
+
+        $sql = "select longitude, latitude, dsn, co_aqi, no2_aqi, so2_aqi, o3_aqi, pm2_5_aqi, pm10_aqi from Udoo where (time,dsn) in (SELECT max(time),dsn FROM Udoo group by dsn);";
         $stmt = $this->em->getConnection()->query($sql);
         $stmt->execute();
 

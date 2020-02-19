@@ -55,9 +55,6 @@ $app->post('/signin', 'App\Controller\HomeController:signin')
 $app->post('/check_sensor', 'App\Controller\HomeController:check_sensor')
     ->setName('check_sensor');
 
-// $app->post('/check_sensor/{mac_addr}', 'App\Controller\HomeController:check_sensor')
-//     ->setName('check_sensor');
-
 $app->post('/regist_sensor/{s_name}/{s_type}/{mac_addr}', 'App\Controller\HomeController:regist_sensor')
     ->setName('regist_sensor');
 
@@ -100,8 +97,11 @@ $app->get('/location_aqi/{udoo_id}', 'App\Controller\DeviceController:location_a
 $app->get('/device_data/{udoo_id}', 'App\Controller\DeviceController:device_data')
     ->setName('device_data');
 
-$app->get('/locations', 'App\Controller\DeviceController:locations')
+$app->get('/locations/{ne_lat}/{ne_lng}/{sw_lat}/{sw_lng}', 'App\Controller\DeviceController:locations')
     ->setName('locations');
+
+$app->get('/historic_aqi/{date}', 'App\Controller\DeviceController:historic_aqi/{date}')
+    ->setName('historic_aqi/{date}');
 
 ///////////////////////// app //////////////////////////
 $app->get('/signup_app', 'App\Controller\AppController:signup_app')
@@ -137,3 +137,14 @@ $app->get('/check_duplicate_app/{id}', 'App\Controller\AppController:check_dupli
 $app->post('/register_app', 'App\Controller\AppController:register_app')
     ->setName('register_app');
 
+$app->get('/userinfo_app/{username}', 'App\Controller\AppController:userinfo_app')
+    ->setName('userinfo_app');
+
+$app->post('/check_sensor_app', 'App\Controller\AppController:check_sensor_app')
+    ->setName('check_sensor_app');
+
+$app->post('/regist_sensor_app/{s_name}/{s_type}/{mac_addr}', 'App\Controller\AppController:regist_sensor_app')
+    ->setName('regist_sensor_app');
+
+$app->post('/remove_sensor_app/{dsn}', 'App\Controller\AppController:remove_sensor_app')
+    ->setName('remove_sensor_app');
