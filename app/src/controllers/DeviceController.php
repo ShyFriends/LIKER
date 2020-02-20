@@ -41,11 +41,102 @@ final class DeviceController extends BaseController
         return $response;
     }
 
-    public function heartrate(Request $request, Response $response, $args)
+        public function heartrate(Request $request, Response $response, $args)
     {
         $username_sql = $_SESSION['username'];
-        $this->view->render($response, 'devices/heartrate.twig',['username'=>$username_sql]);
+        $usn_sql = $_SESSION['usn'];
+        $sql = "select dsn from Devices where usn = '$usn_sql' and s_type = 'polar'";
+        $stmt = $this->em->getConnection()->query($sql);
+        $stmt->execute();
+        $results = $stmt->fetchAll();
+
+        $dsn_sql = $results[0]['dsn'];
+
+        $sql = "select avg(heart_rate), max(heart_rate), min(heart_rate) from Polar where dsn = ".$dsn_sql;
+        $stmt = $this->em->getConnection()->query($sql);
+        $stmt->execute();
+        $results = $stmt->fetchAll();
+
+        $avg = $results[0]['avg(heart_rate)'];
+        $min = $results[0]['min(heart_rate)'];
+        $max = $results[0]['max(heart_rate)'];
+
+        $this->view->render($response, 'devices/heartrate.twig',['username'=>$username_sql, 'avg'=>$avg, 'lowest'=>$min, 'highest'=>$max]);
         return $response;
+    }
+
+     public function historic_heartrate(Request $request, Response $response, $args)
+    {
+        $historic_polar = [];
+        $usn_sql = $_SESSION['usn'];
+        $start_time_sql = $_GET['start_time'];
+        $end_time_sql = $_GET['end_time'];
+
+        $sql = "select dsn from Devices where usn = '$usn_sql' and s_type = 'polar'";
+        $stmt = $this->em->getConnection()->query($sql);
+        $stmt->execute();
+        $results = $stmt->fetchAll();
+
+        $dsn_sql = $results[0]['dsn'];
+
+        $sql = "select time, heart_rate from Polar where dsn=".$dsn_sql." and '".$start_time_sql."' <= time and time < '".$end_time_sql."' order by time asc";
+        $stmt = $this->em->getConnection()->query($sql);
+        $stmt->execute();
+        $pre_polar_data = $stmt->fetchAll();
+
+        $resultsno = count($pre_polar_data);
+
+        for($i=0; $i<$resultsno; $i++){
+            $historic_polar[$i]['heart_rate'] = $pre_polar_data[$i]['heart_rate'];
+            $historic_polar[$i]['time'] = $pre_polar_data[$i]['time'];
+            $sql = "select TIMESTAMPDIFF(second, Date_format('".$start_time_sql."', '%Y-%m-%d %H:%i:%s'), date_format('".$pre_polar_data[$i]['time']."', '%Y-%m-%d %H:%i:%s')) AS timediff";
+            $stmt = $this->em->getConnection()->query($sql);
+            $stmt->execute();
+            $timediff = $stmt->fetchAll(); 
+            $historic_polar[$i]['timediff'] = $timediff[0]['timediff'];
+        }
+
+        /*for($i=0; $i<24; $i++){
+            $sql = "select heart_rate from Polar where dsn=".$dsn_sql." and '".$date_sql." ".$i.":00:00' <= time and time < '".$date_sql." ".($i+1).":00:00' order by time asc limit 0,1";
+            if(i==23){  
+                $sql = "select heart_rate from Polar where dsn=".$dsn_sql." and '".$date_sql." ".$i.":00:00' <= time and time < '".($date_sql+1)." 00:00:00' order by time asc limit 0,1";
+            }        
+            $stmt = $this->em->getConnection()->query($sql);
+            $stmt->execute();
+            $pre_polar_data = $stmt->fetchAll();
+            $historic_polar[$i] = $pre_polar_data[0]['heart_rate'];
+        }*/
+     
+      $json_array = $historic_polar;
+            return $response->withStatus(200)
+            ->withHeader('Content-Type', 'application/json')
+            ->write(json_encode($json_array));
+    }
+
+    public function realtime_heartrate(Request $request, Response $response, $args)
+    {
+        $realtime_polar = [];
+        $usn_sql = $_SESSION['usn'];
+
+        $sql = "select dsn from Devices where usn = '$usn_sql' and s_type = 'polar'";
+        $stmt = $this->em->getConnection()->query($sql);
+        $stmt->execute();
+        $results = $stmt->fetchAll();
+
+        $dsn_sql = $results[0]['dsn'];
+
+         for($i=0; $i<60; $i++){
+            $sql = "select heart_rate from Polar where dsn=".$dsn_sql." and DATE_ADD(NOW(), INTERVAL -".($i+1)." MINUTE) <= time and time < DATE_ADD(NOW(), INTERVAL -".$i." MINUTE) order by time desc limit 0,1";
+            $stmt = $this->em->getConnection()->query($sql);
+            $stmt->execute();
+            $pre_polar_data = $stmt->fetchAll();
+            $realtime_polar[$i] = $pre_polar_data[0]['heart_rate'];
+        }
+     
+      $json_array = $realtime_polar;
+            return $response->withStatus(200)
+            ->withHeader('Content-Type', 'application/json')
+            ->write(json_encode($json_array));
     }
 
     public function viewPost(Request $request, Response $response, $args)
@@ -64,7 +155,6 @@ final class DeviceController extends BaseController
         $this->view->render($response, 'post.twig', ['post' => $post, 'flash' => $messages]);
         return $response;
     }
-
 
 
     public function get_aqi(Request $request, Response $response, $args)
@@ -109,9 +199,9 @@ final class DeviceController extends BaseController
         $results = $stmt->fetchAll();
 
         $json_array = $results;
-                return $response->withStatus(200)
-                ->withHeader('Content-Type', 'application/json')
-                ->write(json_encode($json_array));
+            return $response->withStatus(200)
+            ->withHeader('Content-Type', 'application/json')
+            ->write(json_encode($json_array));
     }
 
     public function device_data(Request $request, Response $response, $args)

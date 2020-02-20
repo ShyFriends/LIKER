@@ -7,7 +7,7 @@ use Psr\Http\Message\ResponseInterface as Response;
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
 use PHPMailer\PHPMailer\Exception;
-    
+   
 final class HomeController extends BaseController
 {
     public function dispatch(Request $request, Response $response, $args)
@@ -33,7 +33,7 @@ final class HomeController extends BaseController
         $stmt->execute();
 
         $results = $stmt->fetchAll();
-                
+               
 
         if($results == NULL){
             $json_array = array("status" => "success");
@@ -56,14 +56,14 @@ final class HomeController extends BaseController
         $usn = $_SESSION['usn'];
 
         //echo $_SESSION['username'].$_SESSION['usn']."test";
-        //die("hello"); 
+        //die("hello");
 
-        $sql = "UPDATE Devices SET usn = 1 WHERE usn = $usn"; 
+        $sql = "UPDATE Devices SET usn = 1 WHERE usn = $usn";
         $stmt = $this->em->getConnection()->prepare($sql);
         $stmt->execute();
-        
+       
 
-        $sql = "DELETE FROM Users WHERE username = '$username_sql'"; 
+        $sql = "DELETE FROM Users WHERE username = '$username_sql'";
         $stmt = $this->em->getConnection()->prepare($sql);
         $stmt->execute();
 
@@ -155,14 +155,15 @@ final class HomeController extends BaseController
     public function check_sensor(Request $request, Response $response, $args)
     {
         $usn_sql = $_SESSION['usn'];
-        $randomNum = mt_rand(10000000000000000, 100000000000000000);
-        $mac_addr = $randomNum;
-        //$mac_addr = $_POST['mac_addr']; 
+        //$randomNum = mt_rand(10000000000000000, 100000000000000000);
+        //$mac_addr = $randomNum;
+        $mac_addr = $_POST['mac_addr'];
+
         $sql = "select mac_addr from Devices where usn = '$usn_sql'";
         $stmt = $this->em->getConnection()->query($sql);
         $stmt->execute();
         $sensor_results = $stmt->fetchAll();
-        
+       
         $resultsno = count($sensor_results);
 
         for($i=0; $i<$resultsno; $i++){
@@ -173,7 +174,7 @@ final class HomeController extends BaseController
                 ->write(json_encode($json_array));
             }
         }
-        $json_array = array("status" => 1);
+        $json_array = array("status" => 0);
         return $response->withStatus(200)
         ->withHeader('Content-Type', 'application/json')
         ->write(json_encode($json_array));
@@ -193,7 +194,7 @@ final class HomeController extends BaseController
         $results = $stmt->fetchAll();
 
         if(password_verify($password_sql, $results[0]['h_password'])){
-            $sql = "UPDATE Users SET loginflag = 'T' WHERE username = '$username_sql'"; 
+            $sql = "UPDATE Users SET loginflag = 'T' WHERE username = '$username_sql'";
             $stmt = $this->em->getConnection()->prepare($sql);
             $stmt->execute();
 
@@ -206,7 +207,7 @@ final class HomeController extends BaseController
             $_SESSION['username'] = $results[0]['username'];
             //echo $_SESSION['usn'] . " is the session .... ";
             //die("test");
-            
+           
             $this->view->render($response, 'home.twig', ['username'=>$_SESSION['username']]);
             return $response;
         }
@@ -232,7 +233,7 @@ final class HomeController extends BaseController
     public function signout(Request $request, Response $response, $args)
     {
         $usn_sql = $_SESSION['usn'];
-        $sql = "UPDATE Users SET loginflag = 'F' WHERE usn = '$usn_sql'"; 
+        $sql = "UPDATE Users SET loginflag = 'F' WHERE usn = '$usn_sql'";
         $stmt = $this->em->getConnection()->prepare($sql);
         $stmt->execute();
 
@@ -271,7 +272,7 @@ final class HomeController extends BaseController
 
     public function self_confirm_verify(Request $request, Response $response, $args)
     {
-        
+       
         $nonce = $_GET['nonce'];
 
         $sql = "select username from Auth where nonce = '$nonce'";
@@ -279,16 +280,16 @@ final class HomeController extends BaseController
         $stmt->execute();
 
         $results = $stmt->fetchAll();
-                
+               
         if($results == NULL){
             $this->view->render($response, 'errorpage.twig');
             return $response;
         }
         else{
-            $sql = "UPDATE Auth SET stateflag = 'T' WHERE nonce = '$nonce'"; 
+            $sql = "UPDATE Auth SET stateflag = 'T' WHERE nonce = '$nonce'";
             $stmt = $this->em->getConnection()->prepare($sql);
             $stmt->execute();
-            
+           
             $this->view->render($response, 'success.twig');
             return $response;        
         }
@@ -306,7 +307,7 @@ final class HomeController extends BaseController
         $stmt->execute();
 
         $results = $stmt->fetchAll();
-        
+       
         $email_sql = $results[0]['email'];
 
         $randomNum = mt_rand(1000, 10000);
@@ -316,8 +317,8 @@ final class HomeController extends BaseController
         $stmt = $this->em->getConnection()->prepare($sql);
         $stmt->execute();
 
-        
-        $sql = "UPDATE Users SET h_password = '$temp_password' WHERE username = '$username_sql'"; 
+       
+        $sql = "UPDATE Users SET h_password = '$temp_password' WHERE username = '$username_sql'";
             $stmt = $this->em->getConnection()->prepare($sql);
             $stmt->execute();
 
@@ -329,7 +330,7 @@ final class HomeController extends BaseController
 
     public function confirm_verify(Request $request, Response $response, $args)
     {
-        
+       
         $nonce = $_GET['nonce'];
 
         $sql = "select username from Auth where nonce = '$nonce'";
@@ -337,13 +338,13 @@ final class HomeController extends BaseController
         $stmt->execute();
 
         $results = $stmt->fetchAll();
-                
+               
         if($results == NULL){
             $this->view->render($response, 'errorpage.twig');
             return $response;
         }
         else{
-            $sql = "UPDATE Auth SET stateflag = 'T' WHERE nonce = '$nonce'"; 
+            $sql = "UPDATE Auth SET stateflag = 'T' WHERE nonce = '$nonce'";
             $stmt = $this->em->getConnection()->prepare($sql);
             $stmt->execute();
             $this->view->render($response, 'signup.twig');
@@ -373,7 +374,7 @@ final class HomeController extends BaseController
             $stmt = $this->em->getConnection()->prepare($sql);
             $stmt->execute();
 
-            $sql = "DELETE FROM Auth WHERE username = '$username_sql'"; 
+            $sql = "DELETE FROM Auth WHERE username = '$username_sql'";
             $stmt = $this->em->getConnection()->prepare($sql);
             $stmt->execute();
 
@@ -410,7 +411,7 @@ final class HomeController extends BaseController
             ->withHeader('Content-Type', 'application/json')
             ->write(json_encode($json_array));
         }
-    } 
+    }
 
     public function change_pwd(Request $request, Response $response, $args)
     {
@@ -419,14 +420,14 @@ final class HomeController extends BaseController
 
         $nonce = password_hash($password_sql, PASSWORD_DEFAULT);
 
-        $sql = "UPDATE Users SET h_password = '$nonce', loginflag = 'F' WHERE username = '$username_sql'"; 
+        $sql = "UPDATE Users SET h_password = '$nonce', loginflag = 'F' WHERE username = '$username_sql'";
         $stmt = $this->em->getConnection()->prepare($sql);
         $stmt->execute();
-        
+       
         session_unset();
         session_destroy();  
         $this->view->render($response, 'userinfo.twig');
-        return $response;     
+        return $response;    
 
     }
 
@@ -509,9 +510,9 @@ final class HomeController extends BaseController
 
     }
 
-    
+   
     public function testQuery(Request $request, Response $response, $args){
-        
+       
         $sql = "select * from Users";
         $stmt = $this->em->getConnection()->query($sql);
         $stmt->execute();
@@ -534,7 +535,7 @@ final class HomeController extends BaseController
         $my_array = array();
         $my_array = array("name"=>"Bill","address"=>"123 Pine");
         $my_array = array("name"=>"Frank","address"=>"456 Hyatt");
-        
+       
 
         return $response->withStatus(200)
         ->withHeader('Content-Type','application/json')

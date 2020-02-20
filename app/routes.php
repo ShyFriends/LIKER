@@ -49,10 +49,19 @@ $app->get('/aqi', 'App\Controller\DeviceController:aqi')
 $app->get('/heartrate', 'App\Controller\DeviceController:heartrate')
     ->setName('heartrate');
 
+$app->get('/historic_heartrate/{start_time}/{end_time}', 'App\Controller\DeviceController:historic_heartrate')
+    ->setName('historic_heartrate');
+
+$app->get('/realtime_heartrate', 'App\Controller\DeviceController:realtime_heartrate')
+    ->setName('realtime_heartrate');
+
 $app->post('/signin', 'App\Controller\HomeController:signin')
     ->setName('signin');
 
-$app->post('/check_sensor', 'App\Controller\HomeController:check_sensor')
+// $app->post('/check_sensor', 'App\Controller\HomeController:check_sensor')
+//     ->setName('check_sensor');
+
+$app->post('/check_sensor/{mac_addr}', 'App\Controller\HomeController:check_sensor')
     ->setName('check_sensor');
 
 $app->post('/regist_sensor/{s_name}/{s_type}/{mac_addr}', 'App\Controller\HomeController:regist_sensor')

@@ -143,7 +143,7 @@
                                         <div class="row">
                                             <div class="col-md-6">
                                                 <label>Gender</label>
-                                            </div>
+                                                </div>
                                             <div class="col-md-6">
                                                 <p>{{user.gender}}</p>
                                             </div>
@@ -418,12 +418,12 @@
 </div>
 <script type="text/javascript">
   function check_sensor(){
-    //var mac_addr = $('#mac_addr').val();
+    var mac_addr = $('#mac_addr').val();
        $.ajax({ 
            type:"POST",
-           //url:"/check_sensor/{mac_addr}"
-           url:"/check_sensor",
-          //data: {"mac_addr":mac_addr},
+           url:"/check_sensor/{mac_addr}",
+           //url:"/check_sensor",
+          data: {"mac_addr":mac_addr},
             success: function(data){
                 console.log("SUCCESS: ", data);
                 if(data['status']==1){
