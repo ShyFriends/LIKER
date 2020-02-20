@@ -41,10 +41,18 @@ final class DeviceController extends BaseController
         return $response;
     }
 
-        public function heartrate(Request $request, Response $response, $args)
+    public function heartrate(Request $request, Response $response, $args)
     {
         $username_sql = $_SESSION['username'];
+        $this->view->render($response, 'devices/heartrate.twig',['username'=>$username_sql]);
+        return $response;
+    }
+
+    public function heartrate_info(Request $request, Response $response, $args)
+    {
+        $heartrate_info = [];
         $usn_sql = $_SESSION['usn'];
+
         $sql = "select dsn from Devices where usn = '$usn_sql' and s_type = 'polar'";
         $stmt = $this->em->getConnection()->query($sql);
         $stmt->execute();
@@ -57,12 +65,14 @@ final class DeviceController extends BaseController
         $stmt->execute();
         $results = $stmt->fetchAll();
 
-        $avg = $results[0]['avg(heart_rate)'];
-        $min = $results[0]['min(heart_rate)'];
-        $max = $results[0]['max(heart_rate)'];
+        $heartrate_info['avg'] = $results[0]['avg(heart_rate)'];
+        $heartrate_info['min'] = $results[0]['min(heart_rate)'];
+        $heartrate_info['max'] = $results[0]['max(heart_rate)'];
 
-        $this->view->render($response, 'devices/heartrate.twig',['username'=>$username_sql, 'avg'=>$avg, 'lowest'=>$min, 'highest'=>$max]);
-        return $response;
+        $json_array = $heartrate_info;
+            return $response->withStatus(200)
+            ->withHeader('Content-Type', 'application/json')
+            ->write(json_encode($json_array));   
     }
 
      public function historic_heartrate(Request $request, Response $response, $args)
@@ -107,7 +117,7 @@ final class DeviceController extends BaseController
             $historic_polar[$i] = $pre_polar_data[0]['heart_rate'];
         }*/
      
-      $json_array = $historic_polar;
+        $json_array = $historic_polar;
             return $response->withStatus(200)
             ->withHeader('Content-Type', 'application/json')
             ->write(json_encode($json_array));
@@ -223,7 +233,6 @@ final class DeviceController extends BaseController
 
     public function locations(Request $request, Response $response, $args)
     {
-
         $ne_lat_sql = (float)$_GET['ne_lat'];
         $ne_lng_sql = (float)$_GET['ne_lng'];
         $sw_lat_sql = (float)$_GET['sw_lat'];

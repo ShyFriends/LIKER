@@ -24,13 +24,47 @@ final class AppController extends BaseController
         }
     }
 
+    public function send_polardata_app(Request $request, Response $response, $args)
+    {
+        $dsn_sql = $_POST['dsn'];
+        $time_sql = $_POST['time'];
+        $lat_sql = $_POST['latitude'];
+        $long_sql = $_POST['longitude'];
+        $heartrate_sql = $_POST['heartrate'];
+
+        $sql = "insert into Polar (dsn,heart_rate,latitude,longitude,time) values (".$dsn_sql.",".$heartrate_sql.",".$lat_sql.",".$long_sql.",'".$time_sql."')";
+        $stmt = $this->em->getConnection()->query($sql);
+
+        $data = array("message" => "true");
+        echo json_encode($data);
+    }
+
+    public function send_udoodata_app(Request $request, Response $response, $args)
+    {
+        $dsn_sql = $_POST['dsn'];
+        $time_sql = $_POST['time'];
+        $co_sql = $_POST['co'];
+        $no2_sql = $_POST['no2'];
+        $so2_sql = $_POST['so2'];
+        $o3_sql = $_POST['o3'];
+        $pm25_sql = $_POST['pm25'];
+        $pm10_sql = $_POST['pm10'];
+        $lat_sql = $_POST['latitude'];
+        $long_sql = $_POST['longitude'];
+
+        $sql = "insert into Udoo (dsn,co,no2,so2,o3,pm2.5,pm10,latitude,longitude,time) values (".$dsn_sql.",".$co_sql.",".$no2_sql.",".$so2_sql.",".$o3_sql.",".$pm25_sql.",".$pm10_sql.",".$lat_sql.",".$long_sql.",'".$time_sql."')";
+        $stmt = $this->em->getConnection()->query($sql);
+
+        $data = array("message" => "true");
+        echo json_encode($data);
+    }   
+
     public function check_duplicate_app(Request $request, Response $response, $args)
     {
         $username_sql = $_GET['id'];
 
         $sql = "select * from Users where username = '$username_sql'";
         $stmt = $this->em->getConnection()->query($sql);
-        $stmt->execute();
 
         $results = $stmt->fetchAll();
 
