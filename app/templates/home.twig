@@ -394,15 +394,7 @@ function calculate_aqi(aqi){
           return "darkred"
         }
 }
-                  var aqi_data; 
-                  $.ajax({
-                    type:"GET",
-                    url:"/get_aqi",
-                    success: function(data) {
-                        console.log("~~");
-                        console.log("SUCCESS: ", data);
-                        aqi_data = data;
-                        chart_view();
+
 
 function heartratenum(){
     $.ajax({ 
@@ -420,7 +412,15 @@ function heartratenum(){
             },   
           });
 }
-
+                  var aqi_data; 
+                  $.ajax({
+                    type:"GET",
+                    url:"/get_aqi",
+                    success: function(data) {
+                        console.log("~~");
+                        console.log("SUCCESS: ", data);
+                        aqi_data = data;
+                        chart_view();
                         for (i in aqi_data[0]) {
                           if(i!="longitude"&&i!="latitude"&&i!="udoo_sn"){
                             alert(document.getElementById(i).value);
