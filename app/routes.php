@@ -109,8 +109,8 @@ $app->get('/device_data/{udoo_id}', 'App\Controller\DeviceController:device_data
 $app->get('/locations/{ne_lat}/{ne_lng}/{sw_lat}/{sw_lng}', 'App\Controller\DeviceController:locations')
     ->setName('locations');
 
-$app->get('/historic_aqi/{date}', 'App\Controller\DeviceController:historic_aqi/{date}')
-    ->setName('historic_aqi/{date}');
+$app->get('/historic_aqi/{start_time}/{end_time}/{dsn}', 'App\Controller\DeviceController:historic_aqi')
+    ->setName('historic_aqi');
 
 ///////////////////////// app //////////////////////////
 $app->get('/signup_app', 'App\Controller\AppController:signup_app')
@@ -157,3 +157,12 @@ $app->post('/regist_sensor_app/{s_name}/{s_type}/{mac_addr}', 'App\Controller\Ap
 
 $app->post('/remove_sensor_app/{dsn}', 'App\Controller\AppController:remove_sensor_app')
     ->setName('remove_sensor_app');
+
+$app->get('/remove_app', 'App\Controller\AppController:remove_app')
+    ->setName('remove_app');
+
+$app->post('/change_pwd_app/{new_pwd}', 'App\Controller\AppController:change_pwd_app')
+    ->setName('change_pwd_app');
+
+$app->post('/check_pwd_app/{current_pwd}', 'App\Controller\AppController:check_pwd_app')
+    ->setName('check_pwd_app');

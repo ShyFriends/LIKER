@@ -314,7 +314,8 @@
                     data: { "udoo_id":udoo_id },
                     success: function(data) {
                         console.log("SUCCESS: ", data);
-
+                        document.getElementById('test').value = data[0].dsn;
+                       
                         for(var i = 0;i<data.length;i++){
                           mychart.data.datasets[0].data[i] = data[i].pm2_5_aqi;
                         }
@@ -347,6 +348,10 @@
                     data: { "udoo_id":udoo_id },
                     success: function(data) {
                         console.log("SUCCESS: ", data);
+
+                        //alert($('#date').name); 
+
+
                         $('#sensors').empty();
                         var sensors = data;
                         var sensor = new Array();
@@ -414,32 +419,62 @@
     
   <script>
   $( function() {
-    $('#reservationtime').daterangepicker({
-      timePicker: true,
-      timePickerIncrement: 30,
-      locale: {
-        format: 'MM/DD/YYYY hh:mm A'
-      }
-    })  } );
+    $( "#datepicker" ).datepicker({
+      dateFormat: 'yy-mm-dd'
+    });
+    $('#datepicker').datepicker('setDate', 'today');
+  } );
 
   function search(){
-    alert($('#reservationtime').val());
-    var date = $('#reservationtime').val();
-    alert(date);
-    $.ajax({
-        type:"GET",
-        url:"/historic_aqi/{date}",
-        data: { "date": date },
-        success: function(data) {
-          alert("~!~!~");
-            console.log("SUCCESS: ", data);
+    var start_time = $('#start_time').val();
+    var end_time = $('#end_time').val();
+    var dsn = document.getElementById('test').value;
 
-        },
-        error: function(data) {
-            console.log('ERROR: ', data);
-        },
+    start_time = start_time.substring(0,10)+" "+start_time.substring(11,16)+":00";
+    end_time = end_time.substring(0,10)+" "+end_time.substring(11,16)+":00";
+    $.ajax({ 
+          type:"GET",
+          url:"/historic_aqi/{start_time}/{end_time}/{dsn}",
+          data: {"start_time":start_time,"end_time":end_time, "dsn":dsn },
+            success: function(data){
+              console.log("SUCCESS: ", data);
+              for(var i=0;i<data.length;i++){
+                mychart.data.labels.pop();
+              }
+              for(var i=0;i<data.length;i++){
+                mychart.data.labels.push(parseInt(data[i].timediff/60));
+              }
+              for(var i = 0;i<data.length;i++){
+                mychart.data.datasets[0].data[i] = data[i].pm2_5_aqi;
+              }
 
+              for(var i = 0;i<data.length;i++){
+                mychart.data.datasets[1].data[i] = data[i].pm10_aqi;
+              }
+              for(var i = 0;i<data.length;i++){
+                mychart.data.datasets[2].data[i] = data[i].no2_aqi;
+              }
+              for(var i = 0;i<data.length;i++){
+                mychart.data.datasets[3].data[i] = data[i].co_aqi;
+              }
+              for(var i = 0;i<data.length;i++){
+                mychart.data.datasets[4].data[i] = data[i].so2_aqi;
+              }
+              for(var i = 0;i<data.length;i++){
+                mychart.data.datasets[5].data[i] = data[i].o3_aqi;
+              }
+                        
+              mychart.update();
+
+
+
+              // line_graph();
+            },
+            error: function(data){
+             console.log('ERROR: ', data);
+            },   
     });
+
   }
   </script>
 <!-- DONUT CHART -->
@@ -452,13 +487,21 @@
                 <div class="form-group">
                   <label>Date and time range:</label>
 
-                  <div class="input-group">
+                  <div class="input-group" id="test" value="">
+
                     <div class="input-group-prepend">
                       <span class="input-group-text"><i class="far fa-clock"></i></span>
                     </div>
-                    <input type="text" class="form-control float-right" id="reservationtime">
 
-                    <button type="button" class="btn btn-default" id="date" onclick="search()" style="width: 30%;float: left;">Search</button>
+                      <input id="start_time" type="datetime-local" name="start_time" class="form-control float-right" style="text-align: center;">
+                      <label for="party"  style="text-align: center;">~~</label>
+                       <div class="input-group-prepend">
+                      <span class="input-group-text"><i class="far fa-clock"></i></span>
+                      </div>
+                      <input id="end_time" type="datetime-local" name="end_time" class="form-control float-right" style="text-align: center;"> 
+
+
+                    <input type="button" class="btn btn-default" id="date" value="Search" name="" onclick="search()" style="width: 20%;float: left;"></button>
                   </div>
                   <!-- /.input group -->
 
@@ -474,6 +517,7 @@
                     type:"GET",
                     url:"/get_aqi",
                     success: function(data) {
+                        console.log("~~");
                         console.log("SUCCESS: ", data);
                         aqi_data = data;
                         chart_view();
@@ -481,45 +525,84 @@
                         for (i in aqi_data[0]) {
                           if(i!="longitude"&&i!="latitude"&&i!="udoo_sn"){
                             document.getElementById(i).value = aqi_data[0][i];
-                            if(document.getElementById(i).value>100&&document.getElementById(i).value<150){
-                              if(i=="pm2_5_aqi"){
-                                $('#pm2_5_aqi').knob({
-                                  fgColor: 'orange'
+                            if(i=="pm2_5_aqi"){
+                              var color = calculate_aqi(aqi_data[0].pm2_5_aqi);
+                              $('#pm2_5_aqi').knob({
+                                  fgColor: color
                                 });  
-                              }
-                              if(i=="pm10_aqi"){
-                                $('#pm10_aqi').knob({
-                                  fgColor: 'orange'
-                                });  
-                              }
-                              if(i=="co_aqi"){
-                                $('#co_aqi').knob({
-                                  fgColor: 'orange'
-                                });  
-                              }
-                              if(i=="no2_aqi"){
-                                $('#no2_aqi').knob({
-                                  fgColor: 'orange'
-                                });  
-                              }
-                              if(i=="so2_aqi"){
-                                $('#so2_aqi').knob({
-                                  fgColor: 'orange'
-                                });  
-                              }
-                              if(i=="o3_aqi"){
-                                $('#o3_aqi').knob({
-                                  fgColor: 'orange'
-                                });  
-                              }
                             }
-                            if(document.getElementById(i).value>150){
-                                if(i=="co_aqi"){
-                                $('#co_aqi').knob({
-                                  fgColor: 'red'
+                            else if(i=="pm10_aqi"){
+                              var color = calculate_aqi(aqi_data[0].pm10_aqi);
+                              $('#pm10_aqi').knob({
+                                  fgColor: color
                                 });  
-                              }  
                             }
+                            else if(i=="co_aqi"){
+                              var color = calculate_aqi(aqi_data[0].co_aqi);
+                              $('#co_aqi').knob({
+                                  fgColor: color
+                                });  
+                            }
+                            else if(i=="no2_aqi"){
+                              var color = calculate_aqi(aqi_data[0].no2_aqi);
+                              $('#no2_aqi').knob({
+                                  fgColor: color
+                                });  
+                            }
+                            else if(i=="so2_aqi"){
+                              var color = calculate_aqi(aqi_data[0].so2_aqi);
+                              $('#so2_aqi').knob({
+                                  fgColor: color
+                                });  
+                            }
+                            else if(i=="o3_aqi"){
+                              var color = calculate_aqi(aqi_data[0].o3_aqi);
+                              $('#o3_aqi').knob({
+                                  fgColor: color
+                                });  
+                            }
+
+
+
+                            // if(document.getElementById(i).value>100&&document.getElementById(i).value<150){
+                            //   if(i=="pm2_5_aqi"){
+                            //     $('#pm2_5_aqi').knob({
+                            //       fgColor: 'orange'
+                            //     });  
+                            //   }
+                            //   if(i=="pm10_aqi"){
+                            //     $('#pm10_aqi').knob({
+                            //       fgColor: 'orange'
+                            //     });  
+                            //   }
+                            //   if(i=="co_aqi"){
+                            //     $('#co_aqi').knob({
+                            //       fgColor: 'orange'
+                            //     });  
+                            //   }
+                            //   if(i=="no2_aqi"){
+                            //     $('#no2_aqi').knob({
+                            //       fgColor: 'orange'
+                            //     });  
+                            //   }
+                            //   if(i=="so2_aqi"){
+                            //     $('#so2_aqi').knob({
+                            //       fgColor: 'orange'
+                            //     });  
+                            //   }
+                            //   if(i=="o3_aqi"){
+                            //     $('#o3_aqi').knob({
+                            //       fgColor: 'orange'
+                            //     });  
+                            //   }
+                            // }
+                            // if(document.getElementById(i).value>150){
+                            //     if(i=="co_aqi"){
+                            //     $('#co_aqi').knob({
+                            //       fgColor: 'red'
+                            //     });  
+                            //   }  
+                            // }
                           }
                         }
                     },
@@ -567,7 +650,20 @@
                       ]
                     },
                     options: {
-
+                        scales: {
+                        xAxes: [{
+                          scaleLabel: {
+                            display: true,
+                            labelString: 'hours'
+                          }
+                        }],
+                        yAxes: [{
+                          scaleLabel: {
+                            display: true,
+                            labelString: 'concentration'
+                          }
+                        }]
+                      }  
                     }
                   });
                 }
