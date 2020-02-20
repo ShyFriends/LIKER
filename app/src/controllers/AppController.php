@@ -452,6 +452,79 @@ final class AppController extends BaseController
 
     }
 
+    public function remove_app(Request $request, Response $response, $args)
+    {
+        $username_sql = $_GET['username'];
+
+        $sql = "select usn from Users where username = '$username_sql'";
+        $stmt = $this->em->getConnection()->query($sql);
+        $stmt->execute();
+        $user_results = $stmt->fetchAll();
+
+        $usn_sql = $user_results[0]['usn'];
+        //echo $_SESSION['username'].$_SESSION['usn']."test";
+        //die("hello");
+
+        $sql = "UPDATE Devices SET usn = 1 WHERE usn = $usn_sql";
+        $stmt = $this->em->getConnection()->prepare($sql);
+        $stmt->execute();
+       
+
+        $sql = "DELETE FROM Users WHERE username = '$username_sql'";
+        $stmt = $this->em->getConnection()->prepare($sql);
+        $stmt->execute();
+
+
+        if($results == NULL){
+            $data = array("message" => "true");
+            echo json_encode($data);
+        }
+        else{
+            $data = array("message" => "false");
+            echo json_encode($data);
+        }
+
+    }
+
+    public function check_pwd_app(Request $request, Response $response, $args)
+    {
+        $username_sql = $_POST['username'];
+        $password_sql = $_POST['current_pwd'];
+
+        $sql = "select h_password from Users where username = '$username_sql'";
+        $stmt = $this->em->getConnection()->query($sql);
+        $stmt->execute();
+
+        $results = $stmt->fetchAll();
+
+        if(password_verify($password_sql, $results[0]['h_password'])){
+           $data = array("message" => "true");
+            echo json_encode($data);
+
+        }
+        else{
+            $data = array("message" => "false");
+            echo json_encode($data);
+        }
+    }
+
+    public function change_pwd_app(Request $request, Response $response, $args)
+    {
+        $username_sql = $_POST['username'];
+        $password_sql = $_POST['new_pwd'];
+
+        $nonce = password_hash($password_sql, PASSWORD_DEFAULT);
+
+        $sql = "UPDATE Users SET h_password = '$nonce', loginflag = 'F' WHERE username = '$username_sql'";
+        $stmt = $this->em->getConnection()->prepare($sql);
+        $stmt->execute();
+       
+        session_unset();
+        session_destroy();  
+        $data = array("message" => "true");
+        echo json_encode($data);  
+
+    }
 
 }
 
