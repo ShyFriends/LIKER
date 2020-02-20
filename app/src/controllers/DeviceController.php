@@ -168,7 +168,7 @@ final class DeviceController extends BaseController
 
         $dsn_sql = $results[0]['dsn'];
 
-        $sql = "select udoo_sn, co_aqi, no2_aqi, so2_aqi, o3_aqi, pm2_5_aqi, pm10_aqi, longitude, latitude from Udoo where dsn = '$dsn_sql'";
+        $sql = "select udoo_sn, co_aqi, no2_aqi, so2_aqi, o3_aqi, pm2_5_aqi, pm10_aqi, longitude, latitude from Udoo where dsn = '$dsn_sql' order by time ASC limit 1";
         $stmt = $this->em->getConnection()->query($sql);
         $stmt->execute();
 
@@ -192,7 +192,7 @@ final class DeviceController extends BaseController
         $usn_sql = $_SESSION['usn'];
         $dsn_sql = $_GET['udoo_id'];
 
-        $sql = "select co_aqi, no2_aqi, so2_aqi, o3_aqi, pm2_5_aqi, pm10_aqi from Udoo where dsn = '$dsn_sql' order by time ASC limit 12 ";
+        $sql = "select dsn, co_aqi, no2_aqi, so2_aqi, o3_aqi, pm2_5_aqi, pm10_aqi from Udoo where dsn = '$dsn_sql' order by time ASC limit 12 ";
         $stmt = $this->em->getConnection()->query($sql);
         $stmt->execute();
 
@@ -209,7 +209,7 @@ final class DeviceController extends BaseController
         $usn_sql = $_SESSION['usn'];
         $dsn_sql = $_GET['udoo_id'];
 
-        $sql = "select mac_addr, s_name, s_type from Devices where dsn = '$dsn_sql'";
+        $sql = "select dsn, mac_addr, s_name, s_type from Devices where dsn = '$dsn_sql'";
         $stmt = $this->em->getConnection()->query($sql);
         $stmt->execute();
 
@@ -258,19 +258,39 @@ final class DeviceController extends BaseController
 
     public function historic_aqi(Request $request, Response $response, $args)
     {
+        $historic_udoo = [];
         $usn_sql = $_SESSION['usn'];
-        $date_sql = $_GET['date'];
+        $start_time_sql = $_GET['start_time'];
+        $end_time_sql = $_GET['end_time'];
+        $dsn_sql = $_GET['dsn'];
 
+        $sql = "select dsn, time, longitude, latitude, co_aqi, no2_aqi, so2_aqi, o3_aqi, pm2_5_aqi, pm10_aqi from Udoo where dsn=".$dsn_sql." and '".$start_time_sql."' <= time and time < '".$end_time_sql."' order by time asc";
 
-        $sql = "select longitude, latitude, dsn, co_aqi, no2_aqi, so2_aqi, o3_aqi, pm2_5_aqi, pm10_aqi from Udoo where (time,dsn) in (SELECT max(time),dsn FROM Udoo group by dsn);";
         $stmt = $this->em->getConnection()->query($sql);
         $stmt->execute();
+        $pre_udoo_data = $stmt->fetchAll();
 
-        $results = $stmt->fetchAll();
+        $resultsno = count($pre_udoo_data);
 
-        $json_array = $results;
-                return $response->withStatus(200)
-                ->withHeader('Content-Type', 'application/json')
-                ->write(json_encode($json_array));
+        for($i=0; $i<$resultsno; $i++){
+            $historic_udoo[$i]['co_aqi'] = $pre_udoo_data[$i]['co_aqi'];
+            $historic_udoo[$i]['no2_aqi'] = $pre_udoo_data[$i]['no2_aqi'];
+            $historic_udoo[$i]['so2_aqi'] = $pre_udoo_data[$i]['so2_aqi'];
+            $historic_udoo[$i]['o3_aqi'] = $pre_udoo_data[$i]['o3_aqi'];
+            $historic_udoo[$i]['pm2_5_aqi'] = $pre_udoo_data[$i]['pm2_5_aqi'];
+            $historic_udoo[$i]['pm10_aqi'] = $pre_udoo_data[$i]['pm10_aqi'];
+            $historic_udoo[$i]['time'] = $pre_udoo_data[$i]['time'];
+
+            $sql = "select TIMESTAMPDIFF(second, Date_format('".$start_time_sql."', '%Y-%m-%d %H:%i:%s'), date_format('".$pre_udoo_data[$i]['time']."', '%Y-%m-%d %H:%i:%s')) AS timediff";
+            $stmt = $this->em->getConnection()->query($sql);
+            $stmt->execute();
+            $timediff = $stmt->fetchAll(); 
+            $historic_udoo[$i]['timediff'] = $timediff[0]['timediff'];
+        }
+     
+      $json_array = $historic_udoo;
+            return $response->withStatus(200)
+            ->withHeader('Content-Type', 'application/json')
+            ->write(json_encode($json_array));
     }
 }
