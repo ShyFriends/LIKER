@@ -1,5 +1,17 @@
+
 <!DOCTYPE html>
 <html>
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+<script src="//code.jquery.com/jquery.min.js"></script>
+<script src="//code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
+<script>
+$(function() {
+  $( "#datepicker" ).datepicker({
+    dateFormat: 'yy-mm-dd'
+  });
+  $('#datepicker').datepicker('setDate', 'today');
+});
+</script>  
 <head>
 {% include('nav.twig') %}
 </head>
@@ -31,31 +43,29 @@
         <div class="row">
           <div class="col-md-4">
             <div class="card card-primary card-outline">
-              <div class="card-body box-profile">
+              <div class="card-body box-profile" style="height: 435px">
                 <div class="text-center">
+                  <br/>
                   <img 
                        src="{{base_url}}/img/heart.png" style="width: 20%;height: 30%;"
                        alt="User profile picture">
                 </div>
-            
-
                 <h3 class="profile-username text-center">Heart Rate</h3>
 
-                <p class="text-muted text-center">Qualcomm Institute</p>
-
+                <p class="text-muted text-center">{{username}}</p>
+                <br/>
                 <ul class="list-group list-group-unbordered mb-3">
                   <li class="list-group-item">
-                    <b>Average</b> <a class="float-right">102</a>
+                    <b>Average</b> <a class="float-right">{{avg}}</a>
                   </li>
                   <li class="list-group-item">
-                    <b>Highest</b> <a class="float-right">125</a>
+                    <b>Highest</b> <a class="float-right">{{highest}}</a>
                   </li>
                   <li class="list-group-item">
-                    <b>Lowest</b> <a class="float-right">85</a>
+                    <b>Lowest</b> <a class="float-right">{{lowest}}</a>
                   </li>
                 </ul>
-
-                <a href="#" class="btn btn-primary btn-block"><b>Follow</b></a>
+                <a href="heartrate" class="btn btn-primary btn-block"><b>Refresh Data</b></a>
               </div>
               <!-- /.card-body -->
             </div>
@@ -68,17 +78,25 @@
                 <h3 class="card-title">
                   <i class="far fa-chart-bar"></i>
                   Histroical Heart-Rate
-                </h3>
-
-                <div class="card-tools">
+               </h3>
+               <div class="card-tools">
                   <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i>
                   </button>
                   <button type="button" class="btn btn-tool" data-card-widget="remove"><i class="fas fa-times"></i>
                   </button>
                 </div>
               </div>
-              <div class="card-body">
-                <div id="line-chart" style="height: 300px;"></div>
+              <div class="card-body">  
+                      <div style="display:inline;">
+                      <label for="party"  style="text-align: center;">Start Time </label> 
+                      <input id="start_time" type="datetime-local" name="start_time" style="text-align: center;"> &emsp;&emsp;
+                      <label for="party"  style="text-align: center;">End Time </label>
+                      <input id="end_time" type="datetime-local" name="end_time" style="text-align: center;"> &emsp;&emsp;
+                      <input type="button" class="profile-edit-btn" id="date_submit" value="SUBMIT" onclick="historic()"/>
+                      </div>
+              <div id="line-chart" style="width:800px; height: 300px;">         
+                  </div>
+ <!--           <div id="line_top_x" style="height: 300px;"></div> -->
               </div>
               <!-- /.card-body-->
             </div>
@@ -159,46 +177,57 @@
 <script src="{{ base_url() }}/plugins/flot-old/jquery.flot.pie.min.js"></script>
 <!-- Page script -->
 <script>
-  $(function () {
+//  $(function () {
     /*
      * Flot Interactive Chart
      * -----------------------
      */
-    // We use an inline data source in the example, usually data would
-    // be fetched from a server
-    var data        = [],
-        totalPoints = 100
 
-    function getRandomData() {
+    var historic_heartrate = [];
 
-      if (data.length > 0) {
-        data = data.slice(1)
-      }
+function historic(){
+    var start_time = $('#start_time').val();
+    var end_time = $('#end_time').val();
+    start_time = start_time.substring(0,10)+" "+start_time.substring(11,16)+":00";
+    end_time = end_time.substring(0,10)+" "+end_time.substring(11,16)+":00";
+    $.ajax({ 
+          type:"GET",
+          url:"/historic_heartrate/{start_time}/{end_time}",
+          data: {"start_time":start_time,"end_time":end_time },
+            success: function(data){
+              console.log("SUCCESS: ", data);
+              for(var i = 0;i<data.length;i++){
+                  historic_heartrate[i] = [parseInt(data[i].timediff),parseInt(data[i].heart_rate)];
+              }
+              line_graph();
+            },
+            error: function(data){
+             console.log('ERROR: ', data);
+            },   
+          });
+}
 
-      // Do a random walk
-      while (data.length < totalPoints) {
+function getRandomData(){
+    var realtime_heartrate = [];
+      $.ajax({ 
+          type:"GET",
+          url:"/realtime_heartrate",
+          async : false,
+            success: function(data){
+              console.log("SUCCESS: ", data);
+              for(var i = 0; i<60 ; ++i){
+                  if(data[i]==null){ realtime_heartrate.push([i,100]); }
+                  else{ realtime_heartrate.push([i,parseInt(data[i])]);}
+              }
+            },
+            error: function(data){
+             console.log('ERROR: ', data);
+            },   
+          });
+       return realtime_heartrate;
+ }
 
-        var prev = data.length > 0 ? data[data.length - 1] : 100,
-            y    = prev + Math.random() * 10 - 5
-
-        if (y < 0) {
-          y = 0
-        } else if (y > 100) {
-          y = 100
-        }
-
-        data.push(y)
-      }
-
-      // Zip the generated y values with the x values
-      var res = []
-      for (var i = 0; i < data.length; ++i) {
-        res.push([i, data[i]])
-      }
-
-      return res
-    }
-
+function realtime_graph(){
     var interactive_plot = $.plot('#interactive', [
         {
           data: getRandomData(),
@@ -219,28 +248,28 @@
           },
         },
         yaxis: {
+          label: "Heart Rate(bpm)",
           min: 0,
           max: 100,
-          show: true
+          show: true,
+          ticks: [0,50,100,150,200]
         },
         xaxis: {
-          show: true
+          show: true,
+          //ticks: [23, 22, 21, 20, 19, 18, 17, 16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0]
         }
       }
     )
-
+}
     var updateInterval = 500 //Fetch data ever x milliseconds
     var realtime       = 'on' //If == to on then fetch data every x seconds. else stop fetching
     function update() {
-
-      interactive_plot.setData([getRandomData()])
-
-      // Since the axes don't change, we don't need to call plot.setupGrid()
-      interactive_plot.draw()
+      realtime_graph()
       if (realtime === 'on') {
         setTimeout(update, updateInterval)
       }
     }
+
 
     //INITIALIZE REALTIME DATA FETCHING
     if (realtime === 'on') {
@@ -256,32 +285,23 @@
       }
       update()
     })
+
     /*
      * END INTERACTIVE CHART
-     */
-
-
+     */     
     /*
      * LINE CHART
      * ----------
      */
-    //LINE randomly generated data
 
-    var sin = [],
-        cos = []
-    for (var i = 0; i < 14; i += 0.5) {
-      sin.push([i, Math.sin(i)])
-      cos.push([i, Math.cos(i)])
-    }
+function line_graph(){
     var line_data1 = {
-      data : sin,
+      data : historic_heartrate,
       color: '#3c8dbc'
     }
-    var line_data2 = {
-      data : cos,
-      color: '#00c0ef'
-    }
-    $.plot('#line-chart', [line_data1, line_data2], {
+    $.plot('#line-chart', [line_data1], {
+      width : 500,
+      height : 300,
       grid  : {
         hoverable  : true,
         borderColor: '#f3f3f3',
@@ -302,25 +322,42 @@
         color: ['#3c8dbc', '#f56954']
       },
       yaxis : {
-        show: true
+        title: 'Heart Rate (bpm)',
+        show: true,
+        min: 0,
+        max: 200,
+        ticks: [0,50,100,150,200]
       },
       xaxis : {
-        show: true
+        title: {
+          text: 'Time (hours)',
+          font: {
+            size: 18,
+            color: '#000000'
+          }
+        },
+        show: false,
+        // min: 0,
+        // max: 23,
+        //ticks: [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23]
       }
     })
     //Initialize tooltip on hover
     $('<div class="tooltip-inner" id="line-chart-tooltip"></div>').css({
       position: 'absolute',
       display : 'none',
-      opacity : 0.8
+      opacity : 0.5
     }).appendTo('body')
     $('#line-chart').bind('plothover', function (event, pos, item) {
-
       if (item) {
         var x = item.datapoint[0].toFixed(2),
             y = item.datapoint[1].toFixed(2)
-
-        $('#line-chart-tooltip').html(item.series.label + ' of ' + x + ' = ' + y)
+        // if(parseInt(x/3600)>23){
+        //   $('#line-chart-tooltip').html( (parseInt(x/3600)-23) + 'day ' + parseInt(x/3600) + 'hours from Start Time => ' + parseInt(y) +'bpm')
+       //  } 
+        // else{   
+          $('#line-chart-tooltip').html( parseInt(x/3600) + 'hours from Start Time => ' + parseInt(y) +'bpm')
+       // }
           .css({
             top : item.pageY + 5,
             left: item.pageX + 5
@@ -329,111 +366,11 @@
       } else {
         $('#line-chart-tooltip').hide()
       }
-
     })
-    /* END LINE CHART */
-
-    /*
-     * FULL WIDTH STATIC AREA CHART
-     * -----------------
-     */
-    var areaData = [[2, 88.0], [3, 93.3], [4, 102.0], [5, 108.5], [6, 115.7], [7, 115.6],
-      [8, 124.6], [9, 130.3], [10, 134.3], [11, 141.4], [12, 146.5], [13, 151.7], [14, 159.9],
-      [15, 165.4], [16, 167.8], [17, 168.7], [18, 169.5], [19, 168.0]]
-    $.plot('#area-chart', [areaData], {
-      grid  : {
-        borderWidth: 0
-      },
-      series: {
-        shadowSize: 0, // Drawing is faster without shadows
-        color     : '#00c0ef',
-        lines : {
-          fill: true //Converts the line chart to area chart
-        },
-      },
-      yaxis : {
-        show: false
-      },
-      xaxis : {
-        show: false
-      }
-    })
-
-    /* END AREA CHART */
-
-    /*
-     * BAR CHART
-     * ---------
-     */
-
-    var bar_data = {
-      data : [[1,10], [2,8], [3,4], [4,13], [5,17], [6,9]],
-      bars: { show: true }
-    }
-    $.plot('#bar-chart', [bar_data], {
-      grid  : {
-        borderWidth: 1,
-        borderColor: '#f3f3f3',
-        tickColor  : '#f3f3f3'
-      },
-      series: {
-         bars: {
-          show: true, barWidth: 0.5, align: 'center',
-        },
-      },
-      colors: ['#3c8dbc'],
-      xaxis : {
-        ticks: [[1,'January'], [2,'February'], [3,'March'], [4,'April'], [5,'May'], [6,'June']]
-      }
-    })
-    /* END BAR CHART */
-
-    /*
-     * DONUT CHART
-     * -----------
-     */
-
-    var donutData = [
-      {
-        label: 'Series2',
-        data : 30,
-        color: '#3c8dbc'
-      },
-      {
-        label: 'Series3',
-        data : 20,
-        color: '#0073b7'
-      },
-      {
-        label: 'Series4',
-        data : 50,
-        color: '#00c0ef'
-      }
-    ]
-    $.plot('#donut-chart', donutData, {
-      series: {
-        pie: {
-          show       : true,
-          radius     : 1,
-          innerRadius: 0.5,
-          label      : {
-            show     : true,
-            radius   : 2 / 3,
-            formatter: labelFormatter,
-            threshold: 0.1
-          }
-
-        }
-      },
-      legend: {
-        show: false
-      }
-    })
-    /*
-     * END DONUT CHART
-     */
-
-  })
+  }
+  /* END LINE CHART */
+    
+ //})
 
   /*
    * Custom Label formatter
