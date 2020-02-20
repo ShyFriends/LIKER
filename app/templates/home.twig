@@ -412,67 +412,7 @@ function heartratenum(){
             },   
           });
 }
-                  var aqi_data; 
-                  $.ajax({
-                    type:"GET",
-                    url:"/get_aqi",
-                    success: function(data) {
-                        console.log("~~");
-                        console.log("SUCCESS: ", data);
-                        aqi_data = data;
-                        chart_view();
-                        for (i in aqi_data[0]) {
-                          if(i!="longitude"&&i!="latitude"&&i!="udoo_sn"){
-                            alert(document.getElementById(i).value);
-                            document.getElementById(i).value = aqi_data[0][i];
-                            alert(document.getElementById(i).value);
-                            if(i=="pm2_5_aqi"){
-                              var color = calculate_aqi(aqi_data[0].pm2_5_aqi);
-                              $('#pm2_5_aqi').knob({
-                                  fgColor: color
-                                });  
-                            }
-                            else if(i=="pm10_aqi"){
-                              var color = calculate_aqi(aqi_data[0].pm10_aqi);
-                              $('#pm10_aqi').knob({
-                                  fgColor: color
-                                });  
-                            }
-                            else if(i=="co_aqi"){
-                              var color = calculate_aqi(aqi_data[0].co_aqi);
-                              $('#co_aqi').knob({
-                                  fgColor: color
-                                });  
-                            }
-                            else if(i=="no2_aqi"){
-                              var color = calculate_aqi(aqi_data[0].no2_aqi);
-                              $('#no2_aqi').knob({
-                                  fgColor: color
-                                });  
-                            }
-                            else if(i=="so2_aqi"){
-                              var color = calculate_aqi(aqi_data[0].so2_aqi);
-                              $('#so2_aqi').knob({
-                                  fgColor: color
-                                });  
-                            }
-                            else if(i=="o3_aqi"){
-                              var color = calculate_aqi(aqi_data[0].o3_aqi);
-                              $('#o3_aqi').knob({
-                                  fgColor: color
-                                });  
-                            }
-                          }
-                        }
-                    },
-                    error: function(data) {
-                        console.log('ERROR: ', data);
-                    },
-                  });
               
-
-
-
 </script>
 
 </body>
