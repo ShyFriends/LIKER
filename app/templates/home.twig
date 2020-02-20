@@ -11,7 +11,6 @@
     </body>
 </html>
          -->
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -38,10 +37,88 @@
       </div><!-- /.container-fluid -->
     </div>
     <!-- /.content-header -->
-    {{username}}
     <!-- Main content -->
-    
-  </div>
+    <section class="content">
+      <div class="container-fluid">
+     
+    <!-- heartrate_number -->  
+        <div class="row">
+          <div class="col-md-6" style="float: left; width: 50%">
+            <div class="card card-primary card-outline">
+              <div class="card-body box-profile" style="height: 400px">
+         <div>
+                <div class="text-center" style=" position: relative; left: 7%; float: left; width: 30%; height: 80%; border-radius: 25px;">
+                  <img 
+                       src="{{base_url}}/img/heart.jpg" style="width: 100%; height: 100%;"
+                       alt="User profile picture">
+                  </div>
+                  <div class="text-center" style="float: right; width: 70%; height: 80%; border-radius: 25px; ">
+                    <br/>
+                   <h3 class="profile-username text-center">Current Heart Rate</h3>
+                   <p class="profile-username text-center" style="font-size: 70px">30</p>
+                </div>
+        </div>
+                <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/>
+                 <ul class='list-group list-group-unbordered mb-3' >
+                  <li class="list-group-item">
+                    <b>Average</b> <a class="float-right"><input type="text" id="avg" style="border: none; text-align: right; outline: none;" readonly /></a>
+                  </li>
+                  <li class="list-group-item">
+                    <b>Highest</b> <a class="float-right"><input type="text" id="max" style="border: none; text-align: right; outline: none;" readonly/></a>
+                  </li>
+                  <li class="list-group-item">
+                    <b>Lowest</b> <a class="float-right"><input type="text" id="min" style="border: none; text-align: right; outline: none;" readonly/></a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6" style="float: right; width: 50%">
+            <div class="card card-primary card-outline">
+              <div class="card-body box-profile" style="height: 400px">
+                      <!--aqi-->
+              </div>
+            </div>
+          </div>
+
+      </div> <!--row end-->
+  <!-- heartrate_chart -->              
+        <div class="row" >
+          <div class="col-md-6" style="float: left; width: 50%"> <!-- interactive chart -->
+            <div class="card card-primary card-outline">
+              <div class="card-header">
+                <h3 class="card-title">
+                  <i class="far fa-chart-bar"></i>
+                  Real Time Heart-Rate
+                </h3>
+                <div class="card-tools">
+                  Real time
+                  <div class="btn-group" id="realtime" data-toggle="btn-toggle">
+                    <button type="button" class="btn btn-default btn-sm active" data-toggle="on">On</button>
+                    <button type="button" class="btn btn-default btn-sm" data-toggle="off">Off</button>
+                  </div>
+                </div>
+              </div>
+              <div class="card-body"  style="height: 380px;"  >
+                <div id="interactive" style="position: relative; width: 90%; height: 95%; left: 50px;"></div>
+                 <p class="transform">Heart Rate (bpm)</p>
+                <div style="position: relative; top: -70px; left: 91%;">Time (minutes)</div>
+              </div> <!-- /.card-body-->
+            </div> <!-- /.card -->
+          </div> <!-- /.col -->
+            <div class="col-md-6" style="float: right; width: 50%">
+              <div class="card card-primary card-outline">
+              <div class="card-body box-profile" style="height: 400px">
+              <div>
+                                      <!--map-->
+              </div>
+              </div>
+              </div>                            
+            </div>
+        </div><!--rowend-->
+    </section>
+
+
   <!-- /.content-wrapper -->
   <footer class="main-footer">
     <strong>Copyright &copy; 2014-2019 <a href="http://adminlte.io">AdminLTE.io</a>.</strong>
@@ -91,6 +168,29 @@
 <script src="{{ base_url() }}/dist/js/pages/dashboard.js"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="{{ base_url() }}/dist/js/demo.js"></script>
+
+<script type="text/javascript">
+  
+var intervalID = setTimeout(heartrateinfo, 0);
+var intervalID = setInterval(sayHello, 1000);
+
+function heartrateinfo(){
+    $.ajax({ 
+          type:"GET",
+          url:"/heartrate_info",
+            success: function(data){
+              console.log("SUCCESS: ", data);
+              document.getElementById('avg').value = data.avg+" bpm";
+              document.getElementById('max').value = data.max+" bpm";
+              document.getElementById('min').value = data.min+" bpm";              
+            },
+            error: function(data){
+             console.log('ERROR: ', data);
+            },   
+          });
+}
+
+</script>
 
 </body>
 </html>
