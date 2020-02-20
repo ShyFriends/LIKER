@@ -86,22 +86,6 @@ final class HomeController extends BaseController
         ->write(json_encode($json_array));
     }
 
-        /*public function userinfo(Request $request, Response $response, $args)
-            {
-                $username_sql = $_SESSION['username'];
-
-                $sql = "select username, birth, gender, email, phone_number from Users limit 2";
-
-        $stmt = $this->em->getConnection()->query($sql);
-                $stmt->execute();
-                $results = $stmt->fetchAll();
-                $user_results = $results;
-
-
-
-        $this->view->render($response, 'userinfo.twig', ['username'=>$_SESSION['username'], 'myresults'=>$user_results]);
-
-        }*/
 
     public function userinfo(Request $request, Response $response, $args)
     {
@@ -129,7 +113,7 @@ final class HomeController extends BaseController
         $this->view->render($response, 'userinfo.twig', ['username'=>$_SESSION['username'], 'user_results'=>$user_results, 'polar_results'=>$polar_results, 'udoo_results'=>$udoo_results]);
     }
 
-     public function remove_sensor(Request $request, Response $response, $args)
+    public function remove_sensor(Request $request, Response $response, $args)
     {
         $usn_sql = $_SESSION['usn'];
         $dsn_sql = $_POST['dsn'];
@@ -189,10 +173,15 @@ final class HomeController extends BaseController
                 ->write(json_encode($json_array));
             }
         }
+        $json_array = array("status" => 1);
+        return $response->withStatus(200)
+        ->withHeader('Content-Type', 'application/json')
+        ->write(json_encode($json_array));
+
     }
 
 
-        public function signin(Request $request, Response $response, $args)
+    public function signin(Request $request, Response $response, $args)
     {    
         // print_r($_POST['password']);
         $username_sql = $_POST['username'];
@@ -208,6 +197,10 @@ final class HomeController extends BaseController
             $stmt = $this->em->getConnection()->prepare($sql);
             $stmt->execute();
 
+            $sql = "DELETE FROM Auth WHERE username = '$username_sql'";
+            $stmt = $this->em->getConnection()->prepare($sql);
+            $stmt->execute();
+            
             //$json_array = array("status" => "success");
             $_SESSION['usn'] = $results[0]['usn'];
             $_SESSION['username'] = $results[0]['username'];

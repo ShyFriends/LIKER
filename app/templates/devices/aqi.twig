@@ -7,7 +7,11 @@
   <!-- Ionicons -->
   <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
   <!-- Google Font: Source Sans Pro -->
-
+ <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+  <link rel="stylesheet" href="/resources/demos/style.css">
+  <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+  
 </head>
 <body>
    {% include('sidebar.twig') %}
@@ -60,7 +64,7 @@
         </div>
       </div><!-- /.container-fluid -->
     </section>
-<div class="row">
+      <div class="row">
           <div class="col-12">
             <!-- jQuery Knob -->
             <div class="card">
@@ -120,35 +124,83 @@
         </div>
         <!-- /.row -->
 
-        <div>
+        <div style="">
+
           <div style="width: 700px;height: 700px; padding-left: 50px;float: left;">
+            <div id="aqis" style="margin-bottom: 2%">
+              <button type="button" class="btn btn-default" id="pm2_5" onclick="display_aqi(this.id)" style="width: 15%;margin-left: 4%;background-color: #3e95cd">pm2.5</button>
+              <button type="button" class="btn btn-default" id="pm10" onclick="display_aqi(this.id)" style="width: 15%;background-color: #8e5ea2">pm10</button>
+              <button type="button" class="btn btn-default" id="no2" onclick="display_aqi(this.id)" style="width: 15%;background-color: #3cba9f">NO2</button>
+              <button type="button" class="btn btn-default" id="co" onclick="display_aqi(this.id)" style="width: 15%;background-color: #e8c3b9">CO</button>
+              <button type="button" class="btn btn-default" id="so2" onclick="display_aqi(this.id)" style="width: 15%;background-color: #c45850">SO2</button>
+              <button type="button" class="btn btn-default" id="o3" onclick="display_aqi(this.id)" style="width: 15%;background-color: gray">O3</button>
+            </div>
+
+
+
+
             <div id="map"></div>
 
 
+
+
             <script src="https://unpkg.com/@google/markerclustererplus@4.0.1/dist/markerclustererplus.min.js"></script>
+
     <script>
-
-
-      var citymap = {
-        chicago: {
-          center: {lat: -31.563910, lng: 147.154312},
-          population: 840583
-        },
-        newyork: {
-          center: {lat: -33.718234, lng: 150.363181},
-          population: 8714856
-        },
-        losangeles: {
-          center: {lat: -33.727111, lng: 150.371124},
-          population: 857799
-        },
-        vancouver: {
-          center: {lat: -33.848588, lng: 151.209834},
-          population: 603502
+      function calculate_aqi(aqi){
+        if(aqi<=50){
+          return "green";
         }
-      };
+        else if(aqi<=100){
+          return "yellow";
+        }
+        else if(aqi<=150){
+          return "orange";
+        }
+        else if(aqi<=200){
+          return "red";
+        }
+        else if(aqi<=300){
+          return "DarkOrchid";
+        }
+        else if(aqi<=500){
+          return "darkred"
+        }
+      }
+      function display_aqi(clicked_id){
 
+          for(var item in citymap){
+            if(clicked_id=="co"){
+              var color = calculate_aqi(citymap[item].co_aqi);
+              cityCircle[item].setOptions({fillColor: color, strokeColor: color})
+            }
+            else if(clicked_id=="no2"){
+              var color = calculate_aqi(citymap[item].no2_aqi);
+              cityCircle[item].setOptions({fillColor: color, strokeColor: color})
+            }
+            else if(clicked_id=="so2"){
+              var color = calculate_aqi(citymap[item].so2_aqi);
+              cityCircle[item].setOptions({fillColor: color, strokeColor: color})
+            }
+            else if(clicked_id=="o3"){
+              var color = calculate_aqi(citymap[item].o3_aqi);
+              cityCircle[item].setOptions({fillColor: color, strokeColor: color})
+            }
+            else if(clicked_id=="pm2_5"){
+              var color = calculate_aqi(citymap[item].pm2_5_aqi);
+              cityCircle[item].setOptions({fillColor: color, strokeColor: color})
+            }
+            else if(clicked_id=="pm10"){
+              var color = calculate_aqi(citymap[item].pm10_aqi);
+              cityCircle[item].setOptions({fillColor: color, strokeColor: color})
+            }
+          }
 
+      }
+
+      var locations = [];
+      var citymap = {};
+      var cityCircle = {};
 
       function initMap() {
 
@@ -157,26 +209,82 @@
           center: {lat: -28.024, lng: 140.887}
         });
 
+        
+        map.addListener('center_changed', function() {
+          window.setTimeout(function() {
+          //map.panTo(markers[i].position);
+          }, 3000);
+        });
+        var ne_lat = 30;
+        var ne_lng = -200;
+        var sw_lat = -67;
+        var sw_lng = 84;
+          
+        map.addListener('bounds_changed', function() {  
+        // 3 seconds after the center of the map has changed, pan back to the
+          var bounds =  map.getBounds();
+          var ne = bounds.getNorthEast();
+          var sw = bounds.getSouthWest();
+          ne_lat = ne.lat();
+          ne_lng = ne.lng();
+          sw_lat = sw.lat();
+          sw_lng = sw.lng();
+
+          window.setTimeout(function() {  
+                
+          }, 4000);  
+        });
+
+        var all_sensors;
+        $.ajax({
+            type:"GET",
+            url:"/locations/{ne_lat}/{ne_lng}/{sw_lat}/{sw_lng}",
+            data : {"ne_lat": ne_lat, "ne_lng":ne_lng,"sw_lat":sw_lat,"sw_lng":sw_lng},
+            async: false,
+            success: function(data) {
+                console.log("SUCCESS: ", data);
+                all_sensors = data;
+                for(var i=0; i<all_sensors.length;i++){
+                  locations.push({'lat':parseFloat(all_sensors[i].latitude), 'lng':parseFloat(all_sensors[i].longitude)});
+                  
+                  var object = new Object();
+                  object.center = {'lat':parseFloat(all_sensors[i].latitude), 'lng':parseFloat(all_sensors[i].longitude)}
+
+                  object.population = 1000000;
+                  object.id = all_sensors[i].dsn;
+                  object.co_aqi = all_sensors[i].co_aqi;
+                  object.no2_aqi = all_sensors[i].no2_aqi;
+                  object.so2_aqi = all_sensors[i].so2_aqi;
+                  object.o3_aqi = all_sensors[i].o3_aqi;
+                  object.pm2_5_aqi = all_sensors[i].pm2_5_aqi;
+                  object.pm10_aqi = all_sensors[i].pm10_aqi;
+                  var dsn = new Object();
+                  dsn[i] = object;
+                  citymap[i] = object;
+                  var citymap2 = dsn;
+                  for (var city in citymap2) {
+                      cityCircle[i] = new google.maps.Circle({
+                      strokeColor: '#FF0000',
+                      strokeOpacity: 0.8,
+                      strokeWeight: 2,
+                      fillColor: '#FF0000',
+                      fillOpacity: 0.35,
+                      map: map,
+                      center: citymap2[city].center,
+                      radius: Math.sqrt(citymap2[city].population) * 100
+                    });
+                  }
+                  console.log("!!!!!!");
+                  console.log(citymap2);
+                }
 
 
 
-        for (var city in citymap) {
-          var cityCircle = new google.maps.Circle({
-            strokeColor: '#FF0000',
-            strokeOpacity: 0.8,
-            strokeWeight: 2,
-            fillColor: '#FF0000',
-            fillOpacity: 0.35,
-            map: map,
-            center: citymap[city].center,
-            radius: Math.sqrt(citymap[city].population) * 100
-          });
-
-        }
-
-
-
-
+            },
+            error: function(data) {
+                console.log('ERROR: ', data);
+            },
+        });
 
         // Create an array of alphabetical characters used to label the markers.
         var labels = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
@@ -185,25 +293,21 @@
         // Note: The code uses the JavaScript Array.prototype.map() method to
         // create an array of markers based on a given "locations" array.
         // The map() method here has nothing to do with the Google Maps API.
-        var markers = locations.map(function(location, i) {
-          return new google.maps.Marker({
-            position: location,
-            label: labels[i % labels.length],
-            id : i
-          });
-        });
-
-        for(var i=0;i<markers.length;i++){
-            map.addListener('center_changed', function() {
-                window.setTimeout(function() {
-                    map.panTo(markers[i].getPosition());
-                }, 3000);
+            var markers = locations.map(function(location, i) {
+              return new google.maps.Marker({
+                position: location,
+                label: labels[i % labels.length],
+                id : all_sensors[i].dsn
+              });
             });
+            
+        for(var i=0;i<locations.length;i++){
+
+
             markers[i].addListener('click', function() {
                 map.setZoom(8);
+                // map.setCenter(markers[i].position);
                 var udoo_id = this.id;
-                alert(udoo_id);
- 
                 $.ajax({
                     type:"GET",
                     url:"/location_aqi/{udoo_id}",
@@ -292,67 +396,74 @@
         // Add a marker clusterer to manage the markers.
         var markerCluster = new MarkerClusterer(map, markers,
             {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});
+
       }
 
-      var locations = [
-        {lat: -33.718234, lng: 150.363181},
-        {lat: -33.727111, lng: 150.371124},
-        {lat: -33.848588, lng: 151.209834},
-        {lat: -33.851702, lng: 151.216968},
-        {lat: -34.671264, lng: 150.863657},
-        {lat: -35.304724, lng: 148.662905},
-        {lat: -36.817685, lng: 175.699196},
-        {lat: -36.828611, lng: 175.790222},
-        {lat: -37.750000, lng: 145.116667},
-        {lat: -37.759859, lng: 145.128708},
-        {lat: -37.765015, lng: 145.133858},
-        {lat: -37.770104, lng: 145.143299},
-        {lat: -37.773700, lng: 145.145187},
-        {lat: -37.774785, lng: 145.137978},
-        {lat: -37.819616, lng: 144.968119},
-        {lat: -38.330766, lng: 144.695692},
-        {lat: -39.927193, lng: 175.053218},
-        {lat: -41.330162, lng: 174.865694},
-        {lat: -42.734358, lng: 147.439506},
-        {lat: -42.734358, lng: 147.501315},
-        {lat: -42.735258, lng: 147.438000},
-        {lat: -43.999792, lng: 170.463352}
-      ]
-      var all_sensors;
-      $.ajax({
-          type:"GET",
-          url:"/locations",
-          success: function(data) {
-              console.log("SUCCESS: ", data);
-              all_sensors = data;
-              for(var i=0; i<all_sensors.length;i++){
-                locations.push({'lat':parseFloat(all_sensors[i].latitude), 'lng':parseFloat(all_sensors[i].longitude)});
-              }
-              console.log(locations);
-
-          },
-          error: function(data) {
-              console.log('ERROR: ', data);
-          },
-      });
+      
 
     </script>
     <!-- Replace following script src -->
     <script src="/maps/documentation/javascript/examples/markerclusterer/markerclustererplus@4.0.1.min.js">
+
     </script>
     </script>
            </div>
+         </div>
 
     <!-- Main content -->
     
+  <script>
+  $( function() {
+    $('#reservationtime').daterangepicker({
+      timePicker: true,
+      timePickerIncrement: 30,
+      locale: {
+        format: 'MM/DD/YYYY hh:mm A'
+      }
+    })  } );
 
+  function search(){
+    alert($('#reservationtime').val());
+    var date = $('#reservationtime').val();
+    alert(date);
+    $.ajax({
+        type:"GET",
+        url:"/historic_aqi/{date}",
+        data: { "date": date },
+        success: function(data) {
+          alert("~!~!~");
+            console.log("SUCCESS: ", data);
+
+        },
+        error: function(data) {
+            console.log('ERROR: ', data);
+        },
+
+    });
+  }
+  </script>
 <!-- DONUT CHART -->
 
-        <div style="float: left;">
+        <div style="float: left;width: 50%">
           <div>
 
               <!-- /.card-body -->
+              <div class="form-group" style="margin-left: 5%;">
+                <div class="form-group">
+                  <label>Date and time range:</label>
 
+                  <div class="input-group">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text"><i class="far fa-clock"></i></span>
+                    </div>
+                    <input type="text" class="form-control float-right" id="reservationtime">
+
+                    <button type="button" class="btn btn-default" id="date" onclick="search()" style="width: 30%;float: left;">Search</button>
+                  </div>
+                  <!-- /.input group -->
+
+                </div>
+                <!-- /.form group -->
               <div class="card-body" style="float: left;">
                 <canvas class="chart" id="line-chart" style="min-height: 250px; height: 350px; max-width: 100%;"></canvas>
               </div>
@@ -456,10 +567,7 @@
                       ]
                     },
                     options: {
-                      title: {
-                        display: true,
-                        text: 'World population per region (in millions)'
-                      }
+
                     }
                   });
                 }
