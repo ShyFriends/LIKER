@@ -210,20 +210,17 @@ final class DeviceController extends BaseController
         $results = $stmt->fetchAll();
 
         $dsn_sql = $results[0]['dsn'];
-
         $sql = "select udoo_sn, co_aqi, no2_aqi, so2_aqi, o3_aqi, pm2_5_aqi, pm10_aqi, longitude, latitude from Udoo where dsn = '$dsn_sql' order by time desc limit 1";
         $stmt = $this->em->getConnection()->query($sql);
         $stmt->execute();
 
         $results = $stmt->fetchAll();
-
         $co_aqi = $results[0]['co_aqi'];
         $no2_aqi = $results[0]['no2_aqi'];
         $so2_aqi = $results[0]['so2_aqi'];
         $o3_aqi = $results[0]['o3_aqi'];
         $pm2_5_aqi = $results[0]['pm2_5_aqi'];
         $pm10_aqi = $results[0]['co_aqi'];
-
         $json_array = $results;
                 return $response->withStatus(200)
                 ->withHeader('Content-Type', 'application/json')
@@ -275,19 +272,20 @@ final class DeviceController extends BaseController
 
         if($ne_lng_sql<0&&$sw_lng_sql>0){
             
-            $sql = "select longitude, latitude, dsn, co_aqi, no2_aqi, so2_aqi, o3_aqi, pm2_5_aqi, pm10_aqi from Udoo where latitude < '$ne_lat_sql' and latitude > '$sw_lat_sql' and longitude < 180 and (longitude < '$ne_lng_sql' or longitude > '$sw_lng_sql') and (time,dsn) in (SELECT max(time),dsn FROM Udoo group by dsn);";
+            $sql = "select longitude, latitude, dsn, co_aqi, no2_aqi, so2_aqi, o3_aqi, pm2_5_aqi, pm10_aqi from Udoo where (time,dsn) in (SELECT max(time),dsn FROM Udoo group by dsn);";
             $stmt = $this->em->getConnection()->query($sql);
             $stmt->execute();
 
             $results = $stmt->fetchAll();
         }
         else{
-            $sql = "select longitude, latitude, dsn, co_aqi, no2_aqi, so2_aqi, o3_aqi, pm2_5_aqi, pm10_aqi from Udoo where latitude < '$ne_lat_sql' and latitude > '$sw_lat_sql' and longitude < '$ne_lng_sql' and longitude > '$sw_lng_sql' and (time,dsn) in (SELECT max(time),dsn FROM Udoo group by dsn);";
+            $sql = "select longitude, latitude, dsn, co_aqi, no2_aqi, so2_aqi, o3_aqi, pm2_5_aqi, pm10_aqi from Udoo where (time,dsn) in (SELECT max(time),dsn FROM Udoo group by dsn);";
             $stmt = $this->em->getConnection()->query($sql);
             $stmt->execute();
 
             $results = $stmt->fetchAll();
         }
+        //latitude < '$ne_lat_sql' and latitude > '$sw_lat_sql' and longitude < 180 and (longitude < '$ne_lng_sql' or longitude > '$sw_lng_sql') and 
 
         
 

@@ -178,3 +178,6 @@ $app->get('/check_it_app', 'App\Controller\AppController:check_it_app')
 
 $app->post('/send_polardata_app', 'App\Controller\AppController:send_polardata_app')
     ->setName('send_polardata_app');
+
+$app->post('/send_udoodata_app', 'App\Controller\AppController:send_udoodata_app')
+    ->setName('send_udoodata_app');
