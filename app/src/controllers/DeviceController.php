@@ -169,9 +169,17 @@ final class DeviceController extends BaseController
         $dsn_sql = $results[0]['dsn'];
 
          for($i=0; $i<60; $i++){
-            $sql = "select heart_rate from Polar where dsn=".$dsn_sql." and DATE_ADD(NOW(), INTERVAL -".($i+1)." MINUTE) <= time and time < DATE_ADD(NOW(), INTERVAL -".$i." MINUTE) order by time desc limit 0,1";
+            $sql = "select DATE_ADD(NOW(), INTERVAL -".($i+1)." SECOND) as datetime";
             $stmt = $this->em->getConnection()->query($sql);
-            $stmt->execute();
+            $results = $stmt->fetchAll();
+            $datetime1 = $results[0]['datetime'];
+            $sql = "select DATE_ADD(NOW(), INTERVAL -".$i." SECOND) as datetime";
+            $stmt = $this->em->getConnection()->query($sql);
+            $results = $stmt->fetchAll();
+            $datetime2 = $results[0]['datetime'];
+
+            $sql = "select heart_rate from Polar where dsn=".$dsn_sql." and '".$datetime1."' <= time and time < '".$datetime2."' order by time desc limit 0,1";
+            $stmt = $this->em->getConnection()->query($sql);
             $pre_polar_data = $stmt->fetchAll();
             $realtime_polar[$i] = $pre_polar_data[0]['heart_rate'];
         }
