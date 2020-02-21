@@ -59,13 +59,20 @@ final class DeviceController extends BaseController
         $results = $stmt->fetchAll();
 
         $dsn_sql = $results[0]['dsn'];
-//and DATE_ADD(NOW(), INTERVAL -10 SECOND) <= time and time <= now()
-        $sql = "select heart_rate from Polar where dsn=".$dsn_sql." order by time desc limit 1";
+
+        $sql = "select DATE_ADD(now(), INTERVAL -5 SECOND) as subtime";
         $stmt = $this->em->getConnection()->query($sql);
         $stmt->execute();
         $results = $stmt->fetchAll();
 
-        $heartrate_num['heartrate'] = $results[0]['heart_rate'];
+        $subtime_sql = $results[0]['subtime'];
+//and DATE_ADD(NOW(), INTERVAL -10 SECOND) <= time and time <= now()
+        $sql = "select heart_rate from Polar where dsn=".$dsn_sql." and '".$subtime_sql."' < time and time <= now() order by time desc limit 0,1";
+        $stmt = $this->em->getConnection()->query($sql);
+        $stmt->execute();
+        $results = $stmt->fetchAll();
+
+       // $heartrate_num['heartrate'] = $results[0]['heart_rate'];
 
         $json_array = $heartrate_num;
             return $response->withStatus(200)
@@ -124,8 +131,9 @@ final class DeviceController extends BaseController
         for($i=0; $i<$resultsno; $i++){
             $historic_polar[$i]['heart_rate'] = $pre_polar_data[$i]['heart_rate'];
             $historic_polar[$i]['time'] = $pre_polar_data[$i]['time'];
-            $sql = "select TIMESTAMPDIFF(second, Date_format('".$start_time_sql."', '%Y-%m-%d %H:%i:%s'), date_format('".$pre_polar_data[$i]['time']."', '%Y-%m-%d %H:%i:%s')) AS timediff";
-            $stmt = $this->em->getConnection()->query($sql);
+
+            $sql = "select TIMESTAMPDIFF(second, Date_format('".$start_time_sql."', '%Y-%m-%d %H:%i:%s'), Date_format('".$pre_polar_data[$i]['time']."', '%Y-%m-%d %H:%i:%s')) AS timediff";
+            $stmt = $this->em->getConnection()->query($sql);    
             $stmt->execute();
             $timediff = $stmt->fetchAll(); 
             $historic_polar[$i]['timediff'] = $timediff[0]['timediff'];
