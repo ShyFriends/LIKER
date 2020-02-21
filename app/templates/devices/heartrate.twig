@@ -41,7 +41,7 @@ $(function() {
         <div class="row">
           <div class="col-md-4">
             <div class="card card-primary card-outline">
-              <div class="card-body box-profile" style="height: 510px">
+              <div class="card-body box-profile" style="height: 100%">
                 <div class="text-center" style="height: 30%;">
                   <img 
                        src="{{base_url}}/img/heart.jpg" style="width: 30%;height: 100%;"
@@ -199,7 +199,7 @@ $(function() {
      * -----------------------
      */
 
-var historic_heartrate = [[0,90],[10,120],[20,80],[50,100],[70,60],[100,120]];
+var historic_heartrate = [];
 var intervalID = setTimeout(heartrateinfo, 0);
 var intervalID = setTimeout(line_graph, 0);
 
@@ -379,7 +379,7 @@ function line_graph(){
         //   $('#line-chart-tooltip').html( (parseInt(x/3600)-23) + 'day ' + parseInt(x/3600) + 'hours from Start Time => ' + parseInt(y) +'bpm')
        //  } 
         // else{   
-          $('#line-chart-tooltip').html( parseInt(x/3600) + 'hours after Start Time => ' + parseInt(y) +'bpm')
+          $('#line-chart-tooltip').html( parseFloat(x/3600).toFixed(3) + 'hours after Start Time => ' + parseInt(y) +'bpm')
        // }
           .css({
             top : item.pageY + 5,

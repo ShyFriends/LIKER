@@ -74,29 +74,29 @@
 
 <!--                     <div class="knob-label">data-width="90"</div>
  -->
-                    <input type="text" class="knob" id="pm2_5_aqi" value="90" data-width="150" data-max = "500" data-height="150" data-fgColor="#00a65a" data-readonly="true" >pm2.5
+                    <input type="text" class="knob" id="pm2_5_aqi" value="0" data-width="150" data-max = "500" data-height="150" data-fgColor="#00a65a" data-readonly="true" >pm2.5
 
 <!--                     <div class="knob-label">New Visitors</div>
  -->
-                    <input type="text" class="knob" id="pm10_aqi" value="70" data-max = "500" data-width="150" data-height="150" data-fgColor="#f56954" data-readonly="true">pm10
+                    <input type="text" class="knob" id="pm10_aqi" value="0" data-max = "500" data-width="150" data-height="150" data-fgColor="#00a65a" data-readonly="true">pm10
 
 <!--                     <div class="knob-label">Bounce Rate</div>
  -->
-                    <input type="text" class="knob" id="no2_aqi" value="80"data-width="150" data-max = "500"
+                    <input type="text" class="knob" id="no2_aqi" value="0" data-width="150" data-max = "500"
                            data-height="150" data-fgColor="#00a65a" data-readonly="true">NO2
 
 <!--                     <div class="knob-label">Server Load</div>
  -->
-                    <input type="text" class="knob" id="co_aqi" value="40" data-width="150" data-height="150" data-max = "500" data-fgColor="#00a65a" data-readonly="true" >CO
+                    <input type="text" class="knob" id="co_aqi" value="0" data-width="150" data-height="150" data-max = "500" data-fgColor="#00a65a" data-readonly="true" >CO
 
 <!--                     <div class="knob-label">Disk Space</div>
  -->
 
-                    <input type="text" class="knob" id="so2_aqi" value="90" data-width="150" data-height="150" data-max = "500" data-fgColor="#00a65a" data-readonly="true" >SO2
+                    <input type="text" class="knob" id="so2_aqi" value="0" data-width="150" data-height="150" data-max = "500" data-fgColor="#00a65a" data-readonly="true" >SO2
 
 <!--                     <div class="knob-label">Bandwidth</div>
  -->                    
-                    <input type="text" class="knob" id="o3_aqi" value="50" data-width="150" data-height="150" data-max = "500" data-fgColor="#00a65a" data-readonly="true" >O3
+                    <input type="text" class="knob" id="o3_aqi" value="0" data-width="150" data-height="150" data-max = "500" data-fgColor="#00a65a" data-readonly="true" >O3
 
 <!--                     <div class="knob-label">CPU</div>
 
@@ -291,7 +291,7 @@
 
         var map = new google.maps.Map(document.getElementById('map'), {
           zoom: 3,
-          center: {lat: -28.024, lng: 140.887}
+          center: {lat: 32.024, lng: -117.887}
         });
 
         
@@ -300,10 +300,11 @@
           //map.panTo(markers[i].position);
           }, 3000);
         });
-        var ne_lat = 30;
+
+        var ne_lat = -34;
         var ne_lng = -200;
-        var sw_lat = -67;
-        var sw_lng = 84;
+        var sw_lat = -71;
+        var sw_lng = -64;
           
         map.addListener('bounds_changed', function() {  
         // 3 seconds after the center of the map has changed, pan back to the
@@ -426,7 +427,11 @@
                         }
                         
                         mychart.update();
-
+                        alert("!!!!");
+                        var length = data.length;
+                        console.log("tlqkf");
+                        console.log(length);
+                        console.log(data[length-1]);
                         console.log("~!");
                         console.log(data[0]);
                         var color = calculate_aqi(data[0].pm10_aqi);
