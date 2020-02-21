@@ -162,14 +162,14 @@
 
                       </div>
                       <!-- /.form group -->
-                      <div class="card-body" style="float: left;">
-                        <canvas class="chart" id="line-chart" style="min-height: 250px; height: 350px; max-width: 100%;"></canvas>
+                      <div class="card-body" style="">
+                        <canvas class="chart" id="line-chart" style=""></canvas>
                       </div>
                     </div>
 
 
 
-                    <div id="dvTable" class="container" style="width: 100%;margin-top: 40%">
+                    <div id="dvTable" class="container" style="width: 100%;">
                                
                         <table class="table table-striped" id="sensors">
                           <thead>
@@ -272,7 +272,6 @@
             }
             else if(clicked_id=="pm2_5"){
               var color = calculate_aqi(citymap[item].pm2_5_aqi);
-              alert(color);
               cityCircle[item].setOptions({fillColor: color, strokeColor: color})
             }
             else if(clicked_id=="pm10"){
@@ -288,6 +287,7 @@
       var cityCircle = {};
 
       function initMap() {
+        first();
 
         var map = new google.maps.Map(document.getElementById('map'), {
           zoom: 3,
@@ -656,7 +656,9 @@
 <!-- DONUT CHART -->
 
               <script type="text/javascript">
-                  var aqi_data; 
+                var aqi_data; 
+
+                function first(){
                   $.ajax({
                     type:"GET",
                     url:"/get_aqi",
@@ -667,61 +669,156 @@
                         aqi_data = data;
                         chart_view();
 
-                        for (i in aqi_data[0]) {
-                          if(i!="longitude"&&i!="latitude"&&i!="udoo_sn"){
-                            alert(i);
-                            alert(document.getElementById(i).value);
-                            document.getElementById(i).value = aqi_data[0][i];
-                            alert(document.getElementById(i).value);
-                            if(i=="pm2_5_aqi"){
-                              var color = calculate_aqi(aqi_data[0].pm2_5_aqi);
-                              $('#pm2_5_aqi').knob({
-                                fgColor: color
-                              });  
-                            }
-                            else if(i=="pm10_aqi"){
-                              var color = calculate_aqi(aqi_data[0].pm10_aqi);
-                              $('#pm10_aqi').knob({
-                                fgColor: color
-                              });  
-                            }
-                            else if(i=="co_aqi"){
-                              alert("tlqkf");
-                              var color = calculate_aqi(aqi_data[0].co_aqi);
-                              alert(color);
-                              $('#co_aqi').trigger(
-                               'configure',
-                                {
-                                  "fgColor":color,
-                                  "inputColor":color
-                                }
-                              ); 
-                            }
-                            else if(i=="no2_aqi"){
-                              var color = calculate_aqi(aqi_data[0].no2_aqi);
-                              $('#no2_aqi').knob({
-                                fgColor: color
-                              });  
-                            }
-                            else if(i=="so2_aqi"){
-                              var color = calculate_aqi(aqi_data[0].so2_aqi);
-                              $('#so2_aqi').knob({
-                                fgColor: color
-                              });  
-                            }
-                            else if(i=="o3_aqi"){
-                              var color = calculate_aqi(aqi_data[0].o3_aqi);
-                              $('#o3_aqi').knob({
-                                fgColor: color
-                              });  
-                            }
+                        var color = calculate_aqi(data[0].pm10_aqi);
+                        document.getElementById('pm10_aqi').value = data[0].pm10_aqi;
+                        $('#pm10_aqi').knob({
+                            fgColor: color
+                        }); 
+                        $('#pm10_aqi').trigger(
+                         'configure',
+                          {
+                            "fgColor":color,
+                            "inputColor":color
                           }
-                        }
+                        );
+                        $('#pm10_aqi')
+                          .val(data[0].pm10_aqi)
+                          .trigger('change');
+
+                        color = calculate_aqi(data[0].pm2_5_aqi);
+                        document.getElementById('pm2_5_aqi').value = data[0].pm2_5_aqi;
+                        $('#pm2_5_aqi').knob({
+                            fgColor: color
+                        }); 
+                        $('#pm2_5_aqi')
+                          .val(data[0].pm2_5_aqi)
+                          .trigger('change');
+
+                        color = calculate_aqi(data[0].co_aqi);
+                        document.getElementById('co_aqi').value = data[0].co_aqi;
+
+                        $('#co_aqi').knob({
+                            fgColor: color
+                        }); 
+                        $('#co_aqi').trigger(
+                         'configure',
+                          {
+                            "fgColor":color,
+                            "inputColor":color
+                          }
+                        );
+                        $('#co_aqi')
+                          .val(data[0].co_aqi)
+                          .trigger('change');
+
+                        color = calculate_aqi(data[0].no2_aqi);
+                        document.getElementById('no2_aqi').value = data[0].no2_aqi;
+
+                        $('#no2_aqi').knob({
+                            fgColor: color
+                        }); 
+                        $('#no2_aqi').trigger(
+                         'configure',
+                          {
+                            "fgColor":color,
+                            "inputColor":color
+                          }
+                        );
+                        $('#no2_aqi')
+                          .val(data[0].no2_aqi)
+                          .trigger('change');
+
+                        color = calculate_aqi(data[0].so2_aqi);
+                        document.getElementById('so2_aqi').value = data[0].so2_aqi;
+
+                        $('#so2_aqi').knob({
+                            fgColor: color
+                        }); 
+                        $('#so2_aqi').trigger(
+                         'configure',
+                          {
+                            "fgColor":color,
+                            "inputColor":color
+                          }
+                        );
+                        $('#so2_aqi')
+                          .val(data[0].so2_aqi)
+                          .trigger('change');
+
+                        color = calculate_aqi(data[0].o3_aqi);
+                        document.getElementById('o3_aqi').value = data[0].o3_aqi;
+
+                        $('#o3_aqi').knob({
+                            fgColor: color
+                        }); 
+                        $('#o3_aqi').trigger(
+                         'configure',
+                          {
+                            "fgColor":color,
+                            "inputColor":color
+                          }
+                        );
+                        $('#o3_aqi')
+                          .val(data[0].o3_aqi)
+                          .trigger('change');
+
+                        // for (i in aqi_data[0]) {
+                        //   if(i!="longitude"&&i!="latitude"&&i!="udoo_sn"){
+                        //     alert(i);
+                        //     alert(document.getElementById(i).value);
+                        //     document.getElementById(i).value = aqi_data[0][i];
+                        //     alert(document.getElementById(i).value);
+                        //     if(i=="pm2_5_aqi"){
+                        //       var color = calculate_aqi(aqi_data[0].pm2_5_aqi);
+                        //       $('#pm2_5_aqi').knob({
+                        //         fgColor: color
+                        //       });  
+                        //     }
+                        //     else if(i=="pm10_aqi"){
+                        //       var color = calculate_aqi(aqi_data[0].pm10_aqi);
+                        //       $('#pm10_aqi').knob({
+                        //         fgColor: color
+                        //       });  
+                        //     }
+                        //     else if(i=="co_aqi"){
+                        //       alert("tlqkf");
+                        //       var color = calculate_aqi(aqi_data[0].co_aqi);
+                        //       alert(color);
+                        //       $('#co_aqi').trigger(
+                        //        'configure',
+                        //         {
+                        //           "fgColor":color,
+                        //           "inputColor":color
+                        //         }
+                        //       ); 
+                        //     }
+                        //     else if(i=="no2_aqi"){
+                        //       var color = calculate_aqi(aqi_data[0].no2_aqi);
+                        //       $('#no2_aqi').knob({
+                        //         fgColor: color
+                        //       });  
+                        //     }
+                        //     else if(i=="so2_aqi"){
+                        //       var color = calculate_aqi(aqi_data[0].so2_aqi);
+                        //       $('#so2_aqi').knob({
+                        //         fgColor: color
+                        //       });  
+                        //     }
+                        //     else if(i=="o3_aqi"){
+                        //       var color = calculate_aqi(aqi_data[0].o3_aqi);
+                        //       $('#o3_aqi').knob({
+                        //         fgColor: color
+                        //       });  
+                        //     }
+                        //   }
+                        // }
                     },
                     error: function(data) {
                         console.log('ERROR: ', data);
                     },
                   });
+                }
+                  first();
                   var mychart;
                   function chart_view(){
                     mychart = new Chart(document.getElementById("line-chart"), {

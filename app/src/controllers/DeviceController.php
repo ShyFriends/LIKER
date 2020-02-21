@@ -59,8 +59,8 @@ final class DeviceController extends BaseController
         $results = $stmt->fetchAll();
 
         $dsn_sql = $results[0]['dsn'];
-
-        $sql = "select heart_rate from Polar where dsn=".$dsn_sql." and DATE_ADD(NOW(), INTERVAL -10 SECOND) <= time and time <= now() order by time desc limit 0,1";
+//and DATE_ADD(NOW(), INTERVAL -10 SECOND) <= time and time <= now()
+        $sql = "select heart_rate from Polar where dsn=".$dsn_sql." order by time desc limit 1";
         $stmt = $this->em->getConnection()->query($sql);
         $stmt->execute();
         $results = $stmt->fetchAll();
