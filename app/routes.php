@@ -49,6 +49,9 @@ $app->get('/aqi', 'App\Controller\DeviceController:aqi')
 $app->get('/heartrate', 'App\Controller\DeviceController:heartrate')
     ->setName('heartrate');
 
+$app->get('/heartrate_num', 'App\Controller\DeviceController:heartrate_num')
+    ->setName('heartrate_num');
+
 $app->get('/heartrate_info', 'App\Controller\DeviceController:heartrate_info')
     ->setName('heartrate_info');
 

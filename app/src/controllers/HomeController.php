@@ -17,12 +17,14 @@ final class HomeController extends BaseController
             return $response;
         }
         else{
-            $this->logger->info("Home page action dispatched");
-            $this->flash->addMessage('info', 'Sample flash message');
+            //$this->logger->info("Home page action dispatched");
+            //$this->flash->addMessage('info', 'Sample flash message');
             $this->view->render($response, 'home.twig',['username'=>$_SESSION['username']]);
             return $response;
         }
     }
+
+
 
     public function check_duplicate(Request $request, Response $response, $args)
     {
@@ -58,7 +60,7 @@ final class HomeController extends BaseController
         //echo $_SESSION['username'].$_SESSION['usn']."test";
         //die("hello");
 
-        $sql = "UPDATE Devices SET usn = 1 WHERE usn = $usn";
+        $sql = "UPDATE Devices SET usn = -1 WHERE usn = $usn";
         $stmt = $this->em->getConnection()->prepare($sql);
         $stmt->execute();
        

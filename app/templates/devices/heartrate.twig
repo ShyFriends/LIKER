@@ -17,18 +17,17 @@ $(function() {
 <body>
   {% include('sidebar.twig') %}
   <!-- Content Wrapper. Contains page content -->
-  <br/><br/>
   <div class="content-wrapper">
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <div class="container-fluid">
         <div class="row mb-2">
-          <div class="col-sm-6">
+          <div class="col-sm-6"> <br/>
             <h1>Your Heart Rate</h1>
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
-              <li class="breadcrumb-item"><a href="#">Home</a></li>
+              <li class="breadcrumb-item"><a href="/">Home</a></li>
               <li class="breadcrumb-item active">Heartrate</li>
             </ol>
           </div>
@@ -62,7 +61,8 @@ $(function() {
                     <b>Lowest</b> <a class="float-right"><input type="text" id="min" style="border: none; text-align: right; outline: none;" readonly/></a>
                   </li>
                 </ul>
-                <a onclick="heartrateinfo()" class="btn btn-primary btn-block"><b style="color: #ffffff;">Refresh Data</b></a>
+                <br/>
+                <a onclick="heartrateinfo()" class="btn btn-primary btn-block" style="position: relative; bottom: 5%;"><b style="color: #ffffff;">Refresh Data</b></a>
               </div>
               <!-- /.card-body -->
             </div>
@@ -156,13 +156,13 @@ $(function() {
   </div>
   <!-- /.content-wrapper -->
 
-  <footer class="main-footer">
+<!--   <footer class="main-footer">
     <div class="float-right d-none d-sm-block">
       <b>Version</b> 3.0.3-pre
     </div>
     <strong>Copyright &copy; 2014-2019 <a href="http://adminlte.io">AdminLTE.io</a>.</strong> All rights
     reserved.
-  </footer>
+  </footer> -->
 
   <!-- Control Sidebar -->
   <aside class="control-sidebar control-sidebar-dark">
@@ -206,7 +206,7 @@ function heartrateinfo(){
           url:"/heartrate_info",
             success: function(data){
               console.log("SUCCESS: ", data);
-              document.getElementById('avg').value = data.avg+" bpm";
+              document.getElementById('avg').value = parseInt(data.avg)+" bpm";
               document.getElementById('max').value = data.max+" bpm";
               document.getElementById('min').value = data.min+" bpm";              
             },
