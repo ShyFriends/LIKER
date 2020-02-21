@@ -575,7 +575,6 @@ input[type=button], input[type=submit], input[type=reset]  {
     function self_verify(){
       var username = $('#uid').val();
       var email = $('#email').val();
-
       $.ajax({
         type:"GET",
         url:"/self_verify/{username}/{email}",

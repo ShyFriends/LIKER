@@ -48,6 +48,31 @@ final class DeviceController extends BaseController
         return $response;
     }
 
+    public function heartrate_num(Request $request, Response $response, $args)
+    {
+        $heartrate_num = [];
+        $usn_sql = $_SESSION['usn'];
+
+        $sql = "select dsn from Devices where usn = '$usn_sql' and s_type = 'polar'";
+        $stmt = $this->em->getConnection()->query($sql);
+        $stmt->execute();
+        $results = $stmt->fetchAll();
+
+        $dsn_sql = $results[0]['dsn'];
+
+        $sql = "select heart_rate from Polar where dsn=".$dsn_sql." and DATE_ADD(NOW(), INTERVAL -10 SECOND) <= time and time <= now() order by time desc limit 0,1";
+        $stmt = $this->em->getConnection()->query($sql);
+        $stmt->execute();
+        $results = $stmt->fetchAll();
+
+        $heartrate_num['heartrate'] = $results[0]['heart_rate'];
+
+        $json_array = $heartrate_num;
+            return $response->withStatus(200)
+            ->withHeader('Content-Type', 'application/json')
+            ->write(json_encode($json_array));   
+    }
+
     public function heartrate_info(Request $request, Response $response, $args)
     {
         $heartrate_info = [];

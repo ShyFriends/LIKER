@@ -27,25 +27,31 @@
   <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
 <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://unpkg.com/ionicons@5.0.0/dist/ionicons.js"></script>
 
    <!-- Main Sidebar Container -->
   <aside class="main-sidebar sidebar-dark-primary elevation-4" style="background-color: rgb(20,6,79); position: fixed;">
     <!-- Brand Logo -->
-    <a href="/" class="brand-link">
-      <img src="{{ base_url() }}/dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
-           style="opacity: .8">
-      <span class="brand-text font-weight-light">LIKER</span>
-    </a>
+    <a href="/" class="brand-link"> 
+      <img src="{{ base_url() }}/img/real_logo.jpg" style="position: relative; left: 0%; width: 20%; height: 10%;">
+      <span class="brand-text font-weight-light"> &emsp; LIKER</span>
+    </a> 
+
 
     <!-- Sidebar -->
     <div class="sidebar" style="background-color: rgb(20,6,79)">
       <!-- Sidebar user panel (optional) -->
       <div class="user-panel mt-3 pb-3 mb-3 d-flex">
         <div class="image">
-          <img src="{{ base_url() }}/dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
+          <ion-icon name="person-circle-outline" size="large" ></ion-icon>
+          <style>
+            ion-icon {
+               color: white;
+            } 
+          </style>
         </div>
         <div class="info">
-          <a href="/userinfo" class="d-block">{{username}}!!</a>
+          <a href="/userinfo" class="d-block">&emsp;{{username}}</a>
         </div>
       </div>
 
@@ -82,8 +88,8 @@
                 </a>
               </li>
             </ul>
- -->          </li>
-          
+          </li>
+-->          
           <li class="nav-item has-treeview">
             <a href="/" class="nav-link">
               <i class="nav-icon fas fa-chart-pie"></i>
@@ -109,8 +115,7 @@
           </li>
           
           
-          <li class="nav-item has-treeview">
-            <a href="/" class="nav-link">
+<!--            <a href="/" class="nav-link">
               <i class="nav-icon fas fa-table"></i>
               <p>
                 Management
@@ -131,7 +136,7 @@
                 </a>
               </li>
             </ul>
-          </li>
+          </li> -->
           <li class="nav-item">
   <!--        <form name="sendusername"> <input type="hidden" name="username"/></form> -->
             <a href="/userinfo" class="nav-link"> 
