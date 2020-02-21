@@ -465,7 +465,7 @@ final class HomeController extends BaseController
         // Content
         $mail->isHTML(true);                                  // Set email format to HTML
         $mail->Subject = 'Whattssssup bro~~';
-        $mail->Body    = '<h1>LIKER Message</h1><a href="http://192.168.33.99/confirm_verify?nonce=' . $nonce . '">Sign-In? Click me!</a><br>your temporary password is :' . $randomNum . '';
+        $mail->Body    = '<h1>LIKER Message</h1><a href="http://teamb-iot.calit2.net/confirm_verify?nonce=' . $nonce . '">Sign-In? Click me!</a><br>your temporary password is :' . $randomNum . '';
         $mail->AltBody = 'HeyHey~';
 
         $mail->send();
@@ -500,7 +500,7 @@ final class HomeController extends BaseController
 
         $mail->isHTML(true);                                  // Set email format to HTML
         $mail->Subject = 'Whattssssup bro~~';
-        $mail->Body    = '<h1>LIKER Message</h1><a href="http://192.168.33.99/self_confirm_verify?nonce=' . $nonce . '">Sign-In? Click me!</a>';
+        $mail->Body    = '<h1>LIKER Message</h1><a href="http://teamb-iot.calit2.net/self_confirm_verify?nonce=' . $nonce . '">Sign-In? Click me!</a>';
         $mail->AltBody = 'HeyHey~';
 
         $mail->send();

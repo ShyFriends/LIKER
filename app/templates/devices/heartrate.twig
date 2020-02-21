@@ -27,8 +27,8 @@ $(function() {
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
-              <li class="breadcrumb-item"><a href="/">Home</a></li>
-              <li class="breadcrumb-item active">Heartrate</li>
+              <li class="breadcrumb-item" ><a href="/">Home</a></li>
+              <li class="breadcrumb-item active" >Heartrate</li>
             </ol>
           </div>
         </div>
@@ -41,15 +41,18 @@ $(function() {
         <div class="row">
           <div class="col-md-4">
             <div class="card card-primary card-outline">
-              <div class="card-body box-profile" style="height: 450px">
-                <div class="text-center">
+              <div class="card-body box-profile" style="height: 510px">
+                <div class="text-center" style="height: 30%;">
                   <img 
-                       src="{{base_url}}/img/heart.jpg" style="width: 30%;height: 40%;"
+                       src="{{base_url}}/img/heart.jpg" style="width: 30%;height: 100%;"
                        alt="User profile picture">
                 </div>
+                <div style="height: 20%; position:relative; top: 3%;">
                 <h3 class="profile-username text-center">Heart Rate</h3>
                 <p class="text-muted text-center">{{username}}</p>
                 <br/>
+                </div>
+                <div style="height: 50%; position:relative; top: 3%;">
                 <ul class='list-group list-group-unbordered mb-3' >
                   <li class="list-group-item">
                     <b>Average</b> <a class="float-right"><input type="text" id="avg" style="border: none; text-align: right; outline: none;" readonly /></a>
@@ -61,9 +64,9 @@ $(function() {
                     <b>Lowest</b> <a class="float-right"><input type="text" id="min" style="border: none; text-align: right; outline: none;" readonly/></a>
                   </li>
                 </ul>
-                <br/>
-                <a onclick="heartrateinfo()" class="btn btn-primary btn-block" style="position: relative; bottom: 5%;"><b style="color: #ffffff;">Refresh Data</b></a>
-              </div>
+                <a onclick="heartrateinfo()" class="btn btn-primary btn-block"><b style="color: #ffffff;">Refresh Data</b></a>
+               </div>
+             </div>
               <!-- /.card-body -->
             </div>
             <!-- /.card -->
@@ -83,7 +86,7 @@ $(function() {
                   </button>
                 </div>
               </div>
-              <div class="card-body" style="height: 390px;">  
+              <div class="card-body" style="height: 450px;">  
                       <div style="display:inline; position: relative; left: 3%; top:-10px">
                       <label for="party"  style="text-align: center;">Start Time </label> 
                       <input id="start_time" type="datetime-local" name="start_time" style="text-align: center; width: 30%;"> &emsp;

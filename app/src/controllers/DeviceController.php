@@ -59,8 +59,8 @@ final class DeviceController extends BaseController
         $results = $stmt->fetchAll();
 
         $dsn_sql = $results[0]['dsn'];
-
-        $sql = "select heart_rate from Polar where dsn=".$dsn_sql." and DATE_ADD(NOW(), INTERVAL -10 SECOND) <= time and time <= now() order by time desc limit 0,1";
+//and DATE_ADD(NOW(), INTERVAL -10 SECOND) <= time and time <= now()
+        $sql = "select heart_rate from Polar where dsn=".$dsn_sql." order by time desc limit 1";
         $stmt = $this->em->getConnection()->query($sql);
         $stmt->execute();
         $results = $stmt->fetchAll();
@@ -203,7 +203,7 @@ final class DeviceController extends BaseController
 
         $dsn_sql = $results[0]['dsn'];
 
-        $sql = "select udoo_sn, co_aqi, no2_aqi, so2_aqi, o3_aqi, pm2_5_aqi, pm10_aqi, longitude, latitude from Udoo where dsn = '$dsn_sql' order by time ASC limit 1";
+        $sql = "select udoo_sn, co_aqi, no2_aqi, so2_aqi, o3_aqi, pm2_5_aqi, pm10_aqi, longitude, latitude from Udoo where dsn = '$dsn_sql' order by time desc limit 1";
         $stmt = $this->em->getConnection()->query($sql);
         $stmt->execute();
 
@@ -227,7 +227,7 @@ final class DeviceController extends BaseController
         $usn_sql = $_SESSION['usn'];
         $dsn_sql = $_GET['udoo_id'];
 
-        $sql = "select dsn, co_aqi, no2_aqi, so2_aqi, o3_aqi, pm2_5_aqi, pm10_aqi from Udoo where dsn = '$dsn_sql' order by time ASC limit 12 ";
+        $sql = "select dsn, co_aqi, no2_aqi, so2_aqi, o3_aqi, pm2_5_aqi, pm10_aqi, time from Udoo where dsn = '$dsn_sql' order by time desc limit 12 ";
         $stmt = $this->em->getConnection()->query($sql);
         $stmt->execute();
 

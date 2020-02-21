@@ -172,3 +172,9 @@ $app->post('/change_pwd_app/{new_pwd}', 'App\Controller\AppController:change_pwd
 
 $app->post('/check_pwd_app/{current_pwd}', 'App\Controller\AppController:check_pwd_app')
     ->setName('check_pwd_app');
+
+$app->get('/check_it_app', 'App\Controller\AppController:check_it_app')
+    ->setName('check_it_app');
+
+$app->post('/send_polardata_app', 'App\Controller\AppController:send_polardata_app')
+    ->setName('send_polardata_app');
