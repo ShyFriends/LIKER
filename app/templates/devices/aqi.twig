@@ -285,11 +285,17 @@
       var locations = [];
       var citymap = {};
       var cityCircle = {};
-
+      var markers;
+        var ne_lat = -34;
+        var ne_lng = -200;
+        var sw_lat = -71;
+        var sw_lng = -64;
+      var map;
+      //setInterval(init2, 1000);
       function initMap() {
         first();
 
-        var map = new google.maps.Map(document.getElementById('map'), {
+        map = new google.maps.Map(document.getElementById('map'), {
           zoom: 3,
           center: {lat: 32.024, lng: -117.887}
         });
@@ -300,12 +306,7 @@
           //map.panTo(markers[i].position);
           }, 3000);
         });
-
-        var ne_lat = -34;
-        var ne_lng = -200;
-        var sw_lat = -71;
-        var sw_lng = -64;
-          
+  
         map.addListener('bounds_changed', function() {  
         // 3 seconds after the center of the map has changed, pan back to the
           var bounds =  map.getBounds();
@@ -320,8 +321,8 @@
                 
           }, 4000);  
         });
-
         var all_sensors;
+        var pre_data;
         $.ajax({
             type:"GET",
             url:"/locations/{ne_lat}/{ne_lng}/{sw_lat}/{sw_lng}",
@@ -330,6 +331,7 @@
             success: function(data) {
                 console.log("SUCCESS: ", data);
                 all_sensors = data;
+                pre_data = data;
                 for(var i=0; i<all_sensors.length;i++){
                   locations.push({'lat':parseFloat(all_sensors[i].latitude), 'lng':parseFloat(all_sensors[i].longitude)});
                   
@@ -371,6 +373,310 @@
 
 
 
+            },
+            error: function(data) {
+                console.log('ERROR: ', data);
+            },
+        });
+
+        // Create an array of alphabetical characters used to label the markers.
+        var labels = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+
+        // Add some markers to the map.
+        // Note: The code uses the JavaScript Array.prototype.map() method to
+        // create an array of markers based on a given "locations" array.
+        // The map() method here has nothing to do with the Google Maps API.
+            markers = locations.map(function(location, i) {
+              return new google.maps.Marker({
+                position: location,
+                label: labels[i % labels.length],
+                id : all_sensors[i].dsn
+              });
+            });
+            
+        for(var i=0;i<locations.length;i++){
+
+
+            markers[i].addListener('click', function() {
+                map.setZoom(8);
+                // map.setCenter(markers[i].position);
+                var udoo_id = this.id;
+                $.ajax({
+                    type:"GET",
+                    url:"/location_aqi/{udoo_id}",
+                    data: { "udoo_id":udoo_id },
+                    success: function(data) {
+                        console.log("SUCCESS: ", data);
+                        document.getElementById('test').value = data[0].dsn;
+                       
+                        for(var i = 0;i<data.length;i++){
+                          mychart.data.datasets[0].data[i] = data[i].pm2_5_aqi;
+                        }
+                        for(var i = 0;i<data.length;i++){
+                          mychart.data.datasets[1].data[i] = data[i].pm10_aqi;
+                        }
+                        for(var i = 0;i<data.length;i++){
+                          mychart.data.datasets[2].data[i] = data[i].no2_aqi;
+                        }
+                        for(var i = 0;i<data.length;i++){
+                          mychart.data.datasets[3].data[i] = data[i].co_aqi;
+                        }
+                        for(var i = 0;i<data.length;i++){
+                          mychart.data.datasets[4].data[i] = data[i].so2_aqi;
+                        }
+                        for(var i = 0;i<data.length;i++){
+                          mychart.data.datasets[5].data[i] = data[i].o3_aqi;
+                        }
+                        
+                        mychart.update();
+                        alert("!!!!");
+                        var length = data.length;
+                        console.log("tlqkf");
+                        console.log(length);
+                        console.log(data[length-1]);
+                        console.log("~!");
+                        console.log(data[0]);
+                        var color = calculate_aqi(data[0].pm10_aqi);
+                        document.getElementById('pm10_aqi').value = data[0].pm10_aqi;
+
+                        $('#pm10_aqi').trigger(
+                         'configure',
+                          {
+                            "fgColor":color,
+                            "inputColor":color
+                          }
+                        );
+                        $('#pm10_aqi')
+                          .val(data[0].pm10_aqi)
+                          .trigger('change');
+
+                        color = calculate_aqi(data[0].pm2_5_aqi);
+                        document.getElementById('pm2_5_aqi').value = data[0].pm2_5_aqi;
+
+                        $('#pm2_5_aqi').trigger(
+                         'configure',
+                          {
+                            "fgColor":color,
+                            "inputColor":color
+                          }
+                        );
+                        $('#pm2_5_aqi')
+                          .val(data[0].pm2_5_aqi)
+                          .trigger('change');
+
+                        color = calculate_aqi(data[0].co_aqi);
+                        document.getElementById('co_aqi').value = data[0].co_aqi;
+
+                        $('#co_aqi').trigger(
+                         'configure',
+                          {
+                            "fgColor":color,
+                            "inputColor":color
+                          }
+                        );
+                        $('#co_aqi')
+                          .val(data[0].co_aqi)
+                          .trigger('change');
+
+                        color = calculate_aqi(data[0].no2_aqi);
+                        document.getElementById('no2_aqi').value = data[0].no2_aqi;
+
+                        $('#no2_aqi').trigger(
+                         'configure',
+                          {
+                            "fgColor":color,
+                            "inputColor":color
+                          }
+                        );
+                        $('#no2_aqi')
+                          .val(data[0].no2_aqi)
+                          .trigger('change');
+
+                        color = calculate_aqi(data[0].so2_aqi);
+                        document.getElementById('so2_aqi').value = data[0].so2_aqi;
+                        
+                        $('#so2_aqi').trigger(
+                         'configure',
+                          {
+                            "fgColor":color,
+                            "inputColor":color
+                          }
+                        );
+                        $('#so2_aqi')
+                          .val(data[0].so2_aqi)
+                          .trigger('change');
+
+                        color = calculate_aqi(data[0].o3_aqi);
+                        document.getElementById('o3_aqi').value = data[0].o3_aqi;
+
+                        $('#o3_aqi').trigger(
+                         'configure',
+                          {
+                            "fgColor":color,
+                            "inputColor":color
+                          }
+                        );
+                        $('#o3_aqi')
+                          .val(data[0].o3_aqi)
+                          .trigger('change');
+
+                    },
+                    error: function(data) {
+                        console.log('ERROR: ', data);
+                    },
+
+                });
+                $.ajax({
+                    type:"GET",
+                    url:"/device_data/{udoo_id}",
+                    data: { "udoo_id":udoo_id },
+                    success: function(data) {
+                        console.log("SUCCESS: ", data);
+
+                        //alert($('#date').name); 
+
+
+                        $('#sensors').empty();
+                        var sensors = data;
+                        var sensor = new Array();
+                        sensor.push(["Name", "Type", "Mac_address"]);
+
+                        for(var i=0;i<sensors.length;i++){
+                          sensor.push([data[i].s_name, data[i].s_type, data[i].mac_addr]);
+                        }
+                        //Create a HTML Table element.
+                        var table = document.getElementById("sensors");
+                        //Get the count of columns.
+                        var columnCount = sensor[0].length;
+                 
+                        //Add the header row.
+                        var row = table.insertRow(-1);
+                        for (var i = 0; i < columnCount; i++) {
+                            var headerCell = document.createElement("TH");
+                            headerCell.innerHTML = sensor[0][i];
+                            row.appendChild(headerCell);
+                        }
+                 
+                        //Add the data rows.
+                        for (var i = 1; i < sensor.length; i++) {
+                            row = table.insertRow(-1);
+                            for (var j = 0; j < columnCount; j++) {
+                                var cell = row.insertCell(-1);
+                                cell.innerHTML = sensor[i][j];
+                            }
+                        }
+                 
+                        var dvTable = document.getElementById("dvTable");
+                        dvTable.innerHTML = "";
+                        dvTable.appendChild(table);
+                    
+                    },
+                    error: function(data) {
+                        console.log('ERROR: ', data);
+                    },
+
+                });
+            });
+
+                
+        }
+
+
+        // Add a marker clusterer to manage the markers.
+        var markerCluster = new MarkerClusterer(map, markers,
+            {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});
+
+        // setInterval(function() {
+        //   position = new google.maps.LatLng(purple[i][1], purple[i][2]);
+        //   marker.setPosition(position);
+        // }, 1000); 
+
+      }
+
+      function init2() {
+        first();
+
+        // var map = new google.maps.Map(document.getElementById('map'), {
+        //   zoom: 3,
+        //   center: {lat: 32.024, lng: -117.887}
+        // });
+
+        
+        // map.addListener('center_changed', function() {
+        //   window.setTimeout(function() {
+        //   //map.panTo(markers[i].position);
+        //   }, 3000);
+        // });
+  
+        // map.addListener('bounds_changed', function() {  
+        // // 3 seconds after the center of the map has changed, pan back to the
+        //   var bounds =  map.getBounds();
+        //   var ne = bounds.getNorthEast();
+        //   var sw = bounds.getSouthWest();
+        //   ne_lat = ne.lat();
+        //   ne_lng = ne.lng();
+        //   sw_lat = sw.lat();
+        //   sw_lng = sw.lng();
+
+        //   window.setTimeout(function() {  
+                
+        //   }, 4000);  
+        // });
+        var all_sensors;
+        $.ajax({
+            type:"GET",
+            url:"/locations/{ne_lat}/{ne_lng}/{sw_lat}/{sw_lng}",
+            data : {"ne_lat": ne_lat, "ne_lng":ne_lng,"sw_lat":sw_lat,"sw_lng":sw_lng},
+            async: false,
+            success: function(data) {
+                console.log("SUCCESS: ", data);
+                all_sensors = data;
+
+                for(var i=0; i<all_sensors.length;i++){
+                  if(parseFloat(all_sensors[i].latitude) == parseFloat(pre_data[i].latitude)){
+
+                  }
+                  else{
+                  locations.push({'lat':parseFloat(all_sensors[i].latitude), 'lng':parseFloat(all_sensors[i].longitude)});
+                  
+                  var object = new Object();
+                  object.center = {'lat':parseFloat(all_sensors[i].latitude), 'lng':parseFloat(all_sensors[i].longitude)}
+
+                  object.population = 1000000;
+                  object.id = all_sensors[i].dsn;
+                  object.co_aqi = all_sensors[i].co_aqi;
+                  object.no2_aqi = all_sensors[i].no2_aqi;
+                  object.so2_aqi = all_sensors[i].so2_aqi;
+                  object.o3_aqi = all_sensors[i].o3_aqi;
+                  object.pm2_5_aqi = all_sensors[i].pm2_5_aqi;
+                  object.pm10_aqi = all_sensors[i].pm10_aqi;
+                  var dsn = new Object();
+                  dsn[i] = object;
+                  citymap[i] = object;
+                  console.log("~~citymap");
+                  console.log(citymap);
+                  console.log("citymap2~");
+
+                  var citymap2 = dsn;
+                  console.log(citymap2);
+                  for (var city in citymap2) {
+                      cityCircle[i] = new google.maps.Circle({
+                      strokeColor: '#FF0000',
+                      strokeOpacity: 0.8,
+                      strokeWeight: 2,
+                      fillColor: '#FF0000',
+                      fillOpacity: 0.35,
+                      map: map,
+                      center: citymap2[city].center,
+                      radius: Math.sqrt(citymap2[city].population) * 100
+                    });
+                  }
+                  console.log("!!!!!!");
+                  console.log(citymap2);
+                }
+
+
+              }
             },
             error: function(data) {
                 console.log('ERROR: ', data);
@@ -575,14 +881,16 @@
 
                 });
             });
-        
-        }
 
+                
+        }
 
 
         // Add a marker clusterer to manage the markers.
         var markerCluster = new MarkerClusterer(map, markers,
             {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});
+
+
 
       }
 
@@ -767,56 +1075,6 @@
                           .val(data[0].o3_aqi)
                           .trigger('change');
 
-                        // for (i in aqi_data[0]) {
-                        //   if(i!="longitude"&&i!="latitude"&&i!="udoo_sn"){
-                        //     alert(i);
-                        //     alert(document.getElementById(i).value);
-                        //     document.getElementById(i).value = aqi_data[0][i];
-                        //     alert(document.getElementById(i).value);
-                        //     if(i=="pm2_5_aqi"){
-                        //       var color = calculate_aqi(aqi_data[0].pm2_5_aqi);
-                        //       $('#pm2_5_aqi').knob({
-                        //         fgColor: color
-                        //       });  
-                        //     }
-                        //     else if(i=="pm10_aqi"){
-                        //       var color = calculate_aqi(aqi_data[0].pm10_aqi);
-                        //       $('#pm10_aqi').knob({
-                        //         fgColor: color
-                        //       });  
-                        //     }
-                        //     else if(i=="co_aqi"){
-                        //       alert("tlqkf");
-                        //       var color = calculate_aqi(aqi_data[0].co_aqi);
-                        //       alert(color);
-                        //       $('#co_aqi').trigger(
-                        //        'configure',
-                        //         {
-                        //           "fgColor":color,
-                        //           "inputColor":color
-                        //         }
-                        //       ); 
-                        //     }
-                        //     else if(i=="no2_aqi"){
-                        //       var color = calculate_aqi(aqi_data[0].no2_aqi);
-                        //       $('#no2_aqi').knob({
-                        //         fgColor: color
-                        //       });  
-                        //     }
-                        //     else if(i=="so2_aqi"){
-                        //       var color = calculate_aqi(aqi_data[0].so2_aqi);
-                        //       $('#so2_aqi').knob({
-                        //         fgColor: color
-                        //       });  
-                        //     }
-                        //     else if(i=="o3_aqi"){
-                        //       var color = calculate_aqi(aqi_data[0].o3_aqi);
-                        //       $('#o3_aqi').knob({
-                        //         fgColor: color
-                        //       });  
-                        //     }
-                        //   }
-                        // }
                     },
                     error: function(data) {
                         console.log('ERROR: ', data);
