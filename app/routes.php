@@ -181,3 +181,9 @@ $app->post('/send_polardata_app', 'App\Controller\AppController:send_polardata_a
 
 $app->post('/send_udoodata_app', 'App\Controller\AppController:send_udoodata_app')
     ->setName('send_udoodata_app');
+
+$app->post('/realtime_heartrate_app', 'App\Controller\AppController:realtime_heartrate_app')
+    ->setName('realtime_heartrate_app');
+
+$app->post('/historic_heartrate_app/{start_time}/{end_time}', 'App\Controller\AppController:historic_heartrate_app')
+    ->setName('historic_heartrate_app');
