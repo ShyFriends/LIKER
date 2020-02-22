@@ -469,27 +469,33 @@
          <form>
           <div class="form-group">
             <label for="message-name" class="col-form-label">Username of Protector:</label>
-            <input type="text" class="form-control" id="protectorname">
+            <input type="text" class="form-control" id="protector_name">
           </div>
         </form>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary" onclick="confirmed_pwd()">SUBMIT</button>
+        <button type="button" class="btn btn-primary" onclick="addprotector()">SUBMIT</button>
       </div>
     </div>
   </div>
 </div>
 <script type="text/javascript">
  function addprotector(){
-    var protectorname = $('#protectorname').val();
+    var protector_name = $('#protector_name').val();
       $.ajax({ 
-          type:"POST",
-          url:"//{protectorname}",
-          data: {"protectorname":protectorname},
+          type:"GET",
+          url:"add_protector/{protector_name}",
+          data: {"protector_name":protector_name},
             success: function(data){
               console.log("SUCCESS: ", data);
-              alert("Protector Added");
+              if(data['status']==0){
+                alert("Protector Added!"); 
+              }
+              else{
+                alert("Protector is already Existed..");
+              }
+              
             },
             error: function(data){
              console.log('ERROR: ', data);
@@ -513,28 +519,33 @@
          <form>
           <div class="form-group">
             <label for="message-name" class="col-form-label">Username of Protectee:</label>
-            <input type="text" class="form-control" id="protecteename">
+            <input type="text" class="form-control" id="protectee_name">
           </div>
         </form>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary" onclick="confirmed_pwd()">SUBMIT</button>
+        <button type="button" class="btn btn-primary" onclick="addprotectee()">SUBMIT</button>
       </div>
     </div>
   </div>
 </div>
 <script type="text/javascript">
  function addprotectee(){
-    var protecteename = $('#protecteename').val();
+    var protectee_name = $('#protectee_name').val();
       $.ajax({ 
-          type:"POST",
-          url:"//{protecteename}",
-          data: {"protecteename":protecteename},
+          type:"GET",
+          url:"add_protectee/{protectee_name}",
+          data: {"protectee_name":protectee_name},
             success: function(data){
               console.log("SUCCESS: ", data);
-              alert("Protectee Added");
-            },
+              if(data['status']==0){
+                alert("Protectee Added!"); 
+              }
+              else{
+                alert("Protectee is already Existed..");
+              }
+                          },
             error: function(data){
              console.log('ERROR: ', data);
             },
