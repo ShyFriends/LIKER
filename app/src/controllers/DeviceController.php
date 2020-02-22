@@ -60,25 +60,84 @@ final class DeviceController extends BaseController
 
         $dsn_sql = $results[0]['dsn'];
 
-        $sql = "select DATE_ADD(now(), INTERVAL -5 SECOND) as subtime";
+        $sql = "select DATE_ADD(now(), INTERVAL -50 SECOND) as subtime";
         $stmt = $this->em->getConnection()->query($sql);
-        $stmt->execute();
         $results = $stmt->fetchAll();
 
         $subtime_sql = $results[0]['subtime'];
+
 //and DATE_ADD(NOW(), INTERVAL -10 SECOND) <= time and time <= now()
-        $sql = "select heart_rate from Polar where dsn=".$dsn_sql." and '".$subtime_sql."' < time and time <= now() order by time desc limit 0,1";
+        $sql = "select heart_rate from Polar where dsn=".$dsn_sql." and '$subtime_sql' < time and time <= now() order by time desc limit 0,1";
+
         $stmt = $this->em->getConnection()->query($sql);
-        $stmt->execute();
         $results = $stmt->fetchAll();
 
-       // $heartrate_num['heartrate'] = $results[0]['heart_rate'];
 
+        $heartrate_num['heartrate'] = $results[0]['heart_rate'];
+        // $heartrate_num['heartrate'] = 91;
+        // $usn_sql = 18;
+        if($heartrate_num['heartrate']>120||$heartrate_num['heartrate']<60) {
+            $sql = "select protector_sn, status from Protectors where usn = '$usn_sql'";
+
+            $stmt = $this->em->getConnection()->query($sql);
+            $results = $stmt->fetchAll();
+            $protector_sql = $results[0]['protector_sn'];
+            $status_sql = $results[0]['status'];
+            if($status_sql=='T'){
+                $sql = "select email from Users where usn = '$protector_sql'";
+                $stmt = $this->em->getConnection()->prepare($sql);
+                $stmt->execute();
+
+                $results = $stmt->fetchAll();
+                
+                $email_sql = $results[0]['email'];
+                $this->sendMail3($email_sql);
+
+                $sql = "UPDATE Protectors SET status = 'F' WHERE usn = '$usn_sql'";
+                $stmt = $this->em->getConnection()->prepare($sql);
+                $stmt->execute();                
+            }
+
+        }
+        //print_r("expression");
         $json_array = $heartrate_num;
             return $response->withStatus(200)
             ->withHeader('Content-Type', 'application/json')
             ->write(json_encode($json_array));   
     }
+
+    public function sendMail3($email)
+    {
+        $results = $email;
+        $mail = new PHPMailer(true);
+        try {
+        //Server settings
+        // $mail->SMTPDebug = SMTP::DEBUG_SERVER;                      // Enable verbose debug output
+        $mail->isSMTP();                                            // Send using SMTP
+        $mail->Host       = 'smtp.gmail.com';                    // Set the SMTP server to send through
+        $mail->SMTPAuth   = true;                                   // Enable SMTP authentication
+        $mail->Username   = 'wkdgurwls1211@gmail.com';                     // SMTP username
+        $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;         // Enable TLS encryption; `PHPMailer::ENCRYPTION_SMTPS` also accepted
+        $mail->Port       = 587;                                    // TCP port to connect to
+
+        //Recipients
+        $mail->setFrom('QI.8.teamb@gmail.com', 'Team B');
+        $mail->addAddress($results);     // Add a recipient
+
+        $mail->isHTML(true);                                  // Set email format to HTML
+        $mail->Subject = 'Your Protectee is in danger!!';
+        $mail->Body    = '<h1>LIKER Message</h1><a href="http://teamb-iot.calit2.net/signup">More Information? Click Me</a>';
+        $mail->AltBody = 'Emergency';
+
+        $mail->send();
+        // echo 'Message has been sent';
+        }
+        catch (Exception $e) {
+        echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
+        }
+
+    }
+
 
     public function heartrate_info(Request $request, Response $response, $args)
     {
@@ -92,7 +151,7 @@ final class DeviceController extends BaseController
 
         $dsn_sql = $results[0]['dsn'];
 
-        $sql = "select avg(heart_rate), max(heart_rate), min(heart_rate) from Polar where dsn = ".$dsn_sql;
+        $sql = "select avg(heart_rate), max(heart_rate), min(heart_rate) from Polar where heart_rate != 0 and dsn = ".$dsn_sql;
         $stmt = $this->em->getConnection()->query($sql);
         $stmt->execute();
         $results = $stmt->fetchAll();
@@ -107,7 +166,7 @@ final class DeviceController extends BaseController
             ->write(json_encode($json_array));   
     }
 
-     public function historic_heartrate(Request $request, Response $response, $args)
+    public function historic_heartrate(Request $request, Response $response, $args)
     {
         $historic_polar = [];
         $usn_sql = $_SESSION['usn'];
@@ -132,7 +191,7 @@ final class DeviceController extends BaseController
             $historic_polar[$i]['heart_rate'] = $pre_polar_data[$i]['heart_rate'];
             $historic_polar[$i]['time'] = $pre_polar_data[$i]['time'];
 
-            $sql = "select TIMESTAMPDIFF(second, Date_format('".$start_time_sql."', '%Y-%m-%d %H:%i:%s'), Date_format('".$pre_polar_data[$i]['time']."', '%Y-%m-%d %H:%i:%s')) AS timediff";
+            $sql = "select TIMESTAMPDIFF(minute, Date_format('".$start_time_sql."', '%Y-%m-%d %H:%i:%s'), Date_format('".$pre_polar_data[$i]['time']."', '%Y-%m-%d %H:%i:%s')) AS timediff";
             $stmt = $this->em->getConnection()->query($sql);    
             $stmt->execute();
             $timediff = $stmt->fetchAll(); 
@@ -183,8 +242,8 @@ final class DeviceController extends BaseController
             $pre_polar_data = $stmt->fetchAll();
             $realtime_polar[$i] = $pre_polar_data[0]['heart_rate'];
         }
-     
-      $json_array = $realtime_polar;
+
+        $json_array = $realtime_polar;
             return $response->withStatus(200)
             ->withHeader('Content-Type', 'application/json')
             ->write(json_encode($json_array));
@@ -340,5 +399,86 @@ final class DeviceController extends BaseController
             return $response->withStatus(200)
             ->withHeader('Content-Type', 'application/json')
             ->write(json_encode($json_array));
+    }
+
+
+    public function add_protector(Request $request, Response $response, $args)
+    {
+        $usn_sql = $_SESSION['usn'];
+
+        $protector_sql = $_GET['protector_name'];
+
+        $sql = "select usn from Users where username = '$protector_sql'";
+        $stmt = $this->em->getConnection()->query($sql);
+        $stmt->execute();
+        $results = $stmt->fetchAll();
+
+        $protector_usn_sql = $results[0]['usn'];
+
+        $sql = "select usn from Protectors where usn = '$usn_sql'";
+        $stmt = $this->em->getConnection()->prepare($sql);
+        $stmt->execute();
+        $results = $stmt->fetchAll();
+
+        if($results == NULL){
+            $sql = "insert into Protectors(usn, protector_sn) values ('$usn_sql','$protector_usn_sql')";
+            $stmt = $this->em->getConnection()->prepare($sql);
+            $stmt->execute();
+
+            $json_array = array("status" => 0);
+                return $response->withStatus(200)
+                ->withHeader('Content-Type', 'application/json')
+                ->write(json_encode($json_array));
+        }
+        else{
+            $json_array = array("status" => 1);
+                return $response->withStatus(200)
+                ->withHeader('Content-Type', 'application/json')
+                ->write(json_encode($json_array));
+        }
+
+        
+
+        $this->view->render($response, 'userinfo.twig');
+        return $response;
+    }
+
+    public function add_protectee(Request $request, Response $response, $args)
+    {
+        $usn_sql = $_SESSION['usn'];
+
+        $protector_sql = $_GET['protectee_name'];
+
+        $sql = "select usn from Users where username = '$protectee_sql'";
+        $stmt = $this->em->getConnection()->query($sql);
+        $stmt->execute();
+        $results = $stmt->fetchAll();
+
+        $protectee_usn_sql = $results[0]['usn'];
+
+        $sql = "select usn from Protectors where usn = '$protectee_usn_sql'";
+        $stmt = $this->em->getConnection()->prepare($sql);
+        $stmt->execute();
+        $results = $stmt->fetchAll();
+
+        if($results == NULL){
+            $sql = "insert into Protectors(usn, protector_sn) values ('$protectee_usn_sql', '$usn_sql')";
+            $stmt = $this->em->getConnection()->prepare($sql);
+            $stmt->execute();
+
+            $json_array = array("status" => 0);
+                return $response->withStatus(200)
+                ->withHeader('Content-Type', 'application/json')
+                ->write(json_encode($json_array));
+        }
+        else{
+            $json_array = array("status" => 1);
+                return $response->withStatus(200)
+                ->withHeader('Content-Type', 'application/json')
+                ->write(json_encode($json_array));
+        }
+
+        $this->view->render($response, 'userinfo.twig');
+        return $response;
     }
 }

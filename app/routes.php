@@ -13,6 +13,9 @@ $app->get('/sendmail', 'App\Controller\HomeController:sendMail')
 $app->get('/sendmail2', 'App\Controller\HomeController:sendMail2')
     ->setName('sendmail2');
 
+$app->get('/sendmail3', 'App\Controller\DeviceController:sendMail3')
+    ->setName('sendmail3');
+
 $app->get('/self_verify/{username}/{email}', 'App\Controller\HomeController:self_verify')
     ->setName('self_verify');
 
@@ -118,6 +121,11 @@ $app->get('/locations/{ne_lat}/{ne_lng}/{sw_lat}/{sw_lng}', 'App\Controller\Devi
 $app->get('/historic_aqi/{start_time}/{end_time}/{dsn}', 'App\Controller\DeviceController:historic_aqi')
     ->setName('historic_aqi');
 
+$app->get('/add_protector/{protector_name}', 'App\Controller\DeviceController:add_protector')
+    ->setName('add_protector');
+
+$app->get('/add_protectee/{protectee_name}', 'App\Controller\DeviceController:add_protectee')
+    ->setName('add_protectee');
 ///////////////////////// app //////////////////////////
 $app->get('/signup_app', 'App\Controller\AppController:signup_app')
     ->setName('signup_app');
@@ -187,3 +195,9 @@ $app->post('/realtime_heartrate_app', 'App\Controller\AppController:realtime_hea
 
 $app->post('/historic_heartrate_app/{start_time}/{end_time}', 'App\Controller\AppController:historic_heartrate_app')
     ->setName('historic_heartrate_app');
+
+$app->get('/get_aqi_app', 'App\Controller\AppController:get_aqi_app')
+    ->setName('get_aqi_app');
+
+$app->get('/historic_aqi_app/{start_time}/{end_time}/{dsn}', 'App\Controller\AppController:historic_aqi_app')
+    ->setName('historic_aqi_app');

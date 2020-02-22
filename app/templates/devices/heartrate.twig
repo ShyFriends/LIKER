@@ -48,25 +48,25 @@ $(function() {
                        alt="User profile picture">
                 </div>
                 <div style="height: 20%; position:relative; top: 3%;">
-                <h3 class="profile-username text-center">Heart Rate</h3>
-                <p class="text-muted text-center">{{username}}</p>
-                <br/>
+                  <h3 class="profile-username text-center">Heart Rate</h3>
+                  <p class="text-muted text-center">{{username}}</p>
+                  <br/>
                 </div>
                 <div style="height: 50%; position:relative; top: 3%;">
-                <ul class='list-group list-group-unbordered mb-3' >
-                  <li class="list-group-item">
-                    <b>Average</b> <a class="float-right"><input type="text" id="avg" style="border: none; text-align: right; outline: none;" readonly /></a>
-                  </li>
-                  <li class="list-group-item">
-                    <b>Highest</b> <a class="float-right"><input type="text" id="max" style="border: none; text-align: right; outline: none;" readonly/></a>
-                  </li>
-                  <li class="list-group-item">
-                    <b>Lowest</b> <a class="float-right"><input type="text" id="min" style="border: none; text-align: right; outline: none;" readonly/></a>
-                  </li>
-                </ul>
-                <a onclick="heartrateinfo()" class="btn btn-primary btn-block"><b style="color: #ffffff;">Refresh Data</b></a>
-               </div>
-             </div>
+                  <ul class='list-group list-group-unbordered mb-3' >
+                    <li class="list-group-item">
+                      <b>Average</b> <a class="float-right"><input type="text" id="avg" style="border: none; text-align: right; outline: none;" readonly /></a>
+                    </li>
+                    <li class="list-group-item">
+                      <b>Highest</b> <a class="float-right"><input type="text" id="max" style="border: none; text-align: right; outline: none;" readonly/></a>
+                    </li>
+                    <li class="list-group-item">
+                      <b>Lowest</b> <a class="float-right"><input type="text" id="min" style="border: none; text-align: right; outline: none;" readonly/></a>
+                    </li>
+                  </ul>
+                  <a onclick="heartrateinfo()" class="btn btn-primary btn-block"><b style="color: #ffffff;">Refresh Data</b></a>
+                </div>
+              </div>
               <!-- /.card-body -->
             </div>
             <!-- /.card -->
@@ -379,7 +379,7 @@ function line_graph(){
         //   $('#line-chart-tooltip').html( (parseInt(x/3600)-23) + 'day ' + parseInt(x/3600) + 'hours from Start Time => ' + parseInt(y) +'bpm')
        //  } 
         // else{   
-          $('#line-chart-tooltip').html( parseFloat(x/3600).toFixed(3) + 'hours after Start Time => ' + parseInt(y) +'bpm')
+          $('#line-chart-tooltip').html( parseFloat(x/60).toFixed(3) + 'hours after Start Time => ' + parseInt(y) +'bpm')
        // }
           .css({
             top : item.pageY + 5,
