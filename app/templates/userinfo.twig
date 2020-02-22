@@ -27,8 +27,7 @@
       </div><!-- /.container-fluid -->
     </div>
     <!-- /.content-header -->
-     <form method="post" >
-    <div class="container emp-profile">           
+    <div class="container emp-profile" style="height: 55%; ">           
 <!--                <div class="row">
                     <div class="col-md-4">
                         <div class="profile-img">
@@ -38,10 +37,12 @@
                             </div>
                         </div>
                     </div>
--->                    <div class="col-md-6">
-                        <div class="profile-head">
+-->                   
+      <div style="float: left; width: 70%; height: 100%;">
+                <div  style="width: 100%;">
+                        <div class="profile-head" style="width: 100%;">
                           <br/>
-                          <h2>{{username}} </h2>
+                          <h2 style="position: relative; left: 3%;">{{username}} </h2>
                           <div class="row">
                                   &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
                                   <input type="button" class="profile-edit-btn" name="changepasswd" data-toggle="modal" data-target="#changepwd"value="Change Password"/>&emsp;
@@ -73,7 +74,7 @@
                                     <br/><br/>
                                     <!--<p class="proile-rating">RANKINGS : <span>8/10</span></p>-->
                                     <br/>
-                            <ul class="nav nav-tabs" id="myTab" role="tablist">
+                            <ul class="nav nav-tabs" id="myTab" role="tablist" style="width: 100%;">
                                 <li class="nav-item">
                                     <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">About</a>
                                 </li>
@@ -83,27 +84,10 @@
                                  <li class="nav-item">
                                     <a class="nav-link" id="udoo-tab" data-toggle="tab" href="#udoo" role="tab" aria-controls="profile" aria-selected="false">Udoo Sensor</a>
                                 </li>
-                                <input type="button" class="profile-edit-btn3" name="addsensor" data-toggle="modal" data-target="#addsensor" value="Add Sensor"/>
                             </ul>
                         </div>
                     </div>
               
-                <div class="row">
-<!--                    <div class="col-md-4">
-                        <div class="profile-work">
-                            <p>WORK LINK</p>
-                            <a href="">Website Link</a><br/>
-                            <a href="">Bootsnipp Profile</a><br/>
-                            <a href="">Bootply Profile</a>
-                            <p>SKILLS</p>
-                            <a href="">Web Designer</a><br/>
-                            <a href="">Web Developer</a><br/>
-                            <a href="">WordPress</a><br/>
-                            <a href="">WooCommerce</a><br/>
-                            <a href="">PHP, .Net</a><br/> 
-                        </div>
--->                    </div>
-
                {% for user in user_results %}
                     <div class="col-md-8">
                         <div class="tab-content profile-tab" id="myTabContent">
@@ -200,7 +184,15 @@
                           </script>
         </div>
   </div>
-
+</div>
+              <div style="float: left; width: 30%; height: 100%; ">
+                <div class="row" style="width: 100%; height: 50%; " ></div>
+                <input type="button" class="profile-edit-btn3" name="addsensor" data-toggle="modal" data-target="#addsensor" value="Add Sensor" style="width: 40%; height: 10%;" />
+                <br/>
+                <input type="button" class="profile-edit-btn3" name="addprotector" data-toggle="modal" data-target="#protector" value="Add Protector" style=" width: 40%; height: 10%;"/>
+                <br/>
+                <input type="button" class="profile-edit-btn3" name="addprotectee" data-toggle="modal" data-target="#protectee" value="Add Protectee" style="width: 40%; height: 10%;"/>
+              </div>
 
 <!--                            
 <div class="tab-pane fade" id="polar{{polar.zdsn}}" role="tabpanel" aria-labelledby="polar-tab">
@@ -289,7 +281,7 @@
                       </div>
       {% endfor %}
 -->
-                    </form></div>
+                  </div>
                          
     <!-- Main content -->
     
@@ -462,6 +454,94 @@
 
 </script>
 <!-- add sensor end-->
+
+<!-- add protector start-->
+<div class="modal fade" id="protector" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Adding Protector</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+         <form>
+          <div class="form-group">
+            <label for="message-name" class="col-form-label">Username of Protector:</label>
+            <input type="text" class="form-control" id="protectorname">
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" onclick="confirmed_pwd()">SUBMIT</button>
+      </div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+ function addprotector(){
+    var protectorname = $('#protectorname').val();
+      $.ajax({ 
+          type:"POST",
+          url:"//{protectorname}",
+          data: {"protectorname":protectorname},
+            success: function(data){
+              console.log("SUCCESS: ", data);
+              alert("Protector Added");
+            },
+            error: function(data){
+             console.log('ERROR: ', data);
+            },
+          });
+  }
+</script>
+<!-- add protector end-->
+
+<!-- add protectee start-->
+<div class="modal fade" id="protectee" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Adding Protectee</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+         <form>
+          <div class="form-group">
+            <label for="message-name" class="col-form-label">Username of Protectee:</label>
+            <input type="text" class="form-control" id="protecteename">
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" onclick="confirmed_pwd()">SUBMIT</button>
+      </div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+ function addprotectee(){
+    var protecteename = $('#protecteename').val();
+      $.ajax({ 
+          type:"POST",
+          url:"//{protecteename}",
+          data: {"protecteename":protecteename},
+            success: function(data){
+              console.log("SUCCESS: ", data);
+              alert("Protectee Added");
+            },
+            error: function(data){
+             console.log('ERROR: ', data);
+            },
+          });
+  }
+</script>
+<!-- add protector end-->
 
 
 </form>
