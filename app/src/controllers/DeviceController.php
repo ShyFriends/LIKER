@@ -60,10 +60,9 @@ final class DeviceController extends BaseController
 
         $dsn_sql = $results[0]['dsn'];
 
-        $sql = "select DATE_ADD(now(), INTERVAL -50 SECOND) as subtime";
+        $sql = "select DATE_ADD(now(), INTERVAL -10 SECOND) as subtime";
         $stmt = $this->em->getConnection()->query($sql);
         $results = $stmt->fetchAll();
-
         $subtime_sql = $results[0]['subtime'];
 
 //and DATE_ADD(NOW(), INTERVAL -10 SECOND) <= time and time <= now()
