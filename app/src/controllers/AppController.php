@@ -59,6 +59,45 @@ final class AppController extends BaseController
         echo json_encode($data);
     }   
 
+    public function realtime_heartrate_app(Request $request, Response $response, $args)
+    {
+        $dsn_sql = $_POST['dsn'];
+
+        $sql = "select DATE_ADD(now(), INTERVAL -5 SECOND) as subtime";
+        $stmt = $this->em->getConnection()->query($sql);
+        $stmt->execute();
+        $results = $stmt->fetchAll();
+        $subtime_sql = $results[0]['subtime'];
+
+        $sql = "select heart_rate from Polar where dsn=".$dsn_sql." and '".$subtime_sql."' < time and time <= now() order by time desc limit 0,1";
+        $stmt = $this->em->getConnection()->query($sql);
+        $stmt->execute();
+        $realtime_heartrate = $stmt->fetchAll();
+
+        $json_array = $realtime_heartrate;
+            return $response->withStatus(200)
+            ->withHeader('Content-Type', 'application/json')
+            ->write(json_encode($json_array));   
+    }
+
+    public function historic_heartrate_app(Request $request, Response $response, $args)
+    {
+        $start_time_sql = $_POST['start_time'];
+        $end_time_sql = $_POST['end_time'];
+        $dsn_sql = $_POST['dsn'];
+
+        $sql = "select time, heart_rate from Polar where dsn=".$dsn_sql." and '".$start_time_sql."' <= time and time < '".$end_time_sql."' order by time asc";
+        $stmt = $this->em->getConnection()->query($sql);
+        $stmt->execute();
+        $historic_polar = $stmt->fetchAll();
+     
+        $json_array = $historic_polar;
+            return $response->withStatus(200)
+            ->withHeader('Content-Type', 'application/json')
+            ->write(json_encode($json_array));
+    }
+
+
     public function check_duplicate_app(Request $request, Response $response, $args)
     {
         $username_sql = $_GET['id'];
