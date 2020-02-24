@@ -1,7 +1,7 @@
 
 <div>
 <center>
-<img width='200' src="https://github.com/ShyFriends/LIKER/public/img/real_logo.jpg">
+<img width='200' src="https://github.com/ShyFriends/LIKER/blob/master/public/img/real_logo.jpg">
 </center>
 </div>
 
