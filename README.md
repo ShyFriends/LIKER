@@ -41,19 +41,6 @@ Press "파일선택" -> "Upload" -> "Send"
     $ python pdf2jpg.py -i ./input
 ```
 
-## Contribute
-----------------
-* Issue Tracker: https://github.com/CAU-OSS-2019/team-project-team06/issues
-* Source Code: https://github.com/CAU-OSS-2019/team-project-team06/
-
-## Contribution guidelines
------------------------
-We use GitHub issues for tracking requests and bugs.
-
-## License
-------------------------
-MIT license
-
 ## Installation
 ---------------
 To install package
@@ -66,7 +53,7 @@ You have to get Google Cloud Map API key for running this program.
     $ export GOOGLE_APPLICATION_CREDENTIALS="/my key location.json"
 ```
 
-## Getting Started in Web
+# Getting Started in Web
 ------------------------------
 
 // Slim 3 MVC Skeleton
@@ -75,7 +62,7 @@ This is a simple skeleton project for Slim 3 that includes Doctrine, Twig, Flash
 
 Base on https://github.com/akrabat/slim3-skeleton
 
-# Slim 3 MVC Skeleton
+## Slim 3 MVC Skeleton
 
 This is a simple skeleton project for Slim 3 that includes Doctrine, Twig, Flash messages and Monolog.
 
@@ -133,4 +120,18 @@ Set `logs` and `cache` folder permission to writable when deploy to production e
 * `app/src/controllers/HomeController.php`: Controller class for the home page
 * `app/src/models/Post.php`: Entity class for post table
 * `app/templates/home.twig`: Twig template file for the home page
+
+## Contribute
+----------------
+* Issue Tracker: https://github.com/CAU-OSS-2019/team-project-team06/issues
+* Source Code: https://github.com/CAU-OSS-2019/team-project-team06/
+
+## Contribution guidelines
+-----------------------
+We use GitHub issues for tracking requests and bugs.
+
+## License
+------------------------
+MIT license
+
 # LIKER
