@@ -1,3 +1,80 @@
+
+<div>
+<center>
+<img width='200' src="https://user-images.githubusercontent.com/43204507/57985512-f0387300-7aa3-11e9-8eea-a1cc4603d649.png">
+</center>
+</div>
+
+# LIKER
+
+**LIKER(Like Air)** is a customized health care platform. Now you can check your heart rate and aqi in current location. You can also check your health status by receiving real-time and historical information. In addition, a warning alarm is issued to the neighbors in case of a dangerous situation, so it has a more systematic system.
+
+LIKER(Like Air) is an open source project developed by Qualcomm Institute Student B Team using Google API, Udoo/Polar Sensors etc..
+
+
+```
+<div>
+<center>
+Enter '127.0.0.1:8000/mainapp'
+<br>
+<br>
+<img width = '600' src="https://user-images.githubusercontent.com/43204507/58175040-3aa33500-7cda-11e9-82fc-ba5b66133c57.png">
+<br>
+<br>
+Press "파일선택" -> "Upload" -> "Send"
+<br>
+<br>
+<img width = '600' src="https://user-images.githubusercontent.com/43204507/58175357-ef3d5680-7cda-11e9-96a0-4c0c45cc5663.png">
+<br>
+<br>
+<img width = '600' src="https://user-images.githubusercontent.com/43204507/58175962-44c63300-7cdc-11e9-9485-5e7bc426d80b.png">
+<br>
+</center>
+<p style="font-size:20px"> &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbspinput&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp output
+</div>
+
+## Test
+-------------------
+
+```bash
+    $ cd mainapp
+    $ python pdf2jpg.py -i ./input
+```
+
+## Contribute
+----------------
+* Issue Tracker: https://github.com/CAU-OSS-2019/team-project-team06/issues
+* Source Code: https://github.com/CAU-OSS-2019/team-project-team06/
+
+## Contribution guidelines
+-----------------------
+We use GitHub issues for tracking requests and bugs.
+
+## License
+------------------------
+MIT license
+
+## Installation
+---------------
+To install package
+```bash
+    $ git clone https://github.com/ShyFriends/LIKER.git
+    $ cd Team_B
+```
+You have to get Google Cloud Map API key for running this program.
+```bash
+    $ export GOOGLE_APPLICATION_CREDENTIALS="/my key location.json"
+```
+
+## Getting Started in Web
+------------------------------
+
+// Slim 3 MVC Skeleton
+
+This is a simple skeleton project for Slim 3 that includes Doctrine, Twig, Flash messages and Monolog.
+
+Base on https://github.com/akrabat/slim3-skeleton
+
 # Slim 3 MVC Skeleton
 
 This is a simple skeleton project for Slim 3 that includes Doctrine, Twig, Flash messages and Monolog.
