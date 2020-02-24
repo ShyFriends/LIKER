@@ -13,25 +13,6 @@ LIKER(Like Air) is an open source project developed by Qualcomm Institute Studen
 
 
 ```
-<div>
-<center>
-Enter '127.0.0.1:8000/mainapp'
-<br>
-<br>
-<img width = '600' src="https://user-images.githubusercontent.com/43204507/58175040-3aa33500-7cda-11e9-82fc-ba5b66133c57.png">
-<br>
-<br>
-Press "파일선택" -> "Upload" -> "Send"
-<br>
-<br>
-<img width = '600' src="https://user-images.githubusercontent.com/43204507/58175357-ef3d5680-7cda-11e9-96a0-4c0c45cc5663.png">
-<br>
-<br>
-<img width = '600' src="https://user-images.githubusercontent.com/43204507/58175962-44c63300-7cdc-11e9-9485-5e7bc426d80b.png">
-<br>
-</center>
-<p style="font-size:20px"> &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbspinput&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp output
-</div>
 
 ## Test
 -------------------
@@ -43,7 +24,7 @@ Press "파일선택" -> "Upload" -> "Send"
 
 ## Installation
 ---------------
-To install package
+To install repository
 ```bash
     $ git clone https://github.com/ShyFriends/LIKER.git
     $ cd Team_B
