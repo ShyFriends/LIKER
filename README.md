@@ -10,8 +10,14 @@
 **LIKER(Like Air)** is a customized health care platform. Now you can check your heart rate and aqi in current location. You can also check your health status by receiving real-time and historical information. In addition, a warning alarm is issued to the neighbors in case of a dangerous situation, so it has a more systematic system.
 
 LIKER(Like Air) is an open source project developed by Qualcomm Institute Student B Team using Google API, Udoo/Polar Sensors etc..
+<div>
+<center>
+<img width='200' src="https://github.com/ShyFriends/LIKER/blob/master/public/img/dashboard.png">
+<img width='200' src="https://github.com/ShyFriends/LIKER/blob/master/public/img/heart_rate_page.png">
+<img width='200' src="https://github.com/ShyFriends/LIKER/blob/master/public/img/aqi_page.png">
 
-
+</center>
+</div>
 ```
 
 ## Test
