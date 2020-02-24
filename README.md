@@ -17,6 +17,7 @@ LIKER(Like Air) is an open source project developed by Qualcomm Institute Studen
 
 </center>
 </div>
+
 # Heart Rate Page
 
 <div>
@@ -28,15 +29,7 @@ LIKER(Like Air) is an open source project developed by Qualcomm Institute Studen
 <img width='800' src="https://github.com/ShyFriends/LIKER/blob/master/public/img/aqi_page.png">
 
 </div>
-```
 
-## Test
--------------------
-
-```bash
-    $ cd mainapp
-    $ python pdf2jpg.py -i ./input
-```
 
 ## Installation
 ---------------
