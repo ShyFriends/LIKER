@@ -113,8 +113,8 @@ Set `logs` and `cache` folder permission to writable when deploy to production e
 
 ## Contribute
 ----------------
-* Issue Tracker: https://github.com/CAU-OSS-2019/team-project-team06/issues
-* Source Code: https://github.com/CAU-OSS-2019/team-project-team06/
+* Issue Tracker: https://github.com/ShyFriends/LIKER/issues
+* Source Code: https://github.com/ShyFriends/LIKER
 
 ## Contribution guidelines
 -----------------------
