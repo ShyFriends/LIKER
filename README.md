@@ -12,11 +12,21 @@
 LIKER(Like Air) is an open source project developed by Qualcomm Institute Student B Team using Google API, Udoo/Polar Sensors etc..
 <div>
 <center>
-<img width='200' src="https://github.com/ShyFriends/LIKER/blob/master/public/img/dashboard.png">
-<img width='200' src="https://github.com/ShyFriends/LIKER/blob/master/public/img/heart_rate_page.png">
-<img width='200' src="https://github.com/ShyFriends/LIKER/blob/master/public/img/aqi_page.png">
+
+<img width='800' src="https://github.com/ShyFriends/LIKER/blob/master/public/img/dashboard.png">
 
 </center>
+</div>
+# Heart Rate Page
+
+<div>
+<img width='800' src="https://github.com/ShyFriends/LIKER/blob/master/public/img/heart_rate_page.png">
+</div>
+
+# AQI Page
+<div>
+<img width='800' src="https://github.com/ShyFriends/LIKER/blob/master/public/img/aqi_page.png">
+
 </div>
 ```
 
